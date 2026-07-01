@@ -1,4 +1,6 @@
-*.png
+# Local screenshots
+templatus-local*.png
+
 # Deploy artifacts
 deploy_output.txt
 Caddyfile.remote

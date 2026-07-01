@@ -118,14 +118,18 @@ def update_caddyfile(sftp_client) -> None:
     encode gzip zstd
     try_files {{path}} {{path}}.html /404.html
 }}"""
+
+        # Удаляем существующий блок домена, включая возможные артефакты
+        escaped_domain = re.escape(DOMAIN)
         pattern = re.compile(
-            rf"^{re.escape(DOMAIN)}\s*\{{.*?\}}\n?",
+            rf"^{escaped_domain}\s*\{{.*?^\}}\n?",
             re.MULTILINE | re.DOTALL,
         )
-        if pattern.search(content):
-            content = pattern.sub(block, content)
-        else:
-            content = content.rstrip("\n") + "\n\n" + block
+        content = pattern.sub("", content)
+        # Удаляем оставшиеся артефакты try_files, если они есть
+        content = re.sub(r"\s*\{path\}\.html /404\.html\s*\}?\s*", "\n", content)
+        content = re.sub(r"\n{3,}", "\n\n", content)
+        content = content.rstrip("\n") + "\n\n" + block
 
         local_path.write_text(content, encoding="utf-8")
         sftp_client.put(str(local_path), REMOTE_CADDYFILE_PATH)

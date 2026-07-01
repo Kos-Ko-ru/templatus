@@ -1,3 +1,4 @@
+*.png
 # Deploy artifacts
 deploy_output.txt
 Caddyfile.remote

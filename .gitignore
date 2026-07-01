@@ -1,0 +1,26 @@
+# Deploy artifacts
+deploy_output.txt
+Caddyfile.remote
+
+# Test artifacts
+.playwright-mcp/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Node (на всякий случай)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/

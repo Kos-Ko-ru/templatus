@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Питч-дек стартапа — бесплатный генератор презентации | templatus</title>
+  <meta name="description" content="Создайте питч-дек для инвесторов онлайн. Бесплатно, без регистрации. Скачайте презентацию в формате PPTX.">
+  <meta name="keywords" content="питч дек, шаблон презентации стартапа, pitch deck, pptx, бесплатно">
+  <link rel="canonical" href="https://templatus.ru/presentations/pitch-deck.html">
+  <meta property="og:title" content="Питч-дек стартапа — бесплатный генератор | templatus">
+  <meta property="og:description" content="Заполните тезисы и получите готовую презентацию для инвесторов в PPTX.">
+  <meta property="og:image" content="https://templatus.ru/assets/images/og-image.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Генератор питч-дека стартапа",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" },
+    "url": "https://templatus.ru/presentations/pitch-deck.html"
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/script.js" async></script>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+</head>
+<body data-page-id="pptx-pitch">
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a>
+      <nav class="main-nav" aria-label="Главное меню">
+        <a href="/resume/">Резюме</a>
+        <a href="/documents/">Документы</a>
+        <a href="/presentations/" class="active">Презентации</a>
+        <a href="/blog/">Блог</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему"><span data-theme-icon>☾</span></button>
+        <button class="icon-btn mobile-menu-btn" type="button" data-mobile-menu-toggle aria-label="Открыть меню" aria-expanded="false"><i class="ph ph-list" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="mobile-menu hidden" data-mobile-menu>
+      <a href="/resume/">Резюме</a>
+      <a href="/documents/">Документы</a>
+      <a href="/presentations/">Презентации</a>
+      <a href="/blog/">Блог</a>
+    </div>
+  </header>
+
+  <div class="ad-banner-top" aria-label="Реклама"><span>728×90 — место для рекламы</span></div>
+
+  <main>
+    <section class="section" style="padding-top:1.5rem">
+      <div class="container">
+        <h1 class="section-title">Питч-дек стартапа</h1>
+        <p class="section-subtitle">Заполните тезисы для каждого слайда и выберите цветовую схему.</p>
+
+        <div class="wizard">
+          <div class="wizard-form">
+            <form id="pptx-form">
+              <div class="form-group">
+                <label class="form-label" for="projectTitle">Название проекта / компании</label>
+                <input type="text" id="projectTitle" name="projectTitle" placeholder="SuperApp">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="projectSubtitle">Подзаголовок / слоган</label>
+                <input type="text" id="projectSubtitle" name="projectSubtitle" placeholder="Платформа для автоматизации бизнеса">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="theme">Цветовая схема</label>
+                <select id="theme" name="theme">
+                  <option value="blue">Синяя</option>
+                  <option value="green">Зелёная</option>
+                  <option value="purple">Фиолетовая</option>
+                  <option value="dark">Тёмная</option>
+                  <option value="orange">Оранжевая</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="slide-problem">Проблема</label>
+                <textarea id="slide-problem" name="slide-problem" data-slide-textarea data-slide-title="Проблема" rows="3" placeholder="Какую боль решает ваш продукт?"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="slide-solution">Решение</label>
+                <textarea id="slide-solution" name="slide-solution" data-slide-textarea data-slide-title="Решение" rows="3" placeholder="Как продукт решает проблему?"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="slide-product">Продукт</label>
+                <textarea id="slide-product" name="slide-product" data-slide-textarea data-slide-title="Продукт" rows="3" placeholder="Ключевые функции и преимущества"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="slide-market">Рынок</label>
+                <textarea id="slide-market" name="slide-market" data-slide-textarea data-slide-title="Рынок" rows="3" placeholder="Объём рынка, целевая аудитория"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="slide-model">Бизнес-модель</label>
+                <textarea id="slide-model" name="slide-model" data-slide-textarea data-slide-title="Бизнес-модель" rows="3" placeholder="Монетизация, цены, юнит-экономика"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="slide-team">Команда</label>
+                <textarea id="slide-team" name="slide-team" data-slide-textarea data-slide-title="Команда" rows="3" placeholder="Ключевые члены команды и их опыт"></textarea>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="form-group">
+                  <label class="form-label" for="chartLabels">Подписи графика (через запятую)</label>
+                  <input type="text" id="chartLabels" name="chartLabels" placeholder="Q1, Q2, Q3, Q4">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="chartValues">Значения графика (через запятую)</label>
+                  <input type="text" id="chartValues" name="chartValues" placeholder="10, 25, 45, 80">
+                </div>
+              </div>
+
+              <div class="ad-between-steps" aria-label="Реклама"><span>468×60 — место для рекламы</span></div>
+
+              <div class="flex gap-4 mt-4" style="justify-content:flex-end">
+                <button type="button" class="btn btn-primary" id="download-pptx">
+                  <i class="ph ph-microsoft-powerpoint-logo" aria-hidden="true"></i> Скачать PPTX
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <aside class="wizard-preview" aria-label="Предпросмотр презентации">
+            <h3 style="margin-top:0">Предпросмотр слайдов</h3>
+            <div id="pptx-preview"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="download-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <h3 id="modal-title">Готовим вашу презентацию...</h3>
+      <div class="progress-bar"><div id="download-progress"></div></div>
+      <div class="ad-before-download" aria-label="Реклама"><span>300×250 — реклама перед скачиванием</span></div>
+      <button class="btn btn-primary" id="download-modal-btn" style="width:100%" disabled>Подождите...</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col"><h4>templatus</h4><p style="color:var(--color-muted);font-size:.9rem">Бесплатные шаблоны документов.</p></div>
+        <div class="footer-col"><h4>Разделы</h4><a href="/resume/">Резюме</a><a href="/documents/">Документы</a><a href="/presentations/">Презентации</a></div>
+        <div class="footer-col"><h4>Помощь</h4><a href="/">Главная</a></div>
+      </div>
+      <div class="footer-bottom">© 2026 templatus.ru</div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.min.js"></script>
+
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/pptx-generator.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/pptx-page.js"></script>
+</body>
+</html>

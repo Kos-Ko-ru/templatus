@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>templatus — бесплатные шаблоны резюме, документов и презентаций</title>
+  <meta name="description" content="Создавайте резюме, документы и презентации онлайн бесплатно, без регистрации. Скачивайте готовые файлы в форматах DOCX, PDF и PPTX.">
+  <meta name="keywords" content="шаблоны документов, резюме, договор аренды, презентация, скачать docx, бесплатно">
+  <link rel="canonical" href="https://templatus.ru/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="templatus — бесплатные шаблоны документов">
+  <meta property="og:description" content="Создавайте резюме, договоры и презентации за 5 минут. Бесплатно и без регистрации.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://templatus.ru/">
+  <meta property="og:image" content="https://templatus.ru/assets/images/og-image.jpg">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "templatus",
+    "url": "https://templatus.ru/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://templatus.ru/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/script.js" async></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="logo" aria-label="templatus">
+        <i class="ph ph-files" aria-hidden="true"></i>
+        templa<span>us</span>
+      </a>
+      <nav class="main-nav" aria-label="Главное меню">
+        <a href="/resume/">Резюме</a>
+        <a href="/documents/">Документы</a>
+        <a href="/presentations/">Презентации</a>
+        <a href="/blog/">Блог</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему">
+          <span data-theme-icon>☾</span>
+        </button>
+        <button class="icon-btn mobile-menu-btn" type="button" data-mobile-menu-toggle aria-label="Открыть меню" aria-expanded="false">
+          <i class="ph ph-list" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu hidden" data-mobile-menu aria-label="Мобильное меню">
+      <a href="/resume/">Резюме</a>
+      <a href="/documents/">Документы</a>
+      <a href="/presentations/">Презентации</a>
+      <a href="/blog/">Блог</a>
+    </div>
+  </header>
+
+  <!-- Рекламный placeholder: шапка -->
+  <div class="ad-banner-top" aria-label="Реклама">
+    <span>728×90 — место для рекламы</span>
+  </div>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Создавайте документы за 5 минут.<br>Бесплатно. Без регистрации.</h1>
+        <p>Генератор резюме, шаблонов документов и презентаций. Всё работает в браузере — ваши данные не покидают компьютер.</p>
+        <div class="hero-actions">
+          <a href="/resume/" class="btn btn-primary btn-lg">
+            <i class="ph ph-user" aria-hidden="true"></i>
+            Создать резюме
+          </a>
+          <a href="/documents/" class="btn btn-secondary btn-lg">
+            <i class="ph ph-file-text" aria-hidden="true"></i>
+            Создать документ
+          </a>
+        </div>
+        <p class="mt-4" style="color:var(--color-muted)">
+          Уже создано <strong data-doc-counter>0</strong> документов
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title text-center">Что можно создать</h2>
+        <p class="section-subtitle text-center">Выберите нужный раздел и заполните форму — файл готов через несколько секунд.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <article class="card">
+            <div class="card-icon"><i class="ph ph-user" aria-hidden="true"></i></div>
+            <h3>Резюме</h3>
+            <p>Современные шаблоны для IT-специалистов, менеджеров по продажам и кандидатов без опыта.</p>
+            <a href="/resume/" class="btn btn-primary btn-sm">Выбрать шаблон</a>
+          </article>
+          <article class="card">
+            <div class="card-icon"><i class="ph ph-file-text" aria-hidden="true"></i></div>
+            <h3>Документы</h3>
+            <p>Договоры, заявления, доверенности и коммерческие предложения с пошаговым заполнением.</p>
+            <a href="/documents/" class="btn btn-primary btn-sm">Выбрать шаблон</a>
+          </article>
+          <article class="card">
+            <div class="card-icon"><i class="ph ph-presentation" aria-hidden="true"></i></div>
+            <h3>Презентации</h3>
+            <p>Питч-деки, квартальные отчёты и бизнес-презентации в формате PPTX.</p>
+            <a href="/presentations/" class="btn btn-primary btn-sm">Выбрать шаблон</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--color-surface)">
+      <div class="container">
+        <h2 class="section-title text-center">Как это работает</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+          <div class="card">
+            <div class="card-icon"><i class="ph ph-selection" aria-hidden="true"></i></div>
+            <h3>1. Выберите шаблон</h3>
+            <p>Большая база готовых форм под любую задачу.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="ph ph-pencil-simple" aria-hidden="true"></i></div>
+            <h3>2. Заполните форму</h3>
+            <p>Отвечайте на простые вопросы, данные автоматически сохраняются.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="ph ph-eye" aria-hidden="true"></i></div>
+            <h3>3. Смотрите превью</h3>
+            <p>Готовый документ отображается рядом с формой в реальном времени.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="ph ph-download-simple" aria-hidden="true"></i></div>
+            <h3>4. Скачайте файл</h3>
+            <p>DOCX, PDF или PPTX — на ваш выбор.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title text-center">Отзывы пользователей</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <figure class="card">
+            <blockquote>«За 10 минут сделал резюме и скачал DOCX. Всё бесплатно, без смс.»</blockquote>
+            <figcaption>— Алексей, frontend-разработчик</figcaption>
+          </figure>
+          <figure class="card">
+            <blockquote>«Оформила договор аренды сама, не обращаясь к юристу. Очень удобно.»</blockquote>
+            <figcaption>— Марина, арендодатель</figcaption>
+          </figure>
+          <figure class="card">
+            <blockquote>«Питч-дек для инвесторов собрал за полчаса. Презентация выглядит профессионально.»</blockquote>
+            <figcaption>— Дмитрий, основатель стартапа</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--color-surface)">
+      <div class="container">
+        <h2 class="section-title text-center">Частые вопросы</h2>
+        <div class="accordion" role="region" aria-label="FAQ">
+          <div class="accordion-item">
+            <button class="accordion-header" data-accordion-header aria-expanded="false">
+              Сервис действительно бесплатный?
+              <i class="ph ph-caret-down" aria-hidden="true"></i>
+            </button>
+            <div class="accordion-body" data-accordion-body>
+              <p>Да, все шаблоны и генераторы абсолютно бесплатны. Проект монетизируется за счёт рекламы и партнёрских ссылок.</p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" data-accordion-header aria-expanded="false">
+              Нужна ли регистрация?
+              <i class="ph ph-caret-down" aria-hidden="true"></i>
+            </button>
+            <div class="accordion-body" data-accordion-body>
+              <p>Нет, регистрация не требуется. Черновики сохраняются локально в вашем браузере.</p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" data-accordion-header aria-expanded="false">
+              Куда загружаются мои данные?
+              <i class="ph ph-caret-down" aria-hidden="true"></i>
+            </button>
+            <div class="accordion-body" data-accordion-body>
+              <p>Никуда. Все генераторы работают на стороне клиента, файлы создаются прямо в браузере.</p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" data-accordion-header aria-expanded="false">
+              Какие форматы доступны?
+              <i class="ph ph-caret-down" aria-hidden="true"></i>
+            </button>
+            <div class="accordion-body" data-accordion-body>
+              <p>Резюме и документы можно скачать в DOCX и PDF, презентации — в PPTX.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Рекламный placeholder: после контента -->
+    <div class="ad-after-download" aria-label="Реклама">
+      <span>728×90 — похожие шаблоны / реклама</span>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>templatus</h4>
+          <p style="color:var(--color-muted);font-size:.9rem">Бесплатные шаблоны документов, резюме и презентаций.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Резюме</h4>
+          <a href="/resume/it-specialist.html">IT-специалист</a>
+          <a href="/resume/">Все шаблоны резюме</a>
+        </div>
+        <div class="footer-col">
+          <h4>Документы</h4>
+          <a href="/documents/dogovor-arendy.html">Договор аренды</a>
+          <a href="/documents/">Все шаблоны документов</a>
+        </div>
+        <div class="footer-col">
+          <h4>Презентации</h4>
+          <a href="/presentations/pitch-deck.html">Питч-дек</a>
+          <a href="/presentations/">Все шаблоны презентаций</a>
+        </div>
+      </div>
+      <div class="ad-footer" aria-label="Реклама">
+        <span>728×90 — место для рекламы</span>
+      </div>
+      <div class="footer-bottom">
+        © 2026 templatus.ru · Бесплатные шаблоны документов
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

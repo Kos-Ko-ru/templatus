@@ -26,7 +26,7 @@ REMOTE_USER = os.getenv("TEMPLATUS_USER", "root").strip()
 REMOTE_PASSWORD = os.getenv("TEMPLATUS_PASSWORD", "Kostaden2312-").strip()
 REMOTE_BASE = os.getenv("TEMPLATUS_REMOTE_BASE", "/opt/templatus").strip()
 REMOTE_CADDYFILE_PATH = os.getenv(
-    "TEMPLATUS_CADDYFILE_PATH", "/etc/caddy/Caddyfile"
+    "TEMPLATUS_CADDYFILE_PATH", "/opt/safescan/Caddyfile"
 ).strip()
 DOMAIN = os.getenv("TEMPLATUS_DOMAIN", "templatus.ru").strip()
 REPO_URL = os.getenv("TEMPLATUS_REPO_URL", "").strip()
@@ -164,8 +164,8 @@ def deploy_ssh() -> None:
     commands = [
         f"if [ ! -d {REMOTE_BASE}/.git ]; then rm -rf {REMOTE_BASE} && git clone {repo_url} {REMOTE_BASE}; fi",
         f"cd {REMOTE_BASE} && git checkout . && git pull origin main",
-        # Убедимся, что Caddy перезагрузит конфигурацию
-        "caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile || systemctl reload caddy || service caddy reload || true",
+        # Перезагружаем Caddy в Docker
+        "docker exec safescan-caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile",
     ]
 
     full_output = []

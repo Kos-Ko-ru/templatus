@@ -112,7 +112,14 @@ def update_caddyfile(sftp_client) -> None:
         except IOError:
             content = ""
 
-        block = f"""{DOMAIN} {{
+        domain_block = f"""{DOMAIN} {{
+    root * {REMOTE_BASE}
+    file_server
+    encode gzip zstd
+    try_files {{path}} {{path}}.html /404.html
+}}"""
+
+        http_block = f""":80 {{
     root * {REMOTE_BASE}
     file_server
     encode gzip zstd
@@ -126,10 +133,12 @@ def update_caddyfile(sftp_client) -> None:
             re.MULTILINE | re.DOTALL,
         )
         content = pattern.sub("", content)
+        # Удаляем старый HTTP catch-all блок, если есть
+        content = re.sub(r"^:80\s*\{.*?^\}\n?", "", content, flags=re.MULTILINE | re.DOTALL)
         # Удаляем оставшиеся артефакты try_files, если они есть
         content = re.sub(r"\s*\{path\}\.html /404\.html\s*\}?\s*", "\n", content)
         content = re.sub(r"\n{3,}", "\n\n", content)
-        content = content.rstrip("\n") + "\n\n" + block
+        content = content.rstrip("\n") + "\n\n" + domain_block + "\n\n" + http_block
 
         local_path.write_text(content, encoding="utf-8")
         sftp_client.put(str(local_path), REMOTE_CADDYFILE_PATH)

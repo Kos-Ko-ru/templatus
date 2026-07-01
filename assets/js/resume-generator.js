@@ -196,8 +196,22 @@ const ResumeGenerator = (() => {
     TemplateEngine.downloadBlob(blob, filename);
   }
 
+  function setupCyrillicFonts() {
+    if (window.pdfMake && !pdfMake.fonts) {
+      pdfMake.fonts = {
+        DejaVuSans: {
+          normal: "DejaVuSans.ttf",
+          bold: "DejaVuSans-Bold.ttf",
+          italics: "DejaVuSans.ttf",
+          bolditalics: "DejaVuSans-Bold.ttf",
+        },
+      };
+    }
+  }
+
   function generatePdf(data, filename = "resume.pdf") {
     if (!window.pdfMake) throw new Error("pdfmake не загружен");
+    setupCyrillicFonts();
 
     const experienceBlocks = data.experience.length
       ? data.experience.flatMap((exp) => [
@@ -244,7 +258,7 @@ const ResumeGenerator = (() => {
         subheader: { fontSize: 14, bold: true, color: "#2563eb", margin: [0, 0, 0, 6] },
         section: { fontSize: 13, bold: true, margin: [0, 12, 0, 4] },
       },
-      defaultStyle: { font: "Roboto" },
+      defaultStyle: { font: "DejaVuSans" },
     };
 
     pdfMake.createPdf(docDefinition).download(filename);

@@ -1,11 +1,27 @@
 /**
- * doc-page.js — логика генератора документов (договор аренды).
+ * doc-page.js — универсальная логика генератора документов.
+ * Выбирает шаблон по data-doc-template на <body>.
  */
 
 (function () {
-  const PAGE_ID = "doc-arenda";
+  const body = document.body;
+  const PAGE_ID = body.dataset.pageId;
+  const TEMPLATE_NAME = body.dataset.docTemplate || "arenda";
+
+  const TEMPLATES = {
+    arenda: DocGenerator.arendaTemplate,
+    otpusk: DocGenerator.otpuskTemplate,
+    doverennost: DocGenerator.doverennostTemplate,
+    kompredlozheniye: DocGenerator.kompredlozheniyeTemplate,
+  };
+
+  const template = TEMPLATES[TEMPLATE_NAME];
 
   function init() {
+    if (!template) {
+      console.error("Unknown doc template:", TEMPLATE_NAME);
+      return;
+    }
     bindEvents();
     loadDraft();
     updatePreview();
@@ -18,7 +34,7 @@
       saveDraft();
     });
     form.addEventListener("change", () => {
-      toggleDeposit();
+      toggleConditionalFields();
       updatePreview();
       saveDraft();
     });
@@ -26,14 +42,17 @@
     document.getElementById("download-pdf").addEventListener("click", () => handleDownload("pdf"));
   }
 
-  function toggleDeposit() {
-    const deposit = document.getElementById("deposit").checked;
-    document.getElementById("deposit-group").style.display = deposit ? "block" : "none";
+  function toggleConditionalFields() {
+    const deposit = document.getElementById("deposit");
+    if (deposit) {
+      const group = document.getElementById("deposit-group");
+      if (group) group.style.display = deposit.checked ? "block" : "none";
+    }
   }
 
   function updatePreview() {
     const data = DocGenerator.collectFields("doc-form");
-    const html = DocGenerator.arendaTemplate(data)
+    const html = template(data)
       .map((block) => {
         if (typeof block === "string") return `<p>${escapeHtml(block).replace(/\n/g, "<br>")}</p>`;
         const tag = block.bold ? "strong" : "span";
@@ -68,17 +87,17 @@
       if (el.type === "checkbox") el.checked = !!value;
       else el.value = value === undefined ? "" : value;
     });
-    toggleDeposit();
+    toggleConditionalFields();
   }
 
   function handleDownload(format) {
     const data = DocGenerator.collectFields("doc-form");
-    const filename = `dogovor-arendy.${format}`;
+    const filename = `${TEMPLATE_NAME}.${format}`;
 
     showDownloadModal(async () => {
       try {
-        if (format === "docx") await DocGenerator.generateDocx(data, DocGenerator.arendaTemplate, filename);
-        else DocGenerator.generatePdf(data, DocGenerator.arendaTemplate, filename);
+        if (format === "docx") await DocGenerator.generateDocx(data, template, filename);
+        else DocGenerator.generatePdf(data, template, filename);
         bumpCounter();
         if (confirm("Документ готов. Очистить черновик?")) {
           Storage.remove(PAGE_ID);

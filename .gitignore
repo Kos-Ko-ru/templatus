@@ -1,29 +1,27 @@
-# Local screenshots
-templatus-local*.png
-
-# Deploy artifacts
-deploy_output.txt
-Caddyfile.remote
-
-# Test artifacts
-.playwright-mcp/
-
-# OS / Editor
+# OS
 .DS_Store
 Thumbs.db
-*.swp
-*.swo
-.vscode/
-.idea/
 
-# Node (на всякий случай)
-node_modules/
-package-lock.json
-yarn.lock
+# Logs
+*.log
+
+# Playwright MCP artifacts
+.playwright-mcp/
 
 # Python
 __pycache__/
 *.pyc
 *.pyo
-.venv/
-venv/
+
+# Temporary scripts
+create_*.py
+fix_*.py
+
+# Local screenshots
+*.png
+*.jpg
+*.jpeg
+
+# Dependencies
+node_modules/
+deploy_output.txt

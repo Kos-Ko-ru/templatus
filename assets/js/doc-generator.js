@@ -57,8 +57,22 @@ const DocGenerator = (() => {
     TemplateEngine.downloadBlob(blob, filename);
   }
 
+  function setupCyrillicFonts() {
+    if (window.pdfMake && !pdfMake.fonts) {
+      pdfMake.fonts = {
+        DejaVuSans: {
+          normal: "DejaVuSans.ttf",
+          bold: "DejaVuSans-Bold.ttf",
+          italics: "DejaVuSans.ttf",
+          bolditalics: "DejaVuSans-Bold.ttf",
+        },
+      };
+    }
+  }
+
   function generatePdf(data, template, filename = "document.pdf") {
     if (!window.pdfMake) throw new Error("pdfmake не загружен");
+    setupCyrillicFonts();
     const blocks = template(data).map((block) => {
       if (typeof block === "string") return { text: block, margin: [0, 0, 0, 8] };
       return {
@@ -71,7 +85,7 @@ const DocGenerator = (() => {
 
     const docDefinition = {
       content: blocks,
-      defaultStyle: { font: "Roboto" },
+      defaultStyle: { font: "DejaVuSans" },
       styles: {
         header: { fontSize: 16, bold: true, alignment: "center", margin: [0, 0, 0, 12] },
       },
@@ -110,12 +124,71 @@ const DocGenerator = (() => {
     ];
   }
 
+  // Шаблон: заявление на отпуск
+  function otpuskTemplate(data) {
+    return [
+      { text: "ЗАЯВЛЕНИЕ", bold: true, align: "center", after: 200 },
+      "От " + (data.fullName || "_______________________") + ",",
+      "работающего(ей) в должности " + (data.position || "_______________________") + " в " + (data.company || "_______________________") + ",",
+      "",
+      "Прошу предоставить мне " + (data.leaveType || "ежегодный оплачиваемый") + " отпуск с " + (data.dateStart || "______") + " по " + (data.dateEnd || "______") + " включительно на основании ст. 114 Трудового кодекса РФ.",
+      "",
+      "Дата: " + (data.date || "______"),
+      "Подпись: _________________ / " + (data.fullName || ""),
+    ];
+  }
+
+  // Шаблон: доверенность
+  function doverennostTemplate(data) {
+    return [
+      { text: "ДОВЕРЕННОСТЬ", bold: true, align: "center", after: 200 },
+      "г. " + (data.city || "______") + " " + (data.date || "______"),
+      "",
+      "Я, " + (data.principalName || "_______________________") + ", паспорт " + (data.principalPassport || "_______________________"), 
+      "проживающий(ая) по адресу: " + (data.principalAddress || "_______________________") + ",",
+      "",
+      "доверяю " + (data.agentName || "_______________________") + ", паспорт " + (data.agentPassport || "_______________________") + ",",
+      "проживающему(ей) по адресу: " + (data.agentAddress || "_______________________") + ",",
+      "",
+      "представлять мои интересы в " + (data.organization || "_______________________") + " для следующих действий: " + (data.powers || "_______________________") + ".",
+      "",
+      "Доверенность выдана сроком на " + (data.term || "1 год") + ".",
+      "",
+      "Подпись доверителя: _________________ / " + (data.principalName || ""),
+    ];
+  }
+
+  // Шаблон: коммерческое предложение
+  function kompredlozheniyeTemplate(data) {
+    return [
+      { text: "КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ", bold: true, align: "center", after: 200 },
+      "От: " + (data.companyName || "_______________________") + ",",
+      "Контактное лицо: " + (data.contactName || "_______________________") + ", тел. " + (data.phone || "_______________________"),
+      "",
+      "Уважаемый(ая) " + (data.clientName || "_______________________") + "!",
+      "",
+      "Предлагаем вам рассмотреть возможность сотрудничества с нашей компанией.",
+      "",
+      "Предмет предложения: " + (data.subject || "_______________________") + ".",
+      "Стоимость: " + (data.price || "_______________________") + ".",
+      "Сроки: " + (data.terms || "_______________________") + ".",
+      "",
+      "Преимущества:",
+      data.advantages || "— Высокое качество\n— Оперативность\n— Индивидуальный подход",
+      "",
+      "С уважением, " + (data.contactName || "_______________________"),
+    ];
+  }
+
   return {
     collectFields,
     renderPreview,
     generateDocx,
     generatePdf,
     arendaTemplate,
+    otpuskTemplate,
+    doverennostTemplate,
+    kompredlozheniyeTemplate,
   };
 })();
 

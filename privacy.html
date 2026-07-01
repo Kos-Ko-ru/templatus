@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Блог templatus — полезные статьи о документах и резюме</title>
-  <meta name="description" content="Статьи о том, как составить резюме, договор и презентацию. Советы от команды templatus.">
-  <link rel="canonical" href="https://templatus.ru/blog/">
+  <title>Политика конфиденциальности — templatus</title>
+  <meta name="description" content="Политика конфиденциальности templatus. Мы не собираем и не храним ваши данные — всё работает в браузере.">
+  <link rel="canonical" href="https://templatus.ru/privacy.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 </head>
 <body>
   <header class="site-header">
@@ -21,7 +21,7 @@
         <a href="/resume/">Резюме</a>
         <a href="/documents/">Документы</a>
         <a href="/presentations/">Презентации</a>
-        <a href="/blog/" class="active">Блог</a>
+        <a href="/blog/">Блог</a>
         <a href="/about.html">О нас</a>
         <a href="/contacts.html">Контакты</a>
       </nav>
@@ -43,19 +43,23 @@
   <main>
     <section class="page-header">
       <div class="container">
-        <h1>Блог</h1>
-        <p>Полезные материалы о составлении документов, резюме и презентаций.</p>
+        <h1>Политика конфиденциальности</h1>
+        <p>Ваши данные остаются на вашем устройстве.</p>
       </div>
     </section>
     <section class="section">
-      <div class="container">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <article class="card">
-            <h3>Как составить резюме, которое заметят HR</h3>
-            <p>10 практических советов по структуре, навыкам и оформлению резюме для любой профессии.</p>
-            <a href="kak-sostavit-rezume.html" class="btn btn-primary btn-sm">Читать</a>
-          </article>
-        </div>
+      <div class="container" style="max-width:800px">
+        <h2 class="section-title">1. Обработка данных</h2>
+        <p style="color:var(--color-muted)">templatus — это клиентский веб-сервис. Вся обработка данных происходит в браузере пользователя. Мы не отправляем ваши персональные данные на сервер и не передаём их третьим лицам.</p>
+
+        <h2 class="section-title" style="margin-top:2rem">2. LocalStorage</h2>
+        <p style="color:var(--color-muted)">Черновики форм сохраняются в localStorage браузера пользователя. Эти данные хранятся только на устройстве пользователя и автоматически удаляются через 30 дней.</p>
+
+        <h2 class="section-title" style="margin-top:2rem">3. Файлы</h2>
+        <p style="color:var(--color-muted)">Сгенерированные документы (DOCX, PDF, PPTX) создаются локально в браузере и сразу скачиваются на устройство. Они не загружаются на сервер.</p>
+
+        <h2 class="section-title" style="margin-top:2rem">4. Реклама</h2>
+        <p style="color:var(--color-muted)">На сайте могут размещаться рекламные блоки сторонних сетей. Эти сети могут использовать cookies в соответствии со своими политиками.</p>
       </div>
     </section>
   </main>
@@ -89,7 +93,7 @@
     </div>
   </footer>
 
-  <script src="../assets/js/storage.js"></script>
-  <script src="../assets/js/app.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/app.js"></script>
 </body>
 </html>

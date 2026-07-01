@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Резюме IT-специалиста — бесплатный генератор | templatus</title>
-  <meta name="description" content="Составьте резюме IT-специалиста онлайн. Бесплатно, без регистрации. Скачайте готовое резюме в DOCX или PDF.">
-  <meta name="keywords" content="резюме it специалиста, шаблон резюме программиста, скачать резюме, docx, pdf">
-  <link rel="canonical" href="https://templatus.ru/resume/it-specialist.html">
-  <meta property="og:title" content="Резюме IT-специалиста — бесплатный генератор | templatus">
-  <meta property="og:description" content="Создайте профессиональное резюме для IT за несколько минут. DOCX и PDF бесплатно.">
+  <title>Резюме без опыта — бесплатный генератор | templatus</title>
+  <meta name="description" content="Составьте резюме без опыта работы онлайн. Для студентов и выпускников. Бесплатно, без регистрации. DOCX и PDF.">
+  <meta name="keywords" content="резюме без опыта, шаблон резюме студента, скачать резюме, docx, pdf">
+  <link rel="canonical" href="https://templatus.ru/resume/no-experience.html">
+  <meta property="og:title" content="Резюме без опыта — бесплатный генератор | templatus">
+  <meta property="og:description" content="Создайте резюме для первой работы. Образование, курсы, стажировки. Бесплатно.">
   <meta property="og:image" content="https://templatus.ru/assets/images/og-image.jpg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Генератор резюме IT-специалиста",
+    "name": "Генератор резюме без опыта",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" },
-    "url": "https://templatus.ru/resume/it-specialist.html"
+    "url": "https://templatus.ru/resume/no-experience.html"
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 </head>
-<body data-page-id="resume-it">
+<body data-page-id="resume-noexp">
   <header class="site-header">
     <div class="container">
       <a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a>
@@ -60,8 +60,8 @@
   <main>
     <section class="section" style="padding-top:1.5rem">
       <div class="container">
-        <h1 class="section-title">Резюме IT-специалиста</h1>
-        <p class="section-subtitle">Заполните форму пошагово. Превью резюме обновляется автоматически.</p>
+        <h1 class="section-title">Резюме без опыта</h1>
+        <p class="section-subtitle">Акцент на образовании, курсах, стажировках и личных качествах.</p>
 
         <div class="wizard">
           <div class="wizard-form">
@@ -73,7 +73,6 @@
             </div>
 
             <form id="resume-form" novalidate>
-              <!-- Шаг 1 -->
               <fieldset id="step-1" class="step-panel">
                 <legend class="form-label" style="font-size:1.1rem;font-weight:700;margin-bottom:1rem">Шаг 1: Личные данные</legend>
                 <div class="form-group">
@@ -82,7 +81,7 @@
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="position">Желаемая должность *</label>
-                  <input type="text" id="position" name="position" placeholder="Frontend-разработчик" required>
+                  <input type="text" id="position" name="position" placeholder="Стажер аналитик" required>
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="city">Город</label>
@@ -98,59 +97,55 @@
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="about">О себе</label>
-                  <textarea id="about" name="about" rows="4" placeholder="Кратко о вашем опыте и целях"></textarea>
+                  <textarea id="about" name="about" rows="4" placeholder="Цель, мотивация, личные качества"></textarea>
                 </div>
               </fieldset>
 
-              <!-- Шаг 2 -->
               <fieldset id="step-2" class="step-panel hidden">
-                <legend class="form-label" style="font-size:1.1rem;font-weight:700;margin-bottom:1rem">Шаг 2: Опыт работы</legend>
+                <legend class="form-label" style="font-size:1.1rem;font-weight:700;margin-bottom:1rem">Шаг 2: Опыт (стажировки, проекты)</legend>
                 <div class="dynamic-list" id="experience-list" data-dynamic-list="experience"></div>
                 <button type="button" class="btn btn-secondary btn-sm" id="add-experience">
-                  <i class="ph ph-plus" aria-hidden="true"></i> Добавить место работы
+                  <i class="ph ph-plus" aria-hidden="true"></i> Добавить опыт
                 </button>
               </fieldset>
 
-              <!-- Шаг 3 -->
               <fieldset id="step-3" class="step-panel hidden">
-                <legend class="form-label" style="font-size:1.1rem;font-weight:700;margin-bottom:1rem">Шаг 3: Образование</legend>
+                <legend class="form-label" style="font-size:1.1rem;font-weight:700;margin-bottom:1rem">Шаг 3: Образование и курсы</legend>
                 <div class="dynamic-list" id="education-list" data-dynamic-list="education"></div>
                 <button type="button" class="btn btn-secondary btn-sm" id="add-education">
-                  <i class="ph ph-plus" aria-hidden="true"></i> Добавить образование
+                  <i class="ph ph-plus" aria-hidden="true"></i> Добавить образование / курс
                 </button>
               </fieldset>
 
-              <!-- Шаг 4 -->
               <fieldset id="step-4" class="step-panel hidden">
                 <legend class="form-label" style="font-size:1.1rem;font-weight:700;margin-bottom:1rem">Шаг 4: Навыки и языки</legend>
                 <div class="form-group">
                   <label class="form-label">Ключевые навыки</label>
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="JavaScript"> JavaScript</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="TypeScript"> TypeScript</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="React"> React</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Vue.js"> Vue.js</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Node.js"> Node.js</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Python"> Python</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="SQL"> SQL</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Git"> Git</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Docker"> Docker</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="CI/CD"> CI/CD</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Figma"> Figma</label>
-                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Agile/Scrum"> Agile/Scrum</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="MS Office"> MS Office</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Коммуникабельность"> Коммуникабельность</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Английский язык"> Английский язык</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Грамотная речь"> Грамотная речь</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Ответственность"> Ответственность</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Обучаемость"> Обучаемость</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Командная работа"> Командная работа</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Time management"> Time management</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Аналитическое мышление"> Аналитическое мышление</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Навыки презентации"> Навыки презентации</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Google Docs"> Google Docs</label>
+                    <label class="checkbox-row"><input type="checkbox" name="skills" value="Базовое программирование"> Базовое программирование</label>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="customSkills">Другие навыки (через запятую)</label>
-                  <input type="text" id="customSkills" name="customSkills" placeholder="GraphQL, Redis, Kubernetes">
+                  <input type="text" id="customSkills" name="customSkills" placeholder="Photoshop, водительские права">
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="languages">Языки</label>
-                  <input type="text" id="languages" name="languages" placeholder="Русский — родной, Английский — B2">
+                  <input type="text" id="languages" name="languages" placeholder="Русский — родной, Английский — A2">
                 </div>
               </fieldset>
 
-              <!-- Реклама между шагами -->
               <div class="ad-between-steps" aria-label="Реклама"><span>468×60 — место для рекламы</span></div>
 
               <div class="flex gap-4 mt-4" style="justify-content:space-between">
@@ -177,7 +172,6 @@
     </section>
   </main>
 
-  <!-- Модальное окно перед скачиванием -->
   <div class="modal-overlay" id="download-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal">
       <h3 id="modal-title">Готовим ваш документ...</h3>
@@ -187,7 +181,7 @@
     </div>
   </div>
 
-    <footer class="site-footer">
+  <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
@@ -216,7 +210,6 @@
     </div>
   </footer>
 
-  <!-- Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js"></script>

@@ -1,0 +1,139 @@
+
+safescanget.ru {
+	# ── Security Headers ──
+
+	# Disable HTTP TRACE method
+	@trace method TRACE
+	respond @trace 405
+
+	header {
+		# HSTS (HTTP Strict Transport Security)
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+		# Prevent MIME sniffing
+		X-Content-Type-Options "nosniff"
+
+		# Referrer policy
+		Referrer-Policy "strict-origin-when-cross-origin"
+
+		# Permissions policy
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
+
+		# Cross-Origin policies
+		Cross-Origin-Opener-Policy "same-origin"
+
+		# Clickjacking protection (redundant with CSP frame-ancestors, but good for old browsers)
+		X-Frame-Options "DENY"
+
+		# Remove information-disclosure headers
+		-Server
+		-X-Powered-By
+	}
+
+	# Short links — internal rewrite to backend
+	handle_path /d/* {
+		rewrite * /api/v1/dev/files/by-short{path}
+		reverse_proxy backend:8000
+	}
+
+	# HTML report proxy — must go to frontend (Next.js API route)
+	handle /api/reports/html {
+		reverse_proxy frontend:3000
+	}
+
+	# API — явно на бэкенд
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	# Фронтенд (все запросы по умолчанию)
+	reverse_proxy frontend:3000
+
+	# Health checks
+	handle /health {
+		reverse_proxy backend:8000
+	}
+
+	# Автоматический HTTPS через Let's Encrypt
+	tls crahercenter@gmail.com
+
+	# Логирование
+	log {
+		output file /var/log/caddy/access.log
+		format json
+	}
+}
+
+http://remstroyproect.ru, http://www.remstroyproect.ru {
+	header -Server
+	redir https://{host}{uri} 301
+}
+
+remstroyproect.ru, www.remstroyproect.ru {
+	encode gzip
+
+	# Disable HTTP TRACE method
+	@trace method TRACE
+	respond @trace 405
+
+	# Common scanner/probe paths for login. POST is forwarded to the rate-limited
+	# API endpoint; everything else gets an immediate 429 so probes see rate-limiting.
+	handle /login* {
+		@post method POST
+		handle @post {
+			rewrite * /api/auth/login/
+			reverse_proxy rsp96:3000
+		}
+		header Retry-After "900"
+		header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+		respond "Too Many Requests" 429
+	}
+
+	handle /api/v1/auth/login* {
+		rewrite * /api/auth/login/
+		reverse_proxy rsp96:3000
+	}
+
+	# Reverse proxy to Next.js Docker container
+	reverse_proxy rsp96:3000
+
+	# Remove server information
+	header -Server
+	header -X-Powered-By
+
+	# Security headers (CSP is set per-request by the Next.js proxy)
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "SAMEORIGIN"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
+	}
+
+	# Automatic HTTPS
+	tls crahercenter@gmail.com
+
+	log {
+		output file /var/log/caddy/rsp96-access.log
+		format json
+	}
+}
+
+# Kos-Ko landing page
+kos-ko.ru {
+    reverse_proxy kos-ko:3000
+}
+
+templatus.ru {
+    root * /opt/templatus
+    file_server
+    encode gzip zstd
+    try_files {path} {path}.html /index.html /404.html
+}
+
+:80 {
+    root * /opt/templatus
+    file_server
+    encode gzip zstd
+    try_files {path} {path}.html /index.html /404.html
+}

@@ -1,0 +1,12 @@
+import paramiko
+client = paramiko.SSHClient()
+client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+client.connect('158.255.4.142', username='root', password='Kostaden2312-')
+stdin, stdout, stderr = client.exec_command('docker inspect safescan-caddy -f "{{json .Mounts}}"')
+print(stdout.read().decode('utf-8', errors='replace'))
+print(stderr.read().decode('utf-8', errors='replace'))
+stdin, stdout, stderr = client.exec_command('docker exec safescan-caddy ls -la /opt/templatus/')
+print('--- container /opt/templatus ---')
+print(stdout.read().decode('utf-8', errors='replace'))
+print(stderr.read().decode('utf-8', errors='replace'))
+client.close()

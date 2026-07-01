@@ -25,3 +25,10 @@ fix_*.py
 # Dependencies
 node_modules/
 deploy_output.txt
+check_*.py
+recreate_*.py
+read_*.py
+inspect_*.py
+Caddyfile.remote*
+caddyfile_check.txt
+deploy_output.txt

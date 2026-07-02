@@ -86,13 +86,13 @@
           date: new Date().toISOString(),
         };
         if (!review.name || !review.text) {
-          alert('Заполните имя и текст отзыва');
+          showToast('Заполните имя и текст отзыва', 'warning');
           return;
         }
         saveReview(review);
         renderReviews();
         form.reset();
-        alert('Спасибо! Ваш отзыв сохранён.');
+        showToast('Спасибо! Ваш отзыв сохранён.', 'success');
       });
     }
 
@@ -106,7 +106,7 @@
         const rating = (fd.get('rating') || '5').toString();
         const text = (fd.get('text') || '').toString().trim();
         if (!name || !text) {
-          alert('Заполните имя и текст отзыва перед отправкой');
+          showToast('Заполните имя и текст отзыва перед отправкой', 'warning');
           return;
         }
         const body = `Имя: ${name}\nРоль: ${role}\nОценка: ${rating}\n\nОтзыв:\n${text}`;

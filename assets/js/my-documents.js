@@ -137,9 +137,15 @@
 
   function bindActions() {
     document.querySelectorAll('[data-remove]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', async function () {
         const pageId = btn.dataset.remove;
-        if (confirm('Удалить черновик?')) {
+        const confirmed = await showConfirm({
+          title: 'Удалить черновик?',
+          message: 'Это действие нельзя отменить.',
+          confirmText: 'Удалить',
+          cancelText: 'Отмена'
+        });
+        if (confirmed) {
           Storage.remove(pageId);
           renderList();
         }
@@ -149,22 +155,28 @@
     document.querySelectorAll('[data-share-url]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         const url = btn.dataset.shareUrl;
-        if (navigator.clipboard && url) {
-          navigator.clipboard.writeText(url).then(function () {
-            alert('Ссылка скопирована в буфер обмена');
-          }).catch(function () {
-            prompt('Скопируйте ссылку:', url);
-          });
-        } else {
-          prompt('Скопируйте ссылку:', url);
-        }
+        showShareModal(url);
+        setTimeout(() => {
+          const copyBtn = document.getElementById('tm-share-copy');
+          const input = document.getElementById('tm-share-input');
+          if (copyBtn && input) {
+            copyBtn.addEventListener('click', () => copyToClipboard(input.value, 'Ссылка скопирована в буфер обмена'));
+            input.addEventListener('click', () => input.select());
+          }
+        }, 0);
       });
     });
 
     const clearBtn = document.getElementById('clear-history');
     if (clearBtn) {
-      clearBtn.addEventListener('click', function () {
-        if (confirm('Очистить всю историю документов?')) {
+      clearBtn.addEventListener('click', async function () {
+        const confirmed = await showConfirm({
+          title: 'Очистить историю?',
+          message: 'Все сохранённые черновики будут удалены.',
+          confirmText: 'Очистить',
+          cancelText: 'Отмена'
+        });
+        if (confirmed) {
           Storage.clearAll();
           renderList();
         }

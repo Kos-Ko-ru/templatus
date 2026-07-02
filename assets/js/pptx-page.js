@@ -67,7 +67,7 @@
     container.insertBefore(btn, container.firstChild);
   }
 
-  function handleDownload() {
+  async function handleDownload() {
     const data = PptxGenerator.collectData();
     const filename = `pitch-deck-${transliterate(data.title || "startup").replace(/\s+/g, "-")}.pptx`;
 
@@ -75,12 +75,16 @@
       try {
         await PptxGenerator.generate(data, filename);
         bumpCounter();
-        if (confirm("Презентация готова. Очистить черновик?")) {
-          Storage.remove(PAGE_ID);
-        }
+        const clear = await showConfirm({
+          title: 'Презентация готова',
+          message: 'Очистить черновик?',
+          confirmText: 'Очистить',
+          cancelText: 'Оставить'
+        });
+        if (clear) Storage.remove(PAGE_ID);
       } catch (err) {
         console.error(err);
-        alert("Ошибка при генерации презентации: " + err.message);
+        showToast('Ошибка при генерации презентации: ' + err.message, 'error');
       }
     });
   }

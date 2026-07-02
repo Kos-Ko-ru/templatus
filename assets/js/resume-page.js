@@ -284,7 +284,7 @@
     container.insertBefore(btn, container.firstChild);
   }
 
-  function handleDownload(format) {
+  async function handleDownload(format) {
     if (!validateCurrentStep()) return;
     const data = ResumeGenerator.collectData();
     const filename = `resume-${ transliterate(data.fullName || "it-specialist").replace(/\s+/g, "-") }.${format}`;
@@ -294,12 +294,16 @@
         if (format === "docx") await ResumeGenerator.generateDocx(data, filename);
         else ResumeGenerator.generatePdf(data, filename);
         bumpCounter();
-        if (confirm("Документ готов. Очистить черновик?")) {
-          Storage.remove(PAGE_ID);
-        }
+        const clear = await showConfirm({
+          title: 'Документ готов',
+          message: 'Очистить черновик?',
+          confirmText: 'Очистить',
+          cancelText: 'Оставить'
+        });
+        if (clear) Storage.remove(PAGE_ID);
       } catch (err) {
         console.error(err);
-        alert("Ошибка при генерации файла: " + err.message);
+        showToast('Ошибка при генерации файла: ' + err.message, 'error');
       }
     });
   }

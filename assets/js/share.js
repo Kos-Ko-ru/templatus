@@ -184,16 +184,7 @@
     }
 
     document.getElementById('share-copy').addEventListener('click', function () {
-      const url = window.location.href;
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(function () {
-          alert('Ссылка скопирована в буфер обмена');
-        }).catch(function () {
-          prompt('Скопируйте ссылку:', url);
-        });
-      } else {
-        prompt('Скопируйте ссылку:', url);
-      }
+      copyToClipboard(window.location.href, 'Ссылка скопирована в буфер обмена');
     });
   }
 

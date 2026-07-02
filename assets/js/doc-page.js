@@ -117,7 +117,7 @@
     toggleConditionalFields();
   }
 
-  function handleDownload(format) {
+  async function handleDownload(format) {
     const data = DocGenerator.collectFields("doc-form");
     const filename = `${TEMPLATE_NAME}.${format}`;
 
@@ -126,12 +126,16 @@
         if (format === "docx") await DocGenerator.generateDocx(data, template, filename);
         else DocGenerator.generatePdf(data, template, filename);
         bumpCounter();
-        if (confirm("Документ готов. Очистить черновик?")) {
-          Storage.remove(PAGE_ID);
-        }
+        const clear = await showConfirm({
+          title: 'Документ готов',
+          message: 'Очистить черновик?',
+          confirmText: 'Очистить',
+          cancelText: 'Оставить'
+        });
+        if (clear) Storage.remove(PAGE_ID);
       } catch (err) {
         console.error(err);
-        alert("Ошибка при генерации файла: " + err.message);
+        showToast('Ошибка при генерации файла: ' + err.message, 'error');
       }
     });
   }

@@ -68,7 +68,9 @@
     </div>
   </header>
 
-  <div class="ad-banner-top" aria-label="Реклама"><span>728×90 — место для рекламы</span></div>
+  <div class="ad-banner-top" data-ad-slot="banner-top" aria-label="Реклама">
+          <span>728×90 — место для рекламы</span>
+        </div>
 
   <main>
     <section class="section" style="padding-top:1.5rem">
@@ -114,7 +116,9 @@
                 <input type="date" id="date" name="date">
               </div>
 
-              <div class="ad-between-steps" aria-label="Реклама"><span>468×60 — место для рекламы</span></div>
+              <div class="ad-between-steps" data-ad-slot="between-steps" aria-label="Реклама">
+          <span>468×60 — место для рекламы</span>
+        </div>
 
               <div class="flex gap-4 mt-4" style="justify-content:flex-end">
                 <button type="button" class="btn btn-primary" id="download-docx">
@@ -140,7 +144,9 @@
     <div class="modal">
       <h3 id="modal-title">Готовим ваш документ...</h3>
       <div class="progress-bar"><div id="download-progress"></div></div>
-      <div class="ad-before-download" aria-label="Реклама"><span>300×250 — реклама перед скачиванием</span></div>
+      <div class="ad-before-download" data-ad-slot="before-download" aria-label="Реклама">
+          <span>300×250 — реклама перед скачиванием</span>
+        </div>
       <button class="btn btn-primary" id="download-modal-btn" style="width:100%" disabled>Подождите...</button>
     </div>
   </div>
@@ -184,5 +190,9 @@
   <script src="/assets/js/doc-generator.js"></script>
   <script src="/assets/js/app.js"></script>
   <script src="/assets/js/doc-page.js"></script>
+<!-- Yandex.RTB -->
+<script>window.yaContextCb = window.yaContextCb || [];</script>
+<script src="https://yandex.ru/ads/system/context.js" async></script>
+<script src="/assets/js/ads.js"></script>
 </body>
 </html>

@@ -185,16 +185,6 @@ function shareDraft(pageId, values) {
   Storage.set(pageId, values);
   const url = `${window.location.origin}/share#${hash}`;
   showShareModal(url);
-  setTimeout(() => {
-    const copyBtn = document.getElementById('tm-share-copy');
-    const input = document.getElementById('tm-share-input');
-    if (copyBtn && input) {
-      copyBtn.addEventListener('click', () => {
-        copyToClipboard(input.value, 'Ссылка скопирована в буфер обмена');
-      });
-      input.addEventListener('click', () => input.select());
-    }
-  }, 0);
 }
 
 window.showDownloadModal = showDownloadModal;
@@ -272,8 +262,9 @@ window.shareDraft = shareDraft;
         return `<button type="button" class="${cls}" data-value="${encodeURIComponent(JSON.stringify(btn.value ?? idx))}">${escapeHtml(btn.text)}</button>`;
       }).join('');
 
+      const modalClass = ['tm-modal', options.className].filter(Boolean).join(' ');
       overlay.innerHTML = `
-        <div class="tm-modal">
+        <div class="${modalClass}">
           <h3 class="tm-modal-title">${escapeHtml(options.title || '')}</h3>
           <div class="tm-modal-body">${options.message || ''}</div>
           <div class="tm-modal-actions">${buttons}</div>
@@ -346,17 +337,43 @@ window.shareDraft = shareDraft;
   };
 
   window.showShareModal = function (url) {
-    return showModal({
+    const promise = showModal({
+      className: 'tm-modal-share',
       title: 'Поделиться документом',
       message: `
-        <p>Скопируйте ссылку и отправьте её. Получатель увидит заполненный документ.</p>
+        <div class="tm-share-header">
+          <div class="tm-share-icon"><i class="ph ph-share-network" aria-hidden="true"></i></div>
+          <p class="tm-share-hint">Скопируйте ссылку и отправьте её. Получатель откроет заполненный документ.</p>
+        </div>
         <div class="tm-share-link">
-          <input type="text" id="tm-share-input" value="${escapeHtml(url)}" readonly>
-          <button type="button" class="btn btn-primary" id="tm-share-copy">Копировать</button>
+          <input type="text" id="tm-share-input" value="${escapeHtml(url)}" readonly aria-label="Ссылка на документ">
+          <button type="button" class="btn btn-primary" id="tm-share-copy">
+            <i class="ph ph-copy" aria-hidden="true"></i>
+            <span>Копировать</span>
+          </button>
         </div>
       `,
       buttons: [{ text: 'Закрыть', value: true, primary: false }],
-    }).then(() => true);
+    });
+
+    const input = document.getElementById('tm-share-input');
+    const copyBtn = document.getElementById('tm-share-copy');
+    if (input && copyBtn) {
+      input.addEventListener('click', () => input.select());
+      copyBtn.addEventListener('click', () => {
+        copyToClipboard(input.value, 'Ссылка скопирована в буфер обмена');
+        input.select();
+        const originalHtml = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="ph ph-check" aria-hidden="true"></i><span>Скопировано</span>';
+        copyBtn.classList.add('tm-copied');
+        setTimeout(() => {
+          copyBtn.innerHTML = originalHtml;
+          copyBtn.classList.remove('tm-copied');
+        }, 2000);
+      });
+    }
+
+    return promise.then(() => true);
   };
 
   window.copyToClipboard = function (text, successMessage) {

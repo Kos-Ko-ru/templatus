@@ -117,6 +117,14 @@
     toggleConditionalFields();
   }
 
+  function resetDraft() {
+    Storage.remove(PAGE_ID);
+    const form = document.getElementById("doc-form");
+    if (form) form.reset();
+    updatePreview();
+    toggleConditionalFields();
+  }
+
   async function handleDownload(format) {
     const data = DocGenerator.collectFields("doc-form");
     const filename = `${TEMPLATE_NAME}.${format}`;
@@ -132,7 +140,7 @@
           confirmText: 'Очистить',
           cancelText: 'Оставить'
         });
-        if (clear) Storage.remove(PAGE_ID);
+        if (clear) resetDraft();
       } catch (err) {
         console.error(err);
         showToast('Ошибка при генерации файла: ' + err.message, 'error');

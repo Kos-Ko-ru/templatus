@@ -154,16 +154,7 @@
 
     document.querySelectorAll('[data-share-url]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        const url = btn.dataset.shareUrl;
-        showShareModal(url);
-        setTimeout(() => {
-          const copyBtn = document.getElementById('tm-share-copy');
-          const input = document.getElementById('tm-share-input');
-          if (copyBtn && input) {
-            copyBtn.addEventListener('click', () => copyToClipboard(input.value, 'Ссылка скопирована в буфер обмена'));
-            input.addEventListener('click', () => input.select());
-          }
-        }, 0);
+        showShareModal(btn.dataset.shareUrl);
       });
     });
 

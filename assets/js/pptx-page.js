@@ -52,6 +52,13 @@
     if (el && value !== undefined) el.value = value;
   }
 
+  function resetDraft() {
+    Storage.remove(PAGE_ID);
+    const form = document.getElementById("pptx-form");
+    if (form) form.reset();
+    updatePreview();
+  }
+
   function addShareButton() {
     const container = document.querySelector("#pptx-form .flex.gap-4.mt-4");
     if (!container || container.querySelector("[data-share-btn]")) return;
@@ -81,7 +88,7 @@
           confirmText: 'Очистить',
           cancelText: 'Оставить'
         });
-        if (clear) Storage.remove(PAGE_ID);
+        if (clear) resetDraft();
       } catch (err) {
         console.error(err);
         showToast('Ошибка при генерации презентации: ' + err.message, 'error');

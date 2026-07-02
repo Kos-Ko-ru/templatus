@@ -892,15 +892,96 @@ select:focus {
   font-size: 0.9rem;
 }
 
-/* Share modal link */
-.tm-share-link {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+/* Share modal */
+.tm-modal.tm-modal-share {
+  max-width: 520px;
 }
 
-.tm-share-link input {
+.tm-share-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.tm-share-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: hsl(var(--shadcn-primary) / 0.1);
+  color: hsl(var(--shadcn-primary));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tm-share-hint {
+  margin: 0;
+  color: hsl(var(--shadcn-muted-foreground));
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tm-share-link {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: hsl(var(--shadcn-muted) / 0.25);
+  border: 1px solid hsl(var(--shadcn-border));
+  border-radius: calc(var(--shadcn-radius) + 2px);
+  padding: 0.35rem;
+}
+
+.tm-modal-body .tm-share-link input[type="text"] {
   flex: 1;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.9rem;
+  color: hsl(var(--shadcn-foreground));
+  box-shadow: none;
+}
+
+.tm-modal-body .tm-share-link input[type="text"]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.tm-share-link .btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--shadcn-radius);
+  white-space: nowrap;
+}
+
+.tm-share-link .btn.tm-copied {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+
+[data-theme="dark"] .tm-share-link .btn.tm-copied {
+  background: rgba(22, 101, 52, 0.4);
+  color: #bbf7d0;
+  border-color: rgba(134, 239, 172, 0.4);
+}
+
+@media (max-width: 480px) {
+  .tm-share-link {
+    flex-wrap: wrap;
+  }
+  .tm-share-link input {
+    width: 100%;
+  }
+  .tm-share-link .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* Cookie banner */

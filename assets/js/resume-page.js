@@ -269,6 +269,25 @@
     if (el && value !== undefined) el.value = value;
   }
 
+  function resetDraft() {
+    Storage.remove(PAGE_ID);
+    const form = document.getElementById("resume-form");
+    if (form) form.reset();
+    const photoPreview = document.getElementById("photo-preview");
+    if (photoPreview) {
+      photoPreview.src = "";
+      photoPreview.classList.remove("visible");
+      photoPreview.style.display = "none";
+    }
+    document.getElementById("experience-list").innerHTML = "";
+    document.getElementById("education-list").innerHTML = "";
+    addExperience(true);
+    addEducation(true);
+    currentStep = 1;
+    updateUI();
+    updatePreview();
+  }
+
   function addShareButton() {
     const container = document.getElementById("download-actions");
     if (!container || container.querySelector("[data-share-btn]")) return;
@@ -300,7 +319,7 @@
           confirmText: 'Очистить',
           cancelText: 'Оставить'
         });
-        if (clear) Storage.remove(PAGE_ID);
+        if (clear) resetDraft();
       } catch (err) {
         console.error(err);
         showToast('Ошибка при генерации файла: ' + err.message, 'error');

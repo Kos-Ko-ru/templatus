@@ -849,9 +849,11 @@ textarea[aria-invalid="true"] {
   }
 }
 
-.footer-col h4 {
+.footer-col .footer-title {
+  display: block;
   margin: 0 0 1rem;
   font-size: 1rem;
+  font-weight: 600;
   color: var(--color-text-heading);
 }
 

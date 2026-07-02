@@ -116,11 +116,17 @@
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff2">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"></noscript>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=3">
+  <link rel="stylesheet" href="/assets/css/style.css?v=4">
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
 <!-- Yandex.Metrika counter -->
@@ -363,14 +369,14 @@
           <p>Бесплатные шаблоны документов, резюме и презентаций. Без регистрации, в браузере.</p>
         </div>
         <div class="footer-col">
-          <h4>Разделы</h4>
+          <span class="footer-title">Разделы</span>
           <a href="/resume/">Резюме</a>
           <a href="/documents/">Документы</a>
           <a href="/presentations/">Презентации</a>
           <a href="/blog/">Блог</a>
         </div>
         <div class="footer-col">
-          <h4>Проект</h4>
+          <span class="footer-title">Проект</span>
           <a href="/about">О нас</a>
           <a href="/contacts">Контакты</a>
           <a href="/my-documents">Мои документы</a>
@@ -378,7 +384,7 @@
           <a href="/privacy">Политика конфиденциальности</a>
         </div>
         <div class="footer-col">
-          <h4>Помощь</h4>
+          <span class="footer-title">Помощь</span>
           <a href="/blog/kak-sostavit-rezume">Как составить резюме</a>
         </div>
       </div>
@@ -386,11 +392,11 @@
     </div>
   </footer>
 
-  <script src="/assets/js/storage.js?v=3"></script>
-  <script src="/assets/js/app.js?v=3"></script>
+  <script src="/assets/js/storage.js?v=4" defer></script>
+  <script src="/assets/js/app.js?v=4" defer></script>
 <!-- Yandex.RTB -->
 <script>window.yaContextCb = window.yaContextCb || [];</script>
 <script src="https://yandex.ru/ads/system/context.js" async></script>
-<script src="/assets/js/ads.js?v=3"></script>
+<script src="/assets/js/ads.js?v=4" defer></script>
 </body>
 </html>

@@ -41,6 +41,14 @@
     'doc-uvolnenie': { title: 'Заявление на увольнение', url: '/documents/zayavlenie-uvolnenie', type: 'document', icon: 'ph-sign-out', template: 'uvolnenie' },
     'doc-raspiska': { title: 'Расписка в получении денег', url: '/documents/raspiska-dengi', type: 'document', icon: 'ph-money', template: 'raspiska' },
     'doc-akt': { title: 'Акт приёма-передачи', url: '/documents/akt-priemki', type: 'document', icon: 'ph-handshake', template: 'akt' },
+    'doc-kupli': { title: 'Договор купли-продажи', url: '/documents/dogovor-kupli-prodazhi', type: 'document', icon: 'ph-shopping-cart', template: 'kupli' },
+    'doc-zaym': { title: 'Договор займа', url: '/documents/dogovor-zayma', type: 'document', icon: 'ph-hand-coins', template: 'zaym' },
+    'doc-uslug': { title: 'Договор оказания услуг', url: '/documents/dogovor-uslug', type: 'document', icon: 'ph-handshake', template: 'uslug' },
+    'doc-priem': { title: 'Заявление на приём на работу', url: '/documents/zayavlenie-priem', type: 'document', icon: 'ph-user-plus', template: 'priem' },
+    'doc-pretenziya': { title: 'Претензия', url: '/documents/pretenziya', type: 'document', icon: 'ph-warning', template: 'pretenziya' },
+    'doc-property': { title: 'Расписка в получении имущества', url: '/documents/raspiska-imushchestvo', type: 'document', icon: 'ph-archive-box', template: 'property' },
+    'doc-schet': { title: 'Счёт на оплату', url: '/documents/schet', type: 'document', icon: 'ph-receipt', template: 'schet' },
+    'doc-nakladnaya': { title: 'Накладная', url: '/documents/nakladnaya', type: 'document', icon: 'ph-truck', template: 'nakladnaya' },
 
     'pptx-pitch': { title: 'Питч-дек стартапа', url: '/presentations/pitch-deck', type: 'presentation', icon: 'ph-rocket' },
     'pptx-quarterly': { title: 'Квартальный отчёт', url: '/presentations/quarterly-report', type: 'presentation', icon: 'ph-chart-bar' },
@@ -58,6 +66,14 @@
     uvolnenie: DocGenerator.uvolnenieTemplate,
     raspiska: DocGenerator.raspiskaTemplate,
     akt: DocGenerator.aktTemplate,
+    kupli: DocGenerator.kupliTemplate,
+    zaym: DocGenerator.zaymTemplate,
+    uslug: DocGenerator.uslugTemplate,
+    priem: DocGenerator.priemTemplate,
+    pretenziya: DocGenerator.pretenziyaTemplate,
+    property: DocGenerator.propertyTemplate,
+    schet: DocGenerator.schetTemplate,
+    nakladnaya: DocGenerator.nakladnayaTemplate,
   };
 
   function getRegistry(pageId) {

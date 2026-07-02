@@ -16,6 +16,14 @@
     uvolnenie: DocGenerator.uvolnenieTemplate,
     raspiska: DocGenerator.raspiskaTemplate,
     akt: DocGenerator.aktTemplate,
+    kupli: DocGenerator.kupliTemplate,
+    zaym: DocGenerator.zaymTemplate,
+    uslug: DocGenerator.uslugTemplate,
+    priem: DocGenerator.priemTemplate,
+    pretenziya: DocGenerator.pretenziyaTemplate,
+    property: DocGenerator.propertyTemplate,
+    schet: DocGenerator.schetTemplate,
+    nakladnaya: DocGenerator.nakladnayaTemplate,
   };
 
   const template = TEMPLATES[TEMPLATE_NAME];

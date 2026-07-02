@@ -72,15 +72,15 @@
   display: block;
 }
 
-.kosko-logo-dark {
+.kosko-badge .kosko-logo-dark {
   display: none;
 }
 
-[data-theme="dark"] .kosko-logo-light {
+[data-theme="dark"] .kosko-badge .kosko-logo-light {
   display: none;
 }
 
-[data-theme="dark"] .kosko-logo-dark {
+[data-theme="dark"] .kosko-badge .kosko-logo-dark {
   display: block;
 }
 

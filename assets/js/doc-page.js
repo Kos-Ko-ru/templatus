@@ -13,6 +13,9 @@
     otpusk: DocGenerator.otpuskTemplate,
     doverennost: DocGenerator.doverennostTemplate,
     kompredlozheniye: DocGenerator.kompredlozheniyeTemplate,
+    uvolnenie: DocGenerator.uvolnenieTemplate,
+    raspiska: DocGenerator.raspiskaTemplate,
+    akt: DocGenerator.aktTemplate,
   };
 
   const template = TEMPLATES[TEMPLATE_NAME];
@@ -40,6 +43,22 @@
     });
     document.getElementById("download-docx").addEventListener("click", () => handleDownload("docx"));
     document.getElementById("download-pdf").addEventListener("click", () => handleDownload("pdf"));
+    addShareButton();
+  }
+
+  function addShareButton() {
+    const container = document.querySelector("#doc-form .flex.gap-4.mt-4");
+    if (!container || container.querySelector("[data-share-btn]")) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn btn-secondary";
+    btn.dataset.shareBtn = "";
+    btn.innerHTML = '<i class="ph ph-share-network" aria-hidden="true"></i> Поделиться';
+    btn.addEventListener("click", () => {
+      const data = DocGenerator.collectFields("doc-form");
+      if (window.shareDraft) shareDraft(PAGE_ID, data);
+    });
+    container.insertBefore(btn, container.firstChild);
   }
 
   function toggleConditionalFields() {

@@ -92,6 +92,8 @@
             <button type="button" class="template-filter" data-filter="management" aria-pressed="false">Управление и HR</button>
             <button type="button" class="template-filter" data-filter="entry" aria-pressed="false">Без опыта</button>
             <button type="button" class="template-filter" data-filter="creative" aria-pressed="false">Дизайн</button>
+            <button type="button" class="template-filter" data-filter="service" aria-pressed="false">Сфера услуг</button>
+            <button type="button" class="template-filter" data-filter="medical" aria-pressed="false">Медицина</button>
           </div>
           <p class="templates-empty hidden">
             <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
@@ -101,70 +103,276 @@
 
         <div id="resume-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <article class="card" data-category="it">
-            <div class="card-icon"><i class="ph ph-code" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-code" aria-hidden="true"></i></div>
             <h3>Резюме IT-специалиста</h3>
             <p>Для разработчиков, тестировщиков, аналитиков и других специалистов в IT.</p>
             <a href="it-specialist.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="sales">
-            <div class="card-icon"><i class="ph ph-chart-line-up" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-chart-line-up" aria-hidden="true"></i></div>
             <h3>Резюме менеджера по продажам</h3>
             <p>Акцент на достижениях, KPI и навыках переговоров.</p>
             <a href="sales-manager.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="entry">
-            <div class="card-icon"><i class="ph ph-student" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-student" aria-hidden="true"></i></div>
             <h3>Резюме без опыта</h3>
             <p>Для студентов и выпускников: образование, стажировки, курсы.</p>
             <a href="no-experience.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="finance">
-            <div class="card-icon"><i class="ph ph-calculator" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-calculator" aria-hidden="true"></i></div>
             <h3>Резюме бухгалтера</h3>
             <p>Для бухгалтеров и финансовых специалистов.</p>
             <a href="accountant.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="marketing">
-            <div class="card-icon"><i class="ph ph-megaphone" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-megaphone" aria-hidden="true"></i></div>
             <h3>Резюме маркетолога</h3>
             <p>SMM, контекст, таргет и аналитика.</p>
             <a href="marketer.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="management">
-            <div class="card-icon"><i class="ph ph-kanban" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-kanban" aria-hidden="true"></i></div>
             <h3>Резюме менеджера проекта</h3>
             <p>Agile, Scrum, планирование и команда.</p>
             <a href="project-manager.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="creative">
-            <div class="card-icon"><i class="ph ph-paint-brush" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-paint-brush" aria-hidden="true"></i></div>
             <h3>Резюме дизайнера</h3>
             <p>UX/UI, графика и креатив.</p>
             <a href="designer.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="it">
-            <div class="card-icon"><i class="ph ph-desktop-tower" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-desktop-tower" aria-hidden="true"></i></div>
             <h3>Резюме системного администратора</h3>
             <p>Серверы, сети, виртуализация и безопасность.</p>
             <a href="system-admin.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="legal">
-            <div class="card-icon"><i class="ph ph-scales" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-scales" aria-hidden="true"></i></div>
             <h3>Резюме юриста</h3>
             <p>Договоры, претензии и судебное представительство.</p>
             <a href="lawyer.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="management">
-            <div class="card-icon"><i class="ph ph-users" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-users" aria-hidden="true"></i></div>
             <h3>Резюме HR-специалиста</h3>
             <p>Подбор, адаптация и кадровый учет.</p>
             <a href="hr-specialist.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
           <article class="card" data-category="it">
-            <div class="card-icon"><i class="ph ph-chart-pie-slice" aria-hidden="true"></i></div>
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-chart-pie-slice" aria-hidden="true"></i></div>
             <h3>Резюме аналитика</h3>
             <p>SQL, Python, визуализация и статистика.</p>
             <a href="analyst.html" class="btn btn-primary btn-sm">Создать резюме</a>
+          </article>
+          <article class="card" data-category="service">
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-car" aria-hidden="true"></i></div>
+            <h3>Резюме водителя</h3>
+            <p>Для водителей легковых и грузовых автомобилей с опытом.</p>
+            <a href="driver.html" class="btn btn-primary btn-sm">Создать резюме</a>
+          </article>
+          <article class="card" data-category="service">
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-cash-register" aria-hidden="true"></i></div>
+            <h3>Резюме кассира</h3>
+            <p>Для работы в магазине, кафе или торговом центре.</p>
+            <a href="cashier.html" class="btn btn-primary btn-sm">Создать резюме</a>
+          </article>
+          <article class="card" data-category="service">
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-cooking-pot" aria-hidden="true"></i></div>
+            <h3>Резюме повара</h3>
+            <p>Для поваров, су-шефов и кухонных работников.</p>
+            <a href="cook.html" class="btn btn-primary btn-sm">Создать резюме</a>
+          </article>
+          <article class="card" data-category="service">
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-shield-check" aria-hidden="true"></i></div>
+            <h3>Резюме охранника</h3>
+            <p>Для охранников объектов, консьержей и специалистов ЧОП.</p>
+            <a href="security.html" class="btn btn-primary btn-sm">Создать резюме</a>
+          </article>
+          <article class="card" data-category="medical">
+          <div class="template-preview">
+            <div class="tp-resume">
+              <div class="tp-resume-photo"></div>
+              <div class="tp-resume-col">
+                <div class="tp-line highlight"></div>
+                <div class="tp-line short"></div>
+                <div class="tp-line"></div>
+                <div class="tp-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon"><i class="ph ph-heartbeat" aria-hidden="true"></i></div>
+            <h3>Резюме медсестры</h3>
+            <p>Для медсестёр и медбратеров в клиниках и больницах.</p>
+            <a href="nurse.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
         </div>
       </div>
@@ -189,6 +397,8 @@
           <h4>Проект</h4>
           <a href="/about.html">О нас</a>
           <a href="/contacts.html">Контакты</a>
+          <a href="/my-documents.html">Мои документы</a>
+          <a href="/reviews.html">Отзывы</a>
           <a href="/privacy.html">Политика конфиденциальности</a>
         </div>
         <div class="footer-col">

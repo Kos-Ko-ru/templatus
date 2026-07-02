@@ -13,11 +13,19 @@
   <url><loc>https://templatus.ru/resume/lawyer.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/resume/hr-specialist.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/resume/analyst.html</loc><priority>0.8</priority></url>
+  <url><loc>https://templatus.ru/resume/driver.html</loc><priority>0.8</priority></url>
+  <url><loc>https://templatus.ru/resume/cashier.html</loc><priority>0.8</priority></url>
+  <url><loc>https://templatus.ru/resume/cook.html</loc><priority>0.8</priority></url>
+  <url><loc>https://templatus.ru/resume/security.html</loc><priority>0.8</priority></url>
+  <url><loc>https://templatus.ru/resume/nurse.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/documents/</loc><priority>0.9</priority></url>
   <url><loc>https://templatus.ru/documents/dogovor-arendy.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/documents/zayavlenie-otpusk.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/documents/doverennost.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/documents/kommercheskoye-predlozheniye.html</loc><priority>0.8</priority></url>
+  <url><loc>https://templatus.ru/documents/zayavlenie-uvolnenie.html</loc><priority>0.8</priority></url>
+  <url><loc>https://templatus.ru/documents/raspiska-dengi.html</loc><priority>0.8</priority></url>
+  <url><loc>https://templatus.ru/documents/akt-priemki.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/presentations/</loc><priority>0.9</priority></url>
   <url><loc>https://templatus.ru/presentations/pitch-deck.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/presentations/quarterly-report.html</loc><priority>0.8</priority></url>
@@ -27,8 +35,34 @@
   <url><loc>https://templatus.ru/presentations/project-report.html</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/blog/</loc><priority>0.8</priority></url>
   <url><loc>https://templatus.ru/blog/kak-sostavit-rezume.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/kak-napisat-soprovoditelnoye-pismo.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/rezume-bez-opyta-raboty.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/top-oshibok-v-rezume.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/podgotovka-k-sobesedovaniyu.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/dogovor-arendy-kvartiry.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/zayavleniye-otpusk.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/zayavleniye-uvolnenie.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/raspiska-dengi.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/akt-priemki-imushchestva.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/kommercheskoye-predlozheniye.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/doverennost-oformleniye.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/prezentatsiya-dlya-investorov.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/pitch-dek-startapa.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/kvartalnyy-otchet.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/biznes-plan.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/marketingovaya-strategiya.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/zashchita-dannyh.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/docx-pdf-pptx.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/avtomatizaciya-dokumentov.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/rezume-voditelya.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/rezume-medsestry.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/rezume-povara.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/rezume-kassira.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/rezume-ohrannika.html</loc><priority>0.7</priority></url>
+  <url><loc>https://templatus.ru/blog/rezume-buhgaltera.html</loc><priority>0.7</priority></url>
   <url><loc>https://templatus.ru/about.html</loc><priority>0.6</priority></url>
   <url><loc>https://templatus.ru/contacts.html</loc><priority>0.6</priority></url>
+  <url><loc>https://templatus.ru/reviews.html</loc><priority>0.6</priority></url>
   <url><loc>https://templatus.ru/privacy.html</loc><priority>0.4</priority></url>
   <url><loc>https://templatus.ru/404.html</loc><priority>0.1</priority></url>
 </urlset>

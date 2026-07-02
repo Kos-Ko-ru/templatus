@@ -164,7 +164,38 @@ function initContactForm() {
   });
 }
 
+function createShareHash(pageId, values) {
+  try {
+    const payload = JSON.stringify({ pageId: pageId, values: values });
+    return btoa(unescape(encodeURIComponent(payload)));
+  } catch (e) {
+    console.warn('Share hash error', e);
+    return '';
+  }
+}
+
+function shareDraft(pageId, values) {
+  if (!pageId || !values) return;
+  const hash = createShareHash(pageId, values);
+  if (!hash) {
+    alert('Не удалось создать ссылку');
+    return;
+  }
+  Storage.set(pageId, values);
+  const url = `${window.location.origin}/share.html#${hash}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Ссылка скопирована в буфер обмена');
+    }).catch(() => {
+      prompt('Скопируйте ссылку:', url);
+    });
+  } else {
+    prompt('Скопируйте ссылку:', url);
+  }
+}
+
 window.showDownloadModal = showDownloadModal;
 window.closeDownloadModal = closeDownloadModal;
 window.bumpCounter = bumpCounter;
 window.initContactForm = initContactForm;
+window.shareDraft = shareDraft;

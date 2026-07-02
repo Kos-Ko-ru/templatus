@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Отзывы о templatus — оставьте свой отзыв</title>
+  <meta name="description" content="Читайте отзывы пользователей templatus и оставляйте свой. Расскажите, какой документ вы создали.">
+  <link rel="canonical" href="https://templatus.ru/reviews.html">
+  <meta property="og:title" content="Отзывы о templatus">
+  <meta property="og:description" content="Реальные отзывы пользователей и форма обратной связи.">
+  <meta property="og:image" content="https://templatus.ru/assets/images/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110332852', 'ym');
+
+    ym(110332852, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110332852" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a>
+      <nav class="main-nav" aria-label="Главное меню">
+        <a href="/resume/">Резюме</a>
+        <a href="/documents/">Документы</a>
+        <a href="/presentations/">Презентации</a>
+        <a href="/blog/">Блог</a>
+        <a href="/about.html">О нас</a>
+        <a href="/contacts.html">Контакты</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему"><span data-theme-icon>☾</span></button>
+        <button class="icon-btn mobile-menu-btn" type="button" data-mobile-menu-toggle aria-label="Открыть меню" aria-expanded="false"><i class="ph ph-list" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="mobile-menu hidden" data-mobile-menu>
+      <a href="/resume/">Резюме</a>
+      <a href="/documents/">Документы</a>
+      <a href="/presentations/">Презентации</a>
+      <a href="/blog/">Блог</a>
+      <a href="/about.html">О нас</a>
+      <a href="/contacts.html">Контакты</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>Отзывы и кейсы</h1>
+        <p>Узнайте, как другие пользователи применяют templatus, и расскажите о своём опыте.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container" style="max-width:900px">
+        <h2 class="section-title text-center">Как используют templatus</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" style="margin-bottom:2.5rem">
+          <div class="card">
+            <div class="card-icon"><i class="ph ph-briefcase" aria-hidden="true"></i></div>
+            <h3>Соискатели</h3>
+            <p>Составляют резюме для откликов на вакансии и быстро адаптируют его под разные позиции.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="ph ph-house-line" aria-hidden="true"></i></div>
+            <h3>Арендодатели</h3>
+            <p>Оформляют договоры аренды и акты приёма-передачи без похода к юристу.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="ph ph-rocket" aria-hidden="true"></i></div>
+            <h3>Стартаперы</h3>
+            <p>Собирают питч-деки и коммерческие предложения для инвесторов и партнёров.</p>
+          </div>
+        </div>
+
+        <h2 class="section-title text-center">Оставить отзыв</h2>
+        <div class="card" style="max-width:600px;margin:0 auto 2.5rem">
+          <form id="review-form">
+            <div class="form-group">
+              <label class="form-label" for="review-name">Имя *</label>
+              <input type="text" id="review-name" name="name" placeholder="Иван" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="review-role">Кто вы / чем занимаетесь</label>
+              <input type="text" id="review-role" name="role" placeholder="HR-менеджер, фрилансер, арендодатель">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="review-rating">Оценка</label>
+              <select id="review-rating" name="rating">
+                <option value="5">★★★★★ Отлично</option>
+                <option value="4">★★★★ Хорошо</option>
+                <option value="3">★★★ Удовлетворительно</option>
+                <option value="2">★★ Плохо</option>
+                <option value="1">★ Ужасно</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="review-text">Ваш отзыв *</label>
+              <textarea id="review-text" name="text" rows="4" placeholder="Расскажите, какой документ вы создали и что понравилось" required></textarea>
+            </div>
+            <div class="flex gap-4" style="justify-content:flex-end;flex-wrap:wrap">
+              <button type="submit" class="btn btn-primary">Сохранить отзыв</button>
+              <button type="button" id="review-email" class="btn btn-secondary">Отправить на почту</button>
+            </div>
+          </form>
+        </div>
+
+        <h2 class="section-title text-center">Ваши отзывы</h2>
+        <div id="reviews-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+        <p id="reviews-empty" class="text-center" style="color:var(--color-muted)">Пока нет сохранённых отзывов. Будьте первым!</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>templatus</h4>
+          <p>Бесплатные шаблоны документов, резюме и презентаций. Без регистрации, в браузере.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Разделы</h4>
+          <a href="/resume/">Резюме</a>
+          <a href="/documents/">Документы</a>
+          <a href="/presentations/">Презентации</a>
+          <a href="/blog/">Блог</a>
+        </div>
+        <div class="footer-col">
+          <h4>Проект</h4>
+          <a href="/about.html">О нас</a>
+          <a href="/contacts.html">Контакты</a>
+          <a href="/my-documents.html">Мои документы</a>
+          <a href="/reviews.html">Отзывы</a>
+          <a href="/privacy.html">Политика конфиденциальности</a>
+        </div>
+        <div class="footer-col">
+          <h4>Помощь</h4>
+          <a href="/blog/kak-sostavit-rezume.html">Как составить резюме</a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 templatus.ru · Бесплатные шаблоны документов</div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/reviews.js"></script>
+  <script src="/assets/js/app.js"></script>
+<!-- Yandex.RTB -->
+<script>window.yaContextCb = window.yaContextCb || [];</script>
+<script src="https://yandex.ru/ads/system/context.js" async></script>
+<script src="/assets/js/ads.js"></script>
+</body>
+</html>

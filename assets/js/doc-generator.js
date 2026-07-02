@@ -180,6 +180,60 @@ const DocGenerator = (() => {
     ];
   }
 
+  // Шаблон: заявление на увольнение
+  function uvolnenieTemplate(data) {
+    return [
+      { text: "ЗАЯВЛЕНИЕ", bold: true, align: "center", after: 200 },
+      "От " + (data.fullName || "_______________________") + ",",
+      "работающего(ей) в должности " + (data.position || "_______________________") + " в " + (data.company || "_______________________") + ",",
+      "",
+      "Прошу уволить меня по собственному желанию с " + (data.dismissalDate || "______") + " в соответствии со ст. 80 Трудового кодекса РФ.",
+      "",
+      "Дата: " + (data.date || "______"),
+      "Подпись: _________________ / " + (data.fullName || ""),
+    ];
+  }
+
+  // Шаблон: расписка в получении денег
+  function raspiskaTemplate(data) {
+    return [
+      { text: "РАСПИСКА", bold: true, align: "center", after: 200 },
+      "Я, " + (data.borrowerName || "_______________________") + ", паспорт " + (data.borrowerPassport || "_______________________") + ",",
+      "проживающий(ая) по адресу: " + (data.borrowerAddress || "_______________________") + ",",
+      "",
+      "получил(а) от " + (data.lenderName || "_______________________") + " сумму в размере " + (data.amount || "_______________________") + " рублей.",
+      "",
+      "Назначение: " + (data.purpose || "_______________________") + ".",
+      "Срок возврата: " + (data.returnDate || "_______________________") + ".",
+      "",
+      "Подпись: _________________ / " + (data.borrowerName || ""),
+      "Дата: " + (data.date || "______"),
+    ];
+  }
+
+  // Шаблон: акт приёма-передачи
+  function aktTemplate(data) {
+    return [
+      { text: "АКТ ПРИЁМА-ПЕРЕДАЧИ", bold: true, align: "center", after: 200 },
+      "г. " + (data.city || "______") + " " + (data.date || "______"),
+      "",
+      "Мы, нижеподписавшиеся:",
+      "Передающий: " + (data.senderName || "_______________________") + ",",
+      "Принимающий: " + (data.receiverName || "_______________________") + ",",
+      "",
+      "составили настоящий акт о том, что передано имущество:",
+      "",
+      data.propertyList || "_______________________",
+      "",
+      "Состояние имущества: " + (data.condition || "удовлетворительное") + ".",
+      "Примечание: " + (data.note || "_______________________") + ".",
+      "",
+      "Подписи сторон:",
+      "Передал: _________________ / " + (data.senderName || ""),
+      "Принял: _________________ / " + (data.receiverName || ""),
+    ];
+  }
+
   return {
     collectFields,
     renderPreview,
@@ -189,6 +243,9 @@ const DocGenerator = (() => {
     otpuskTemplate,
     doverennostTemplate,
     kompredlozheniyeTemplate,
+    uvolnenieTemplate,
+    raspiskaTemplate,
+    aktTemplate,
   };
 })();
 

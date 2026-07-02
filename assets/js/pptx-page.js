@@ -3,7 +3,7 @@
  */
 
 (function () {
-  const PAGE_ID = "pptx-pitch";
+  const PAGE_ID = document.body.dataset.pageId || "pptx";
 
   function init() {
     bindEvents();
@@ -18,6 +18,7 @@
       saveDraft();
     });
     document.getElementById("download-pptx").addEventListener("click", handleDownload);
+    addShareButton();
   }
 
   function updatePreview() {
@@ -49,6 +50,21 @@
   function setValue(name, value) {
     const el = document.querySelector(`[name="${name}"]`);
     if (el && value !== undefined) el.value = value;
+  }
+
+  function addShareButton() {
+    const container = document.querySelector("#pptx-form .flex.gap-4.mt-4");
+    if (!container || container.querySelector("[data-share-btn]")) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn btn-secondary";
+    btn.dataset.shareBtn = "";
+    btn.innerHTML = '<i class="ph ph-share-network" aria-hidden="true"></i> Поделиться';
+    btn.addEventListener("click", () => {
+      const data = PptxGenerator.collectData();
+      if (window.shareDraft) shareDraft(PAGE_ID, data);
+    });
+    container.insertBefore(btn, container.firstChild);
   }
 
   function handleDownload() {

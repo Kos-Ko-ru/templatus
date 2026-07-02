@@ -3,7 +3,7 @@
  */
 
 (function () {
-  const PAGE_ID = "resume-it";
+  const PAGE_ID = document.body.dataset.pageId || "resume";
   const TOTAL_STEPS = 4;
   let currentStep = 1;
 
@@ -22,6 +22,7 @@
     document.getElementById("add-education").addEventListener("click", () => addEducation());
     document.getElementById("download-docx").addEventListener("click", () => handleDownload("docx"));
     document.getElementById("download-pdf").addEventListener("click", () => handleDownload("pdf"));
+    addShareButton();
 
     document.getElementById("resume-form").addEventListener("input", () => {
       updatePreview();
@@ -266,6 +267,21 @@
   function setValue(name, value) {
     const el = document.querySelector(`[name="${name}"]`);
     if (el && value !== undefined) el.value = value;
+  }
+
+  function addShareButton() {
+    const container = document.getElementById("download-actions");
+    if (!container || container.querySelector("[data-share-btn]")) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn btn-secondary";
+    btn.dataset.shareBtn = "";
+    btn.innerHTML = '<i class="ph ph-share-network" aria-hidden="true"></i> Поделиться';
+    btn.addEventListener("click", () => {
+      const data = ResumeGenerator.collectData();
+      if (window.shareDraft) shareDraft(PAGE_ID, data);
+    });
+    container.insertBefore(btn, container.firstChild);
   }
 
   function handleDownload(format) {

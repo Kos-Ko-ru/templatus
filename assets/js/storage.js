@@ -59,6 +59,32 @@ const Storage = (() => {
     }
   }
 
+  function list() {
+    try {
+      return Object.keys(localStorage)
+        .filter((k) => k.startsWith(`${PREFIX}draft_`))
+        .map((k) => {
+          try {
+            const raw = localStorage.getItem(k);
+            const data = JSON.parse(raw);
+            return {
+              pageId: k.replace(`${PREFIX}draft_`, ""),
+              updated: data.updated || 0,
+              expires: data.expires || 0,
+              values: data.values || {},
+            };
+          } catch (e) {
+            return null;
+          }
+        })
+        .filter(Boolean)
+        .sort((a, b) => (b.updated || 0) - (a.updated || 0));
+    } catch (e) {
+      console.warn("Storage list error", e);
+      return [];
+    }
+  }
+
   // Счётчик сгенерированных документов
   function getStats() {
     try {
@@ -104,6 +130,7 @@ const Storage = (() => {
     set,
     remove,
     clearAll,
+    list,
     getStats,
     incrementGenerated,
     getTheme,

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Документ по ссылке — templatus</title>
+  <meta name="description" content="Просмотр документа, созданного в templatus. Редактируйте и скачивайте бесплатно.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://templatus.ru/share.html">
+  <meta property="og:title" content="Документ по ссылке — templatus">
+  <meta property="og:description" content="Просмотр документа, созданного в templatus.">
+  <meta property="og:image" content="https://templatus.ru/assets/images/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110332852', 'ym');
+
+    ym(110332852, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110332852" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a>
+      <nav class="main-nav" aria-label="Главное меню">
+        <a href="/resume/">Резюме</a>
+        <a href="/documents/">Документы</a>
+        <a href="/presentations/">Презентации</a>
+        <a href="/blog/">Блог</a>
+        <a href="/about.html">О нас</a>
+        <a href="/contacts.html">Контакты</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему"><span data-theme-icon>☾</span></button>
+        <button class="icon-btn mobile-menu-btn" type="button" data-mobile-menu-toggle aria-label="Открыть меню" aria-expanded="false"><i class="ph ph-list" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="mobile-menu hidden" data-mobile-menu>
+      <a href="/resume/">Резюме</a>
+      <a href="/documents/">Документы</a>
+      <a href="/presentations/">Презентации</a>
+      <a href="/blog/">Блог</a>
+      <a href="/about.html">О нас</a>
+      <a href="/contacts.html">Контакты</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1 id="share-title">Документ по ссылке</h1>
+        <p id="share-subtitle">Просмотр документа, присланного по ссылке.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:1.5rem">
+      <div class="container" style="max-width:900px">
+        <div id="share-card" class="card" style="margin-bottom:1.5rem">
+          <div class="flex items-center justify-between" style="flex-wrap:wrap;gap:1rem">
+            <div class="flex items-center gap-4">
+              <div id="share-icon" class="doc-history-icon"><i class="ph ph-file" aria-hidden="true"></i></div>
+              <div>
+                <h2 id="share-doc-title" style="margin:0 0 .25rem">Документ</h2>
+                <p id="share-doc-meta" style="margin:0;color:var(--color-muted);font-size:.9rem"></p>
+              </div>
+            </div>
+            <div class="doc-history-actions">
+              <a id="share-edit" href="/" class="btn btn-primary btn-sm">Редактировать</a>
+              <button type="button" id="share-copy" class="btn btn-secondary btn-sm">Скопировать ссылку</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="share-error" class="hidden">
+          <div class="card" style="text-align:center;padding:2rem">
+            <div class="card-icon" style="margin:0 auto 1rem"><i class="ph ph-warning-circle" aria-hidden="true"></i></div>
+            <h2 style="margin:0 0 .5rem">Ссылка недействительна или устарела</h2>
+            <p style="color:var(--color-muted);margin:0 0 1rem">Не удалось загрузить документ. Возможно, ссылка была повреждена.</p>
+            <a href="/" class="btn btn-primary">На главную</a>
+          </div>
+        </div>
+
+        <div id="share-preview-wrap" class="wizard-preview" style="position:static;width:100%;max-width:100%">
+          <h3 style="margin-top:0">Предпросмотр</h3>
+          <div id="share-preview"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>templatus</h4>
+          <p>Бесплатные шаблоны документов, резюме и презентаций. Без регистрации, в браузере.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Разделы</h4>
+          <a href="/resume/">Резюме</a>
+          <a href="/documents/">Документы</a>
+          <a href="/presentations/">Презентации</a>
+          <a href="/blog/">Блог</a>
+        </div>
+        <div class="footer-col">
+          <h4>Проект</h4>
+          <a href="/about.html">О нас</a>
+          <a href="/contacts.html">Контакты</a>
+          <a href="/my-documents.html">Мои документы</a>
+          <a href="/reviews.html">Отзывы</a>
+          <a href="/privacy.html">Политика конфиденциальности</a>
+        </div>
+        <div class="footer-col">
+          <h4>Помощь</h4>
+          <a href="/blog/kak-sostavit-rezume.html">Как составить резюме</a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 templatus.ru · Бесплатные шаблоны документов</div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js"></script>
+  <script src="/assets/js/vfs_fonts.js"></script>
+
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/template-engine.js"></script>
+  <script src="/assets/js/doc-generator.js"></script>
+  <script src="/assets/js/resume-generator.js"></script>
+  <script src="/assets/js/pptx-generator.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/share.js"></script>
+<!-- Yandex.RTB -->
+<script>window.yaContextCb = window.yaContextCb || [];</script>
+<script src="https://yandex.ru/ads/system/context.js" async></script>
+<script src="/assets/js/ads.js"></script>
+</body>
+</html>

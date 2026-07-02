@@ -952,6 +952,135 @@ textarea[aria-invalid="true"] {
   margin: 0 auto;
 }
 
+/* Resume preview improvements */
+.resume-preview {
+  font-family: var(--font-sans);
+  color: #0f172a;
+  line-height: 1.6;
+}
+
+.resume-preview h2,
+.resume-preview h3,
+.resume-preview strong,
+.resume-preview p {
+  color: inherit;
+}
+
+.resume-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.resume-preview-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary-light);
+  flex-shrink: 0;
+  background: var(--color-surface);
+}
+
+.resume-preview-title {
+  flex: 1;
+}
+
+.resume-preview-title h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.6rem;
+  color: #0f172a;
+}
+
+.resume-preview-title .position {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.resume-preview-title .contacts {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.resume-preview-section {
+  margin-bottom: 1.25rem;
+}
+
+.resume-preview-section h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.35rem;
+}
+
+.resume-preview-item {
+  margin-bottom: 0.75rem;
+}
+
+.resume-preview-item strong {
+  color: #0f172a;
+}
+
+.resume-preview-period {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.resume-preview-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.resume-preview-tag {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--color-primary);
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.resume-preview-empty {
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Photo upload */
+.photo-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.photo-upload-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px dashed var(--color-border);
+  background: var(--color-surface);
+  display: none;
+}
+
+.photo-upload-preview.visible {
+  display: block;
+}
+
+.photo-upload-hint {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
 /* Responsive helpers */
 @media (max-width: 1023px) {
   .wizard-preview {

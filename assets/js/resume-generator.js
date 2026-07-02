@@ -5,6 +5,7 @@
 
 const ResumeGenerator = (() => {
   function collectData() {
+    const photoPreview = document.getElementById("photo-preview");
     const data = {
       fullName: getValue("fullName"),
       phone: getValue("phone"),
@@ -13,6 +14,7 @@ const ResumeGenerator = (() => {
       about: getValue("about"),
       position: getValue("position"),
       languages: getValue("languages"),
+      photo: photoPreview && photoPreview.style.display !== "none" ? photoPreview.src : "",
       skills: [],
       experience: [],
       education: [],
@@ -55,47 +57,68 @@ const ResumeGenerator = (() => {
     const container = document.getElementById(containerId);
     if (!container) return;
 
+    const photoHtml = data.photo
+      ? `<img src="${escapeHtml(data.photo)}" alt="Фото" class="resume-preview-photo">`
+      : "";
+
+    const contacts = [data.city, data.phone, data.email].filter(Boolean).join(" · ");
+
     const expHtml = data.experience.length
       ? data.experience
           .map(
             (e) => `
-          <div style="margin-bottom:1rem">
+          <div class="resume-preview-item">
             <strong>${escapeHtml(e.position)}</strong>, ${escapeHtml(e.company)}<br/>
-            <span style="color:#64748b">${escapeHtml(e.period)}</span>
+            <span class="resume-preview-period">${escapeHtml(e.period)}</span>
             <p style="margin:.25rem 0 0">${nl2br(escapeHtml(e.duties))}</p>
           </div>`
           )
           .join("")
-      : "<p style=\"color:#64748b\">Опыт работы не указан</p>";
+      : '<p class="resume-preview-empty">Опыт работы не указан</p>';
 
     const eduHtml = data.education.length
       ? data.education
           .map(
             (e) => `
-          <div style="margin-bottom:1rem">
+          <div class="resume-preview-item">
             <strong>${escapeHtml(e.institution)}</strong><br/>
             ${escapeHtml(e.specialty)} — ${escapeHtml(e.year)}
           </div>`
           )
           .join("")
-      : "<p style=\"color:#64748b\">Образование не указано</p>";
+      : '<p class="resume-preview-empty">Образование не указано</p>';
+
+    const skillsHtml = data.skills.length
+      ? `<div class="resume-preview-skills">${data.skills
+          .map((s) => `<span class="resume-preview-tag">${escapeHtml(s)}</span>`)
+          .join("")}</div>`
+      : '<p class="resume-preview-empty">Навыки не указаны</p>';
 
     container.innerHTML = `
-      <div style="border-bottom:2px solid #2563eb; padding-bottom:1rem; margin-bottom:1.5rem">
-        <h2 style="margin:0 0 .25rem; font-size:1.75rem">${escapeHtml(data.fullName || "ФИО")}</h2>
-        <p style="margin:0; font-size:1.1rem; color:#2563eb; font-weight:600">${escapeHtml(data.position || "Желаемая должность")}</p>
-        <p style="margin:.5rem 0 0; color:#64748b; font-size:.9rem">
-          ${escapeHtml(data.city)} · ${escapeHtml(data.phone)} · ${escapeHtml(data.email)}
-        </p>
+      <div class="resume-preview">
+        <div class="resume-preview-header">
+          ${photoHtml}
+          <div class="resume-preview-title">
+            <h2>${escapeHtml(data.fullName || "ФИО")}</h2>
+            <p class="position">${escapeHtml(data.position || "Желаемая должность")}</p>
+            ${contacts ? `<p class="contacts">${escapeHtml(contacts)}</p>` : ""}
+          </div>
+        </div>
+        ${data.about ? `<div class="resume-preview-section"><h3>О себе</h3><p>${nl2br(escapeHtml(data.about))}</p></div>` : ""}
+        <div class="resume-preview-section">
+          <h3>Опыт работы</h3>
+          ${expHtml}
+        </div>
+        <div class="resume-preview-section">
+          <h3>Образование</h3>
+          ${eduHtml}
+        </div>
+        <div class="resume-preview-section">
+          <h3>Навыки</h3>
+          ${skillsHtml}
+        </div>
+        ${data.languages ? `<div class="resume-preview-section"><h3>Языки</h3><p>${escapeHtml(data.languages)}</p></div>` : ""}
       </div>
-      ${data.about ? `<h3 style="margin:1rem 0 .5rem">О себе</h3><p>${nl2br(escapeHtml(data.about))}</p>` : ""}
-      <h3 style="margin:1.5rem 0 .5rem">Опыт работы</h3>
-      ${expHtml}
-      <h3 style="margin:1.5rem 0 .5rem">Образование</h3>
-      ${eduHtml}
-      <h3 style="margin:1.5rem 0 .5rem">Навыки</h3>
-      <p>${escapeHtml(data.skills.join(", "))}</p>
-      ${data.languages ? `<h3 style="margin:1.5rem 0 .5rem">Языки</h3><p>${escapeHtml(data.languages)}</p>` : ""}
     `;
   }
 
@@ -113,11 +136,43 @@ const ResumeGenerator = (() => {
     return text.replace(/\n/g, "<br/>");
   }
 
+  function dataUrlToUint8Array(dataUrl) {
+    const base64 = dataUrl.split(",")[1];
+    if (!base64) return null;
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+  }
+
   async function generateDocx(data, filename = "resume.docx") {
     if (!window.docx) throw new Error("docx.js не загружен");
-    const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = docx;
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, ImageRun } = docx;
 
-    const children = [
+    const children = [];
+
+    if (data.photo) {
+      const imageBytes = dataUrlToUint8Array(data.photo);
+      if (imageBytes) {
+        children.push(
+          new Paragraph({
+            alignment: AlignmentType.RIGHT,
+            children: [
+              new ImageRun({
+                data: imageBytes,
+                transformation: { width: 100, height: 100 },
+                type: data.photo.includes("image/png") ? "png" : "jpg",
+              }),
+            ],
+            spacing: { after: 120 },
+          })
+        );
+      }
+    }
+
+    children.push(
       new Paragraph({
         text: data.fullName || "ФИО",
         heading: HeadingLevel.TITLE,
@@ -131,8 +186,8 @@ const ResumeGenerator = (() => {
       new Paragraph({
         text: [data.city, data.phone, data.email].filter(Boolean).join(" · "),
         spacing: { after: 200 },
-      }),
-    ];
+      })
+    );
 
     if (data.about) {
       children.push(
@@ -228,11 +283,27 @@ const ResumeGenerator = (() => {
         ])
       : [{ text: "Образование не указано", color: "#64748b" }];
 
-    const content = [
-      { text: data.fullName || "ФИО", style: "header" },
-      { text: data.position || "Желаемая должность", style: "subheader" },
-      { text: [data.city, data.phone, data.email].filter(Boolean).join(" · "), margin: [0, 0, 0, 12] },
-    ];
+    const headerColumn = {
+      stack: [
+        { text: data.fullName || "ФИО", style: "header" },
+        { text: data.position || "Желаемая должность", style: "subheader" },
+        { text: [data.city, data.phone, data.email].filter(Boolean).join(" · "), margin: [0, 0, 0, 12] },
+      ],
+      width: "*",
+    };
+
+    const content = [headerColumn];
+
+    if (data.photo) {
+      content[0] = {
+        columns: [
+          headerColumn,
+          { image: data.photo, width: 80, height: 80, alignment: "right" },
+        ],
+        columnGap: 16,
+        margin: [0, 0, 0, 12],
+      };
+    }
 
     if (data.about) {
       content.push({ text: "О себе", style: "section" }, { text: data.about, margin: [0, 0, 0, 12] });

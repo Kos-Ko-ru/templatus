@@ -95,7 +95,13 @@
                   <label class="form-label" for="email">Email</label>
                   <input type="email" id="email" name="email" placeholder="email@example.com">
                 </div>
-                <div class="form-group">
+                                <div class="form-group photo-upload">
+                  <label class="form-label" for="photo">Фото</label>
+                  <input type="file" id="photo" name="photo" accept="image/*">
+                  <img id="photo-preview" class="photo-upload-preview" alt="Предпросмотр фото">
+                  <span class="photo-upload-hint">JPG или PNG, до 2 МБ</span>
+                </div>
+<div class="form-group">
                   <label class="form-label" for="about">О себе</label>
                   <textarea id="about" name="about" rows="4" placeholder="Кратко об управлении проектами"></textarea>
                 </div>

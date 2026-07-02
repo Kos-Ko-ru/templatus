@@ -28,10 +28,30 @@
       saveDraft();
     });
 
-    document.getElementById("resume-form").addEventListener("change", () => {
+    document.getElementById("resume-form").addEventListener("change", (e) => {
+      if (e.target && e.target.id === "photo") {
+        handlePhotoUpload(e.target);
+      }
       updatePreview();
       saveDraft();
     });
+  }
+
+  function handlePhotoUpload(input) {
+    const file = input.files && input.files[0];
+    const preview = document.getElementById("photo-preview");
+    if (!file || !preview) return;
+    if (!file.type.startsWith("image/")) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      preview.src = e.target.result;
+      preview.classList.add("visible");
+      preview.style.display = "block";
+      updatePreview();
+      saveDraft();
+    };
+    reader.readAsDataURL(file);
   }
 
   function renderDynamicTemplates() {
@@ -203,6 +223,13 @@
     setValue("about", data.about);
     setValue("customSkills", data.customSkills);
     setValue("languages", data.languages);
+
+    const photoPreview = document.getElementById("photo-preview");
+    if (photoPreview && data.photo) {
+      photoPreview.src = data.photo;
+      photoPreview.classList.add("visible");
+      photoPreview.style.display = "block";
+    }
 
     document.querySelectorAll('input[name="skills"]').forEach((cb) => {
       cb.checked = data.skills && data.skills.includes(cb.value);

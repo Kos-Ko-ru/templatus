@@ -24,6 +24,19 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110332852', 'ym');
+
+    ym(110332852, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110332852" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <header class="site-header">
@@ -64,26 +77,43 @@
 
     <section class="section">
       <div class="container">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <article class="card">
+        <div class="template-toolbar" data-filter-target="#documents-grid">
+          <div class="template-search-wrap">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="template-search" placeholder="Найти документ..." aria-label="Поиск шаблонов документов">
+          </div>
+          <div class="template-filters" role="group" aria-label="Фильтры по типу документа">
+            <button type="button" class="template-filter active" data-filter="all" aria-pressed="true">Все</button>
+            <button type="button" class="template-filter" data-filter="legal" aria-pressed="false">Юридические</button>
+            <button type="button" class="template-filter" data-filter="hr" aria-pressed="false">HR</button>
+            <button type="button" class="template-filter" data-filter="sales" aria-pressed="false">Продажи</button>
+          </div>
+          <p class="templates-empty hidden">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            По вашему запросу ничего не найдено. Попробуйте другие слова или фильтр.
+          </p>
+        </div>
+
+        <div id="documents-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <article class="card" data-category="legal">
             <div class="card-icon"><i class="ph ph-house" aria-hidden="true"></i></div>
             <h3>Договор аренды жилья</h3>
             <p>Арендодатель, арендатор, срок, сумма, залог и дополнительные условия.</p>
             <a href="dogovor-arendy.html" class="btn btn-primary btn-sm">Создать договор</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="hr">
             <div class="card-icon"><i class="ph ph-airplane" aria-hidden="true"></i></div>
             <h3>Заявление на отпуск</h3>
             <p>Готовое заявление по форме HR-отдела.</p>
             <a href="zayavlenie-otpusk.html" class="btn btn-primary btn-sm">Создать заявление</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="legal">
             <div class="card-icon"><i class="ph ph-signature" aria-hidden="true"></i></div>
             <h3>Доверенность</h3>
             <p>Универсальная доверенность на представление интересов.</p>
             <a href="doverennost.html" class="btn btn-primary btn-sm">Создать доверенность</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="sales">
             <div class="card-icon"><i class="ph ph-currency-rub" aria-hidden="true"></i></div>
             <h3>Коммерческое предложение</h3>
             <p>Структурированное КП для клиентов и партнёров.</p>
@@ -124,6 +154,7 @@
   </footer>
 
   <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/template-filters.js"></script>
   <script src="/assets/js/app.js"></script>
 </body>
 </html>

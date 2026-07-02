@@ -24,6 +24,19 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110332852', 'ym');
+
+    ym(110332852, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110332852" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <header class="site-header">
@@ -64,68 +77,88 @@
 
     <section class="section">
       <div class="container">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <article class="card">
+        <div class="template-toolbar" data-filter-target="#resume-grid">
+          <div class="template-search-wrap">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="template-search" placeholder="Найти резюме по профессии..." aria-label="Поиск шаблонов резюме">
+          </div>
+          <div class="template-filters" role="group" aria-label="Фильтры по сфере">
+            <button type="button" class="template-filter active" data-filter="all" aria-pressed="true">Все</button>
+            <button type="button" class="template-filter" data-filter="it" aria-pressed="false">IT</button>
+            <button type="button" class="template-filter" data-filter="sales,marketing" aria-pressed="false">Продажи и маркетинг</button>
+            <button type="button" class="template-filter" data-filter="finance,legal" aria-pressed="false">Финансы и юриспруденция</button>
+            <button type="button" class="template-filter" data-filter="management" aria-pressed="false">Управление и HR</button>
+            <button type="button" class="template-filter" data-filter="entry" aria-pressed="false">Без опыта</button>
+            <button type="button" class="template-filter" data-filter="creative" aria-pressed="false">Дизайн</button>
+          </div>
+          <p class="templates-empty hidden">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            По вашему запросу ничего не найдено. Попробуйте другие слова или фильтр.
+          </p>
+        </div>
+
+        <div id="resume-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <article class="card" data-category="it">
             <div class="card-icon"><i class="ph ph-code" aria-hidden="true"></i></div>
             <h3>Резюме IT-специалиста</h3>
             <p>Для разработчиков, тестировщиков, аналитиков и других специалистов в IT.</p>
             <a href="it-specialist.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="sales">
             <div class="card-icon"><i class="ph ph-chart-line-up" aria-hidden="true"></i></div>
             <h3>Резюме менеджера по продажам</h3>
             <p>Акцент на достижениях, KPI и навыках переговоров.</p>
             <a href="sales-manager.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="entry">
             <div class="card-icon"><i class="ph ph-student" aria-hidden="true"></i></div>
             <h3>Резюме без опыта</h3>
             <p>Для студентов и выпускников: образование, стажировки, курсы.</p>
             <a href="no-experience.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="finance">
             <div class="card-icon"><i class="ph ph-calculator" aria-hidden="true"></i></div>
             <h3>Резюме бухгалтера</h3>
             <p>Для бухгалтеров и финансовых специалистов.</p>
             <a href="accountant.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="marketing">
             <div class="card-icon"><i class="ph ph-megaphone" aria-hidden="true"></i></div>
             <h3>Резюме маркетолога</h3>
             <p>SMM, контекст, таргет и аналитика.</p>
             <a href="marketer.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="management">
             <div class="card-icon"><i class="ph ph-kanban" aria-hidden="true"></i></div>
             <h3>Резюме менеджера проекта</h3>
             <p>Agile, Scrum, планирование и команда.</p>
             <a href="project-manager.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="creative">
             <div class="card-icon"><i class="ph ph-paint-brush" aria-hidden="true"></i></div>
             <h3>Резюме дизайнера</h3>
             <p>UX/UI, графика и креатив.</p>
             <a href="designer.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="it">
             <div class="card-icon"><i class="ph ph-desktop-tower" aria-hidden="true"></i></div>
             <h3>Резюме системного администратора</h3>
             <p>Серверы, сети, виртуализация и безопасность.</p>
             <a href="system-admin.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="legal">
             <div class="card-icon"><i class="ph ph-scales" aria-hidden="true"></i></div>
             <h3>Резюме юриста</h3>
             <p>Договоры, претензии и судебное представительство.</p>
             <a href="lawyer.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="management">
             <div class="card-icon"><i class="ph ph-users" aria-hidden="true"></i></div>
             <h3>Резюме HR-специалиста</h3>
             <p>Подбор, адаптация и кадровый учет.</p>
             <a href="hr-specialist.html" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="it">
             <div class="card-icon"><i class="ph ph-chart-pie-slice" aria-hidden="true"></i></div>
             <h3>Резюме аналитика</h3>
             <p>SQL, Python, визуализация и статистика.</p>
@@ -166,6 +199,7 @@
   </footer>
 
   <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/template-filters.js"></script>
   <script src="/assets/js/app.js"></script>
 </body>
 </html>

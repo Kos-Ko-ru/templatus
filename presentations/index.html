@@ -24,6 +24,19 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110332852', 'ym');
+
+    ym(110332852, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110332852" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <header class="site-header">
@@ -64,38 +77,56 @@
 
     <section class="section">
       <div class="container">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <article class="card">
+        <div class="template-toolbar" data-filter-target="#presentations-grid">
+          <div class="template-search-wrap">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="template-search" placeholder="Найти презентацию..." aria-label="Поиск шаблонов презентаций">
+          </div>
+          <div class="template-filters" role="group" aria-label="Фильтры по типу презентации">
+            <button type="button" class="template-filter active" data-filter="all" aria-pressed="true">Все</button>
+            <button type="button" class="template-filter" data-filter="startup" aria-pressed="false">Стартап</button>
+            <button type="button" class="template-filter" data-filter="report" aria-pressed="false">Отчёты</button>
+            <button type="button" class="template-filter" data-filter="marketing" aria-pressed="false">Маркетинг</button>
+            <button type="button" class="template-filter" data-filter="education" aria-pressed="false">Образование</button>
+          </div>
+          <p class="templates-empty hidden">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            По вашему запросу ничего не найдено. Попробуйте другие слова или фильтр.
+          </p>
+        </div>
+
+        <div id="presentations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <article class="card" data-category="startup">
             <div class="card-icon"><i class="ph ph-rocket" aria-hidden="true"></i></div>
             <h3>Питч-дек стартапа</h3>
             <p>Классическая структура: проблема, решение, продукт, рынок, бизнес-модель, команда, финансы.</p>
             <a href="pitch-deck.html" class="btn btn-primary btn-sm">Создать презентацию</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="report">
             <div class="card-icon"><i class="ph ph-chart-bar" aria-hidden="true"></i></div>
             <h3>Квартальный отчёт</h3>
             <p>Итоги периода, показатели, планы.</p>
             <a href="quarterly-report.html" class="btn btn-primary btn-sm">Создать отчёт</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="startup">
             <div class="card-icon"><i class="ph ph-briefcase" aria-hidden="true"></i></div>
             <h3>Бизнес-план</h3>
             <p>Идея, продукт, рынок, конкуренты и финансы.</p>
             <a href="business-plan.html" class="btn btn-primary btn-sm">Создать презентацию</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="education">
             <div class="card-icon"><i class="ph ph-chalkboard-teacher" aria-hidden="true"></i></div>
             <h3>Образовательная презентация</h3>
             <p>Урок или лекция: цель, теория, примеры, практика.</p>
             <a href="education.html" class="btn btn-primary btn-sm">Создать презентацию</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="marketing">
             <div class="card-icon"><i class="ph ph-trend-up" aria-hidden="true"></i></div>
             <h3>Маркетинговая стратегия</h3>
             <p>Цели, аудитория, каналы, контент и KPI.</p>
             <a href="marketing-strategy.html" class="btn btn-primary btn-sm">Создать презентацию</a>
           </article>
-          <article class="card">
+          <article class="card" data-category="report">
             <div class="card-icon"><i class="ph ph-clipboard-text" aria-hidden="true"></i></div>
             <h3>Отчёт о проекте</h3>
             <p>Ход выполнения, метрики, проблемы и планы.</p>
@@ -136,6 +167,7 @@
   </footer>
 
   <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/template-filters.js"></script>
   <script src="/assets/js/app.js"></script>
 </body>
 </html>

@@ -73,11 +73,10 @@ python deploy.py
 При необходимости можно переопределить параметры через переменные окружения:
 
 ```bash
-# PowerShell
-$env:TEMPLATUS_HOST = "158.255.4.142"
-$env:TEMPLATUS_USER = "root"
-$env:TEMPLATUS_PASSWORD = "Kostaden2312-"
-$env:TEMPLATUS_DOMAIN = "templatus.ru"
+export TEMPLATUS_HOST="your-server-ip"
+export TEMPLATUS_USER="your-user"
+export TEMPLATUS_PASSWORD="your-password"
+export TEMPLATUS_DOMAIN="templatus.ru"
 
 python deploy.py
 ```

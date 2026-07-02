@@ -116,14 +116,14 @@ def update_caddyfile(sftp_client) -> None:
     root * {REMOTE_BASE}
     file_server
     encode gzip zstd
-    try_files {{path}} {{path}}.html /index.html /404.html
+    try_files {{path}} {{path}}/index.html {{path}}.html /index.html /404.html
 }}"""
 
         http_block = f""":80 {{
     root * {REMOTE_BASE}
     file_server
     encode gzip zstd
-    try_files {{path}} {{path}}.html /index.html /404.html
+    try_files {{path}} {{path}}/index.html {{path}}.html /index.html /404.html
 }}"""
 
         # Удаляем существующий блок домена, включая возможные артефакты

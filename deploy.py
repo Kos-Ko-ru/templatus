@@ -21,9 +21,9 @@ from pathlib import Path
 import paramiko
 
 # --- Конфигурация ---
-REMOTE_HOST = os.getenv("TEMPLATUS_HOST", "158.255.4.142").strip()
-REMOTE_USER = os.getenv("TEMPLATUS_USER", "root").strip()
-REMOTE_PASSWORD = os.getenv("TEMPLATUS_PASSWORD", "Kostaden2312-").strip()
+REMOTE_HOST = os.getenv("TEMPLATUS_HOST", "").strip()
+REMOTE_USER = os.getenv("TEMPLATUS_USER", "").strip()
+REMOTE_PASSWORD = os.getenv("TEMPLATUS_PASSWORD", "").strip()
 REMOTE_BASE = os.getenv("TEMPLATUS_REMOTE_BASE", "/opt/templatus").strip()
 REMOTE_CADDYFILE_PATH = os.getenv(
     "TEMPLATUS_CADDYFILE_PATH", "/opt/safescan/Caddyfile"
@@ -153,10 +153,18 @@ def deploy_ssh() -> None:
         print(
             "\nERROR: SSH credentials not configured.\n"
             "Set environment variables before running deploy.py:\n"
-            "  $env:TEMPLATUS_HOST = '158.255.4.142'\n"
-            "  $env:TEMPLATUS_USER = 'root'\n"
-            "  $env:TEMPLATUS_PASSWORD = 'your_password'\n"
-            "  $env:TEMPLATUS_REMOTE_BASE = '/opt/templatus'  # optional\n"
+            "  Bash:\n"
+            "    export TEMPLATUS_HOST='your-server-ip'\n"
+            "    export TEMPLATUS_USER='your-user'\n"
+            "    export TEMPLATUS_PASSWORD='your-password'\n"
+            "    export TEMPLATUS_DOMAIN='templatus.ru'\n\n"
+            "  PowerShell:\n"
+            "    $env:TEMPLATUS_HOST='your-server-ip'\n"
+            "    $env:TEMPLATUS_USER='your-user'\n"
+            "    $env:TEMPLATUS_PASSWORD='your-password'\n"
+            "    $env:TEMPLATUS_DOMAIN='templatus.ru'\n\n"
+            "  Optional:\n"
+            "    TEMPLATUS_REMOTE_BASE='/opt/templatus'\n"
         )
         sys.exit(1)
 

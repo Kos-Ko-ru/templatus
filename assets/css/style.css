@@ -1239,3 +1239,141 @@ select:focus-visible {
   margin-bottom: 0.75rem;
   color: var(--color-primary-light);
 }
+
+/* =========================
+   Визуальные примеры шагов
+   ========================= */
+
+.step-visual {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sv-card {
+  width: 100%;
+  max-width: 140px;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.sv-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(37, 99, 235, 0.15);
+}
+
+.sv-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sv-line {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-border);
+}
+
+.sv-line-short {
+  width: 60%;
+}
+
+.sv-btn {
+  height: 14px;
+  border-radius: 4px;
+  background: var(--color-primary);
+  opacity: 0.85;
+}
+
+.sv-input {
+  width: 100%;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--color-border);
+}
+
+.sv-input-half {
+  width: 60%;
+}
+
+.sv-paper {
+  width: 100%;
+  max-width: 120px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .sv-paper {
+  background: var(--color-surface-elevated);
+}
+
+.sv-file {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  max-width: 150px;
+}
+
+.sv-file-icon {
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.sv-file-name {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.sv-download-btn {
+  padding: 0.35rem 1rem;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* =========================
+   Страница "О нас"
+   ========================= */
+
+.text-center {
+  text-align: center;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 auto;
+}

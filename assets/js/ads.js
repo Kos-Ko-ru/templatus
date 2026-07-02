@@ -33,7 +33,11 @@
     var slotName = slot.dataset.adSlot;
     var blockId = AD_CONFIG.blocks[slotName];
 
-    if (!blockId) return; // placeholder остаётся как есть
+    if (!blockId) {
+      // ID блока не задан — скрываем placeholder, чтобы не выглядело непрофессионально
+      slot.style.display = 'none';
+      return;
+    }
 
     var renderTo = 'yandex_rtb_' + blockId.replace(/[^a-zA-Z0-9]/g, '_');
 

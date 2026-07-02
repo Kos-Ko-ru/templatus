@@ -61,12 +61,43 @@
       </div>
     </section>
     <section class="section">
-      <div class="container" style="max-width:600px">
-        <div class="card" style="text-align:center">
+      <div class="container" style="max-width:640px">
+        <div class="card" style="text-align:center;margin-bottom:1.5rem">
           <div class="card-icon" style="margin:0 auto 1rem"><i class="ph ph-envelope" aria-hidden="true"></i></div>
           <h3 style="margin-top:0">Email</h3>
           <p>Для связи с командой templatus:</p>
           <a href="mailto:hello@templatus.ru" class="btn btn-primary">hello@templatus.ru</a>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0;text-align:center">Или напишите нам прямо здесь</h3>
+          <p style="color:var(--color-muted);text-align:center;margin-bottom:1.5rem">Заполните форму, и мы ответим вам в течение 1–2 рабочих дней.</p>
+          <form id="contact-form" class="contact-form">
+            <div class="form-group">
+              <label class="form-label" for="contact-name">Ваше имя</label>
+              <input type="text" id="contact-name" name="name" placeholder="Иван Иванов" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact-email">Email</label>
+              <input type="email" id="contact-email" name="email" placeholder="ivan@example.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact-subject">Тема</label>
+              <select id="contact-subject" name="subject" required>
+                <option value="" disabled selected>Выберите тему</option>
+                <option value="proposal">Предложение о сотрудничестве</option>
+                <option value="bug">Ошибка на сайте</option>
+                <option value="template">Запрос шаблона</option>
+                <option value="other">Другое</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact-message">Сообщение</label>
+              <textarea id="contact-message" name="message" rows="5" placeholder="Опишите ваш вопрос или предложение..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Отправить сообщение</button>
+            <p class="form-hint" style="text-align:center;margin-top:1rem">Форма откроет ваш почтовый клиент с готовым письмом. Данные не отправляются на сервер.</p>
+          </form>
         </div>
       </div>
     </section>

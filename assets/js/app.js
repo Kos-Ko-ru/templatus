@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileMenu();
   initAccordion();
   updateCounter();
+  initContactForm();
 });
 
 function initTheme() {
@@ -60,12 +61,24 @@ function initAccordion() {
   });
 }
 
+function animateValue(el, start, end, duration) {
+  const startTime = performance.now();
+  function step(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 4);
+    const current = Math.floor(start + (end - start) * ease);
+    el.textContent = current.toLocaleString("ru-RU");
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
 function updateCounter() {
   const els = document.querySelectorAll("[data-doc-counter]");
   if (!els.length) return;
   const stats = Storage.getStats();
-  const formatted = stats.generated.toLocaleString("ru-RU");
-  els.forEach((el) => (el.textContent = formatted));
+  els.forEach((el) => animateValue(el, 0, stats.generated, 1500));
 }
 
 function bumpCounter() {
@@ -126,6 +139,32 @@ function closeDownloadModal() {
   if (overlay) overlay.classList.remove("open");
 }
 
+function initContactForm() {
+  const form = document.getElementById("contact-form");
+  if (!form) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const name = formData.get("name")?.toString().trim() || "";
+    const email = formData.get("email")?.toString().trim() || "";
+    const subject = formData.get("subject")?.toString().trim() || "";
+    const message = formData.get("message")?.toString().trim() || "";
+
+    const subjectLabels = {
+      proposal: "Предложение о сотрудничестве",
+      bug: "Ошибка на сайте",
+      template: "Запрос шаблона",
+      other: "Другое",
+    };
+
+    const mailSubject = `[templatus] ${subjectLabels[subject] || subject}`;
+    const mailBody = `Имя: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0A${message}`;
+    window.location.href = `mailto:hello@templatus.ru?subject=${encodeURIComponent(mailSubject)}&body=${mailBody}`;
+  });
+}
+
 window.showDownloadModal = showDownloadModal;
 window.closeDownloadModal = closeDownloadModal;
 window.bumpCounter = bumpCounter;
+window.initContactForm = initContactForm;

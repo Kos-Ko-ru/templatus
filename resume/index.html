@@ -41,14 +41,14 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a>
+      <div class="header-brand"><a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-badge" aria-label="Продукт kos-ko.ru"><img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark"><span class="kosko-label">продукт kos-ko.ru</span></a></div>
       <nav class="main-nav" aria-label="Главное меню">
         <a href="/resume/" class="active">Резюме</a>
         <a href="/documents/">Документы</a>
         <a href="/presentations/">Презентации</a>
         <a href="/blog/">Блог</a>
-        <a href="/about.html">О нас</a>
-        <a href="/contacts.html">Контакты</a>
+        <a href="/about">О нас</a>
+        <a href="/contacts">Контакты</a>
       </nav>
       <div class="header-actions">
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему"><span data-theme-icon>☾</span></button>
@@ -60,8 +60,8 @@
       <a href="/documents/">Документы</a>
       <a href="/presentations/">Презентации</a>
       <a href="/blog/">Блог</a>
-      <a href="/about.html">О нас</a>
-      <a href="/contacts.html">Контакты</a>
+      <a href="/about">О нас</a>
+      <a href="/contacts">Контакты</a>
     </div>
   </header>
 
@@ -80,7 +80,7 @@
     <section class="section">
       <div class="container">
         <div class="template-toolbar" data-filter-target="#resume-grid">
-          <div class="template-search-wrap">
+          <div class="shadcn-input-wrap">
             <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
             <input type="search" class="template-search" placeholder="Найти резюме по профессии..." aria-label="Поиск шаблонов резюме">
           </div>
@@ -101,8 +101,8 @@
           </p>
         </div>
 
-        <div id="resume-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <article class="card" data-category="it">
+        <div id="resume-grid" class="template-grid">
+          <article class="card card-template" data-category="it">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -117,9 +117,9 @@
           <div class="card-icon"><i class="ph ph-code" aria-hidden="true"></i></div>
             <h3>Резюме IT-специалиста</h3>
             <p>Для разработчиков, тестировщиков, аналитиков и других специалистов в IT.</p>
-            <a href="it-specialist.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="it-specialist" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="sales">
+          <article class="card card-template" data-category="sales">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -134,9 +134,9 @@
           <div class="card-icon"><i class="ph ph-chart-line-up" aria-hidden="true"></i></div>
             <h3>Резюме менеджера по продажам</h3>
             <p>Акцент на достижениях, KPI и навыках переговоров.</p>
-            <a href="sales-manager.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="sales-manager" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="entry">
+          <article class="card card-template" data-category="entry">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -151,9 +151,9 @@
           <div class="card-icon"><i class="ph ph-student" aria-hidden="true"></i></div>
             <h3>Резюме без опыта</h3>
             <p>Для студентов и выпускников: образование, стажировки, курсы.</p>
-            <a href="no-experience.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="no-experience" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="finance">
+          <article class="card card-template" data-category="finance">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -168,9 +168,9 @@
           <div class="card-icon"><i class="ph ph-calculator" aria-hidden="true"></i></div>
             <h3>Резюме бухгалтера</h3>
             <p>Для бухгалтеров и финансовых специалистов.</p>
-            <a href="accountant.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="accountant" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="marketing">
+          <article class="card card-template" data-category="marketing">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -185,9 +185,9 @@
           <div class="card-icon"><i class="ph ph-megaphone" aria-hidden="true"></i></div>
             <h3>Резюме маркетолога</h3>
             <p>SMM, контекст, таргет и аналитика.</p>
-            <a href="marketer.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="marketer" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="management">
+          <article class="card card-template" data-category="management">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -202,9 +202,9 @@
           <div class="card-icon"><i class="ph ph-kanban" aria-hidden="true"></i></div>
             <h3>Резюме менеджера проекта</h3>
             <p>Agile, Scrum, планирование и команда.</p>
-            <a href="project-manager.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="project-manager" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="creative">
+          <article class="card card-template" data-category="creative">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -219,9 +219,9 @@
           <div class="card-icon"><i class="ph ph-paint-brush" aria-hidden="true"></i></div>
             <h3>Резюме дизайнера</h3>
             <p>UX/UI, графика и креатив.</p>
-            <a href="designer.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="designer" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="it">
+          <article class="card card-template" data-category="it">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -236,9 +236,9 @@
           <div class="card-icon"><i class="ph ph-desktop-tower" aria-hidden="true"></i></div>
             <h3>Резюме системного администратора</h3>
             <p>Серверы, сети, виртуализация и безопасность.</p>
-            <a href="system-admin.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="system-admin" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="legal">
+          <article class="card card-template" data-category="legal">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -253,9 +253,9 @@
           <div class="card-icon"><i class="ph ph-scales" aria-hidden="true"></i></div>
             <h3>Резюме юриста</h3>
             <p>Договоры, претензии и судебное представительство.</p>
-            <a href="lawyer.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="lawyer" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="management">
+          <article class="card card-template" data-category="management">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -270,9 +270,9 @@
           <div class="card-icon"><i class="ph ph-users" aria-hidden="true"></i></div>
             <h3>Резюме HR-специалиста</h3>
             <p>Подбор, адаптация и кадровый учет.</p>
-            <a href="hr-specialist.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="hr-specialist" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="it">
+          <article class="card card-template" data-category="it">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -287,9 +287,9 @@
           <div class="card-icon"><i class="ph ph-chart-pie-slice" aria-hidden="true"></i></div>
             <h3>Резюме аналитика</h3>
             <p>SQL, Python, визуализация и статистика.</p>
-            <a href="analyst.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="analyst" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="service">
+          <article class="card card-template" data-category="service">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -304,9 +304,9 @@
           <div class="card-icon"><i class="ph ph-car" aria-hidden="true"></i></div>
             <h3>Резюме водителя</h3>
             <p>Для водителей легковых и грузовых автомобилей с опытом.</p>
-            <a href="driver.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="driver" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="service">
+          <article class="card card-template" data-category="service">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -321,9 +321,9 @@
           <div class="card-icon"><i class="ph ph-cash-register" aria-hidden="true"></i></div>
             <h3>Резюме кассира</h3>
             <p>Для работы в магазине, кафе или торговом центре.</p>
-            <a href="cashier.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="cashier" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="service">
+          <article class="card card-template" data-category="service">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -338,9 +338,9 @@
           <div class="card-icon"><i class="ph ph-cooking-pot" aria-hidden="true"></i></div>
             <h3>Резюме повара</h3>
             <p>Для поваров, су-шефов и кухонных работников.</p>
-            <a href="cook.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="cook" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="service">
+          <article class="card card-template" data-category="service">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -355,9 +355,9 @@
           <div class="card-icon"><i class="ph ph-shield-check" aria-hidden="true"></i></div>
             <h3>Резюме охранника</h3>
             <p>Для охранников объектов, консьержей и специалистов ЧОП.</p>
-            <a href="security.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="security" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
-          <article class="card" data-category="medical">
+          <article class="card card-template" data-category="medical">
           <div class="template-preview">
             <div class="tp-resume">
               <div class="tp-resume-photo"></div>
@@ -372,7 +372,7 @@
           <div class="card-icon"><i class="ph ph-heartbeat" aria-hidden="true"></i></div>
             <h3>Резюме медсестры</h3>
             <p>Для медсестёр и медбратеров в клиниках и больницах.</p>
-            <a href="nurse.html" class="btn btn-primary btn-sm">Создать резюме</a>
+            <a href="nurse" class="btn btn-primary btn-sm">Создать резюме</a>
           </article>
         </div>
       </div>
@@ -395,18 +395,18 @@
         </div>
         <div class="footer-col">
           <h4>Проект</h4>
-          <a href="/about.html">О нас</a>
-          <a href="/contacts.html">Контакты</a>
-          <a href="/my-documents.html">Мои документы</a>
-          <a href="/reviews.html">Отзывы</a>
-          <a href="/privacy.html">Политика конфиденциальности</a>
+          <a href="/about">О нас</a>
+          <a href="/contacts">Контакты</a>
+          <a href="/my-documents">Мои документы</a>
+          <a href="/reviews">Отзывы</a>
+          <a href="/privacy">Политика конфиденциальности</a>
         </div>
         <div class="footer-col">
           <h4>Помощь</h4>
-          <a href="/blog/kak-sostavit-rezume.html">Как составить резюме</a>
+          <a href="/blog/kak-sostavit-rezume">Как составить резюме</a>
         </div>
       </div>
-      <div class="footer-bottom">© 2026 templatus.ru · Бесплатные шаблоны документов</div>
+      <div class="footer-bottom"><span>© 2026 templatus.ru · Бесплатные шаблоны документов</span><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-footer" aria-label="Разработано компанией kos-ko.ru"><span>Разработано компанией</span><img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark"></a></div>
     </div>
   </footer>
 

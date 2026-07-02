@@ -60,7 +60,7 @@ ARTICLES = [
 <h2>Пример заполнения раздела «О себе»</h2>
 <blockquote>«Выпускник Московского университета по направлению «Экономика». Во время учёбы прошёл стажировку в отделе аналитики, где автоматизировал отчётность в Excel. Ищу позицию младшего аналитика для развития в Data Science.»</blockquote>
 
-<p>Используйте <a href="/resume/no-experience.html">шаблон резюме без опыта</a>, чтобы не пропустить важные блоки.</p>
+<p>Используйте <a href="/resume/no-experience">шаблон резюме без опыта</a>, чтобы не пропустить важные блоки.</p>
 """
     },
     {
@@ -129,7 +129,7 @@ ARTICLES = [
   <li><strong>Ответственность сторон.</strong> Порядок расторжения и штрафы.</li>
 </ul>
 
-<p>Составьте договор аренды по <a href="/documents/dogovor-arendy.html">готовому шаблону templatus</a> за несколько минут.</p>
+<p>Составьте договор аренды по <a href="/documents/dogovor-arendy">готовому шаблону templatus</a> за несколько минут.</p>
 """
     },
     {
@@ -151,7 +151,7 @@ ARTICLES = [
 <h2>Когда подавать</h2>
 <p>По Трудовому кодексу РФ работодатель обязан предупредить сотрудника о начале отпуска не позднее чем за две недели. Заявление обычно подаётся заблаговременно, особенно если отпуск не входит в утверждённый график.</p>
 
-<p>Скачайте <a href="/documents/zayavlenie-otpusk.html">шаблон заявления на отпуск</a> и заполните его онлайн.</p>
+<p>Скачайте <a href="/documents/zayavlenie-otpusk">шаблон заявления на отпуск</a> и заполните его онлайн.</p>
 """
     },
     {
@@ -174,7 +174,7 @@ ARTICLES = [
 <h2>Срок отработки</h2>
 <p>Стандартный срок предупреждения работодателя — две недели. В некоторых случаях он может быть сокращён по договорённости с руководством.</p>
 
-<p>Заполните <a href="/documents/zayavlenie-uvolnenie.html">заявление на увольнение онлайн</a> и скачайте DOCX или PDF.</p>
+<p>Заполните <a href="/documents/zayavlenie-uvolnenie">заявление на увольнение онлайн</a> и скачайте DOCX или PDF.</p>
 """
     },
     {
@@ -198,7 +198,7 @@ ARTICLES = [
 <h2>Советы</h2>
 <p>Желательно заверить расписку нотариально при крупных суммах. Храните копию документа и доказательства перевода: чеки, выписки, распечатки.</p>
 
-<p>Составьте <a href="/documents/raspiska-dengi.html">расписку в получении денег</a> по готовому шаблону.</p>
+<p>Составьте <a href="/documents/raspiska-dengi">расписку в получении денег</a> по готовому шаблону.</p>
 """
     },
     {
@@ -225,7 +225,7 @@ ARTICLES = [
   <li>Подписи сторон.</li>
 </ul>
 
-<p>Оформите <a href="/documents/akt-priemki.html">акт приёма-передачи</a> бесплатно в templatus.</p>
+<p>Оформите <a href="/documents/akt-priemki">акт приёма-передачи</a> бесплатно в templatus.</p>
 """
     },
     {
@@ -248,7 +248,7 @@ ARTICLES = [
 <h2>Как повысить отклик</h2>
 <p>Персонализируйте текст, укажите конкретные цифры, добавьте примеры из практики и сделайте дизайн чистым.</p>
 
-<p>Создайте <a href="/documents/kommercheskoye-predlozheniye.html">коммерческое предложение онлайн</a> за несколько минут.</p>
+<p>Создайте <a href="/documents/kommercheskoye-predlozheniye">коммерческое предложение онлайн</a> за несколько минут.</p>
 """
     },
     {
@@ -271,7 +271,7 @@ ARTICLES = [
 <h2>Нотариальное заверение</h2>
 <p>Для многих сделок с недвижимостью, автомобилями и банковскими операциями доверенность должна быть нотариально заверена. Простая письменная форма допускается, когда законом не требуется иное.</p>
 
-<p>Заполните <a href="/documents/doverennost.html">доверенность по шаблону</a> и отнесите к нотариусу.</p>
+<p>Заполните <a href="/documents/doverennost">доверенность по шаблону</a> и отнесите к нотариусу.</p>
 """
     },
     {
@@ -296,7 +296,7 @@ ARTICLES = [
 <h2>Чего избегать</h2>
 <p>Слишком много текста, голые заявления без цифр, непонятные схемы и отсутствие призыва к действию.</p>
 
-<p>Соберите <a href="/presentations/pitch-deck.html">питч-дек для инвесторов</a> в templatus.</p>
+<p>Соберите <a href="/presentations/pitch-deck">питч-дек для инвесторов</a> в templatus.</p>
 """
     },
     {
@@ -322,7 +322,7 @@ ARTICLES = [
 <h2>Советы по дизайну</h2>
 <p>Используйте один шрифт, крупные цифры, качественные изображения и много воздуха. Один слайд — одна мысль.</p>
 
-<p>Начните создавать <a href="/presentations/pitch-deck.html">питч-дек стартапа</a> прямо сейчас.</p>
+<p>Начните создавать <a href="/presentations/pitch-deck">питч-дек стартапа</a> прямо сейчас.</p>
 """
     },
     {
@@ -345,7 +345,7 @@ ARTICLES = [
 <h2>Как визуализировать данные</h2>
 <p>Используйте графики и диаграммы. Сравните текущий квартал с предыдущим и планом. Это делает динамику наглядной.</p>
 
-<p>Создайте <a href="/presentations/quarterly-report.html">квартальный отчёт в PPTX</a> за несколько минут.</p>
+<p>Создайте <a href="/presentations/quarterly-report">квартальный отчёт в PPTX</a> за несколько минут.</p>
 """
     },
     {
@@ -367,7 +367,7 @@ ARTICLES = [
   <li><strong>Риски.</strong> Возможные угрозы и план их минимизации.</li>
 </ol>
 
-<p>Соберите <a href="/presentations/business-plan.html">бизнес-план в презентации</a> с помощью templatus.</p>
+<p>Соберите <a href="/presentations/business-plan">бизнес-план в презентации</a> с помощью templatus.</p>
 """
     },
     {
@@ -388,7 +388,7 @@ ARTICLES = [
   <li><strong>KPI и бюджет.</strong> На какие метрики ориентироваться и сколько тратить.</li>
 </ul>
 
-<p>Оформите <a href="/presentations/marketing-strategy.html">маркетинговую стратегию в презентации</a> для команды или инвесторов.</p>
+<p>Оформите <a href="/presentations/marketing-strategy">маркетинговую стратегию в презентации</a> для команды или инвесторов.</p>
 """
     },
     {
@@ -410,7 +410,7 @@ ARTICLES = [
 <h2>Преимущество локальной генерации</h2>
 <p>Сервисы, которые создают файлы прямо в браузере, не отправляют ваши данные на сервер. Это снижает риски утечек и экономит время.</p>
 
-<p>templatus работает именно так: все документы формируются на вашем устройстве. <a href="/privacy.html">Подробнее в политике конфиденциальности</a>.</p>
+<p>templatus работает именно так: все документы формируются на вашем устройстве. <a href="/privacy">Подробнее в политике конфиденциальности</a>.</p>
 """
     },
     {
@@ -469,7 +469,7 @@ ARTICLES = [
   <li><strong>Личные качества.</strong> Аккуратность, пунктуальность, отсутствие аварий.</li>
 </ul>
 
-<p>Заполните <a href="/resume/driver.html">резюме водителя</a> по готовому шаблону.</p>
+<p>Заполните <a href="/resume/driver">резюме водителя</a> по готовому шаблону.</p>
 """
     },
     {
@@ -489,7 +489,7 @@ ARTICLES = [
   <li><strong>Личные качества.</strong> Внимательность, empathy, стрессоустойчивость.</li>
 </ul>
 
-<p>Используйте <a href="/resume/nurse.html">шаблон резюме медсестры</a> для быстрого заполнения.</p>
+<p>Используйте <a href="/resume/nurse">шаблон резюме медсестры</a> для быстрого заполнения.</p>
 """
     },
     {
@@ -509,7 +509,7 @@ ARTICLES = [
   <li><strong>Навыки.</strong> Закупка продуктов, соблюдение санитарных норм, работа с оборудованием.</li>
 </ul>
 
-<p>Составьте <a href="/resume/cook.html">резюме повара</a> в генераторе templatus.</p>
+<p>Составьте <a href="/resume/cook">резюме повара</a> в генераторе templatus.</p>
 """
     },
     {
@@ -528,7 +528,7 @@ ARTICLES = [
   <li><strong>График работы.</strong> Готовность к сменному графику, ночным сменам.</li>
 </ul>
 
-<p>Заполните <a href="/resume/cashier.html">резюме кассира</a> по шаблону и скачайте DOCX или PDF.</p>
+<p>Заполните <a href="/resume/cashier">резюме кассира</a> по шаблону и скачайте DOCX или PDF.</p>
 """
     },
     {
@@ -548,7 +548,7 @@ ARTICLES = [
   <li><strong>Личные качества.</strong> Внимательность, ответственность, бдительность.</li>
 </ul>
 
-<p>Создайте <a href="/resume/security.html">резюме охранника</a> в несколько кликов.</p>
+<p>Создайте <a href="/resume/security">резюме охранника</a> в несколько кликов.</p>
 """
     },
     {
@@ -567,7 +567,7 @@ ARTICLES = [
   <li><strong>Достижения.</strong> Автоматизация отчётности, снижение ошибок, прохождение проверок.</li>
 </ul>
 
-<p>Используйте <a href="/resume/accountant.html">шаблон резюме бухгалтера</a> для быстрого старта.</p>
+<p>Используйте <a href="/resume/accountant">шаблон резюме бухгалтера</a> для быстрого старта.</p>
 """
     },
 ]
@@ -579,7 +579,7 @@ def make_article_html(article):
     category = escape(article['category'])
     content = article['content']
     slug = article['slug']
-    url = f"https://templatus.ru/blog/{slug}.html"
+    url = f"https://templatus.ru/blog/{slug}"
     date = "2026-07-02"
 
     return f"""<!DOCTYPE html>
@@ -642,14 +642,14 @@ def make_article_html(article):
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a>
+      <div class="header-brand"><a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-badge" aria-label="Продукт kos-ko.ru"><img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark"><span class="kosko-label">продукт kos-ko.ru</span></a></div>
       <nav class="main-nav" aria-label="Главное меню">
         <a href="/resume/">Резюме</a>
         <a href="/documents/">Документы</a>
         <a href="/presentations/">Презентации</a>
         <a href="/blog/" class="active">Блог</a>
-        <a href="/about.html">О нас</a>
-        <a href="/contacts.html">Контакты</a>
+        <a href="/about">О нас</a>
+        <a href="/contacts">Контакты</a>
       </nav>
       <div class="header-actions">
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему"><span data-theme-icon>☾</span></button>
@@ -661,8 +661,8 @@ def make_article_html(article):
       <a href="/documents/">Документы</a>
       <a href="/presentations/">Презентации</a>
       <a href="/blog/">Блог</a>
-      <a href="/about.html">О нас</a>
-      <a href="/contacts.html">Контакты</a>
+      <a href="/about">О нас</a>
+      <a href="/contacts">Контакты</a>
     </div>
   </header>
 
@@ -705,18 +705,18 @@ def make_article_html(article):
         </div>
         <div class="footer-col">
           <h4>Проект</h4>
-          <a href="/about.html">О нас</a>
-          <a href="/contacts.html">Контакты</a>
-          <a href="/my-documents.html">Мои документы</a>
-          <a href="/reviews.html">Отзывы</a>
-          <a href="/privacy.html">Политика конфиденциальности</a>
+          <a href="/about">О нас</a>
+          <a href="/contacts">Контакты</a>
+          <a href="/my-documents">Мои документы</a>
+          <a href="/reviews">Отзывы</a>
+          <a href="/privacy">Политика конфиденциальности</a>
         </div>
         <div class="footer-col">
           <h4>Помощь</h4>
-          <a href="/blog/kak-sostavit-rezume.html">Как составить резюме</a>
+          <a href="/blog/kak-sostavit-rezume">Как составить резюме</a>
         </div>
       </div>
-      <div class="footer-bottom">© 2026 templatus.ru · Бесплатные шаблоны документов</div>
+      <div class="footer-bottom"><span>© 2026 templatus.ru · Бесплатные шаблоны документов</span><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-footer" aria-label="Разработано компанией kos-ko.ru"><span>Разработано компанией</span><img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark"></a></div>
     </div>
   </footer>
 
@@ -731,14 +731,24 @@ def make_article_html(article):
 """
 
 
+CATEGORY_SLUGS = {
+    'Резюме': 'resume',
+    'Карьера': 'career',
+    'Документы': 'documents',
+    'Презентации': 'presentations',
+    'Безопасность': 'security',
+    'Советы': 'tips',
+}
+
+
 def update_blog_index(articles):
     index_path = os.path.join(BLOG_DIR, 'index.html')
     cards = "\n".join([
-        f"""          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">{escape(a['category'])}</div>
+        f"""          <article class="card" data-category="{CATEGORY_SLUGS.get(a['category'], 'other')}">
+            <span class="card-category">{escape(a['category'])}</span>
             <h3>{escape(a['title'])}</h3>
             <p>{escape(a['description'])}</p>
-            <a href="{a['slug']}.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="{a['slug']}" class="btn btn-primary btn-sm">Читать</a>
           </article>"""
         for a in articles
     ])
@@ -746,17 +756,39 @@ def update_blog_index(articles):
     with open(index_path, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    new_grid = f"""<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    new_section = f"""<section class="section">
+      <div class="container">
+        <div class="template-toolbar" data-filter-target="#blog-grid">
+          <div class="shadcn-input-wrap">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="template-search" placeholder="Найти статью по названию..." aria-label="Поиск статей">
+          </div>
+          <p class="templates-empty hidden">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            По вашему запросу ничего не найдено. Попробуйте другие слова.
+          </p>
+        </div>
+
+        <div id="blog-grid" class="blog-grid">
 {cards}
-        </div>"""
+        </div>
+      </div>
+    </section>"""
 
     content = re.sub(
-        r'<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">.*?</div>',
-        new_grid,
+        r'<section class="section">\s*<div class="container">\s*<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">.*?</div>\s*</div>\s*</section>',
+        new_section,
         content,
         count=1,
         flags=re.DOTALL
     )
+
+    # Ensure blog index uses template filters for search
+    if 'template-filters.js' not in content:
+        content = content.replace(
+            '<script src="/assets/js/app.js"></script>',
+            '<script src="/assets/js/template-filters.js"></script>\n  <script src="/assets/js/app.js"></script>'
+        )
 
     with open(index_path, 'w', encoding='utf-8') as f:
         f.write(content)

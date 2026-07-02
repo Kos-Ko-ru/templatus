@@ -29,14 +29,14 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a>
+      <div class="header-brand"><a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-badge" aria-label="Продукт kos-ko.ru"><img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark"><span class="kosko-label">продукт kos-ko.ru</span></a></div>
       <nav class="main-nav" aria-label="Главное меню">
         <a href="/resume/">Резюме</a>
         <a href="/documents/">Документы</a>
         <a href="/presentations/">Презентации</a>
         <a href="/blog/" class="active">Блог</a>
-        <a href="/about.html">О нас</a>
-        <a href="/contacts.html">Контакты</a>
+        <a href="/about">О нас</a>
+        <a href="/contacts">Контакты</a>
       </nav>
       <div class="header-actions">
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему"><span data-theme-icon>☾</span></button>
@@ -48,8 +48,8 @@
       <a href="/documents/">Документы</a>
       <a href="/presentations/">Презентации</a>
       <a href="/blog/">Блог</a>
-      <a href="/about.html">О нас</a>
-      <a href="/contacts.html">Контакты</a>
+      <a href="/about">О нас</a>
+      <a href="/contacts">Контакты</a>
     </div>
   </header>
 
@@ -62,162 +62,167 @@
     </section>
     <section class="section">
       <div class="container">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
-            <h3>Как составить резюме, которое заметят HR</h3>
-            <p>10 практических советов по структуре, навыкам и оформлению резюме для любой профессии.</p>
-            <a href="kak-sostavit-rezume.html" class="btn btn-primary btn-sm">Читать</a>
-          </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+        <div class="template-toolbar" data-filter-target="#blog-grid">
+          <div class="shadcn-input-wrap">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="template-search" placeholder="Найти статью по названию..." aria-label="Поиск статей">
+          </div>
+          <p class="templates-empty hidden">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            По вашему запросу ничего не найдено. Попробуйте другие слова.
+          </p>
+        </div>
+
+        <div id="blog-grid" class="blog-grid">
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Как написать сопроводительное письмо к резюме: пример и шаблон</h3>
             <p>Пошаговая инструкция по составлению сопроводительного письма, которое увеличит шансы на собеседование.</p>
-            <a href="kak-napisat-soprovoditelnoye-pismo.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="kak-napisat-soprovoditelnoye-pismo" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Как составить резюме без опыта работы: советы студентам и выпускникам</h3>
             <p>Как показать потенциал работодателю, если пока нет трудового стажа. Примеры для резюме без опыта.</p>
-            <a href="rezume-bez-opyta-raboty.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="rezume-bez-opyta-raboty" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Топ-10 ошибок в резюме, которые отпугивают работодателей</h3>
             <p>Список самых распространённых ошибок в резюме и способы их исправить перед отправкой.</p>
-            <a href="top-oshibok-v-rezume.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="top-oshibok-v-rezume" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Карьера</div>
+          <article class="card" data-category="career">
+            <span class="card-category">Карьера</span>
             <h3>Как подготовиться к собеседованию: чек-лист кандидата</h3>
             <p>Чек-лист по подготовке к собеседованию: от изучения компании до ответов на сложные вопросы.</p>
-            <a href="podgotovka-k-sobesedovaniyu.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="podgotovka-k-sobesedovaniyu" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Документы</div>
+          <article class="card" data-category="documents">
+            <span class="card-category">Документы</span>
             <h3>Как составить договор аренды квартиры: важные пункты</h3>
             <p>На что обратить внимание при составлении договора аренды жилья и как защитить права арендодателя и арендатора.</p>
-            <a href="dogovor-arendy-kvartiry.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="dogovor-arendy-kvartiry" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Документы</div>
+          <article class="card" data-category="documents">
+            <span class="card-category">Документы</span>
             <h3>Как правильно написать заявление на отпуск</h3>
             <p>Правила оформления заявления на отпуск: образец текста, сроки подачи и ответственность работодателя.</p>
-            <a href="zayavleniye-otpusk.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="zayavleniye-otpusk" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Документы</div>
+          <article class="card" data-category="documents">
+            <span class="card-category">Документы</span>
             <h3>Как написать заявление на увольнение по собственному желанию</h3>
             <p>Образец заявления на увольнение, сроки отработки и советы по корректному расставанию с работодателем.</p>
-            <a href="zayavleniye-uvolnenie.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="zayavleniye-uvolnenie" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Документы</div>
+          <article class="card" data-category="documents">
+            <span class="card-category">Документы</span>
             <h3>Как составить расписку в получении денег: образец и правила</h3>
             <p>Как правильно написать расписку в получении денег, чтобы документ имел юридическую силу.</p>
-            <a href="raspiska-dengi.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="raspiska-dengi" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Документы</div>
+          <article class="card" data-category="documents">
+            <span class="card-category">Документы</span>
             <h3>Как оформить акт приёма-передачи имущества</h3>
             <p>Для чего нужен акт приёма-передачи и как его правильно заполнить. Образец документа.</p>
-            <a href="akt-priemki-imushchestva.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="akt-priemki-imushchestva" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Документы</div>
+          <article class="card" data-category="documents">
+            <span class="card-category">Документы</span>
             <h3>Как написать коммерческое предложение, которое откроют</h3>
             <p>Структура эффективного коммерческого предложения и советы по повышению конверсии.</p>
-            <a href="kommercheskoye-predlozheniye.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="kommercheskoye-predlozheniye" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Документы</div>
+          <article class="card" data-category="documents">
+            <span class="card-category">Документы</span>
             <h3>Как правильно оформить доверенность</h3>
             <p>Виды доверенностей, что нужно указать в документе и когда требуется нотариальное заверение.</p>
-            <a href="doverennost-oformleniye.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="doverennost-oformleniye" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Презентации</div>
+          <article class="card" data-category="presentations">
+            <span class="card-category">Презентации</span>
             <h3>Как составить презентацию для инвесторов: структура и советы</h3>
             <p>Как создать презентацию, которая убедит инвесторов: ключевые слайды и ошибки, которых стоит избегать.</p>
-            <a href="prezentatsiya-dlya-investorov.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="prezentatsiya-dlya-investorov" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Презентации</div>
+          <article class="card" data-category="presentations">
+            <span class="card-category">Презентации</span>
             <h3>Как сделать питч-дек стартапа, который запомнят</h3>
             <p>Пошаговая инструкция по созданию питч-дека: от идеи до финального слайда.</p>
-            <a href="pitch-dek-startapa.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="pitch-dek-startapa" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Презентации</div>
+          <article class="card" data-category="presentations">
+            <span class="card-category">Презентации</span>
             <h3>Как подготовить квартальный отчёт: структура и пример</h3>
             <p>Как оформить квартальный отчёт для руководства или инвесторов. Ключевые разделы и метрики.</p>
-            <a href="kvartalnyy-otchet.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="kvartalnyy-otchet" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Презентации</div>
+          <article class="card" data-category="presentations">
+            <span class="card-category">Презентации</span>
             <h3>Как составить бизнес-план: пошаговое руководство</h3>
             <p>Разделы бизнес-плана, которые должен содержать любой проект: от описания идеи до финансовой модели.</p>
-            <a href="biznes-plan.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="biznes-plan" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Презентации</div>
+          <article class="card" data-category="presentations">
+            <span class="card-category">Презентации</span>
             <h3>Как разработать маркетинговую стратегию: шаблон</h3>
             <p>Как создать маркетинговую стратегию: целевая аудитория, каналы продвижения, KPI и бюджет.</p>
-            <a href="marketingovaya-strategiya.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="marketingovaya-strategiya" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Безопасность</div>
+          <article class="card" data-category="security">
+            <span class="card-category">Безопасность</span>
             <h3>Как защитить личные данные при работе с документами онлайн</h3>
             <p>Советы по безопасности при создании документов в интернете: почему важна локальная обработка данных.</p>
-            <a href="zashchita-dannyh.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="zashchita-dannyh" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Советы</div>
+          <article class="card" data-category="tips">
+            <span class="card-category">Советы</span>
             <h3>Как выбрать формат файла: DOCX, PDF или PPTX</h3>
             <p>В чём разница между форматами DOCX, PDF и PPTX и когда какой использовать.</p>
-            <a href="docx-pdf-pptx.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="docx-pdf-pptx" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Советы</div>
+          <article class="card" data-category="tips">
+            <span class="card-category">Советы</span>
             <h3>Как автоматизировать создание повторяющихся документов</h3>
             <p>Как ускорить создание типовых документов с помощью шаблонов и генераторов.</p>
-            <a href="avtomatizaciya-dokumentov.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="avtomatizaciya-dokumentov" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Как составить резюме водителя: пример и советы</h3>
             <p>Что указать в резюме водителя: категории прав, стаж, опыт работы на разных автомобилях.</p>
-            <a href="rezume-voditelya.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="rezume-voditelya" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Как составить резюме медсестры: образец и ключевые навыки</h3>
             <p>Как оформить резюме медсестры, чтобы выделить опыт, образование и профессиональные навыки.</p>
-            <a href="rezume-medsestry.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="rezume-medsestry" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Как составить резюме повара: советы и пример</h3>
             <p>Как показать кулинарный опыт, специализацию и достижения в резюме повара.</p>
-            <a href="rezume-povara.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="rezume-povara" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Как составить резюме кассира: что важно указать</h3>
             <p>Как оформить резюме кассира, чтобы показать опыт работы с кассовым оборудованием и клиентами.</p>
-            <a href="rezume-kassira.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="rezume-kassira" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Как составить резюме охранника: пример и советы</h3>
             <p>Что указать в резюме охранника: лицензия, опыт, физическая подготовка и навыки работы с системами безопасности.</p>
-            <a href="rezume-ohrannika.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="rezume-ohrannika" class="btn btn-primary btn-sm">Читать</a>
           </article>
-          <article class="card">
-            <div style="color:var(--color-muted);font-size:.85rem;margin-bottom:.5rem">Резюме</div>
+          <article class="card" data-category="resume">
+            <span class="card-category">Резюме</span>
             <h3>Как составить резюме бухгалтера: навыки и достижения</h3>
             <p>Как оформить резюме бухгалтера, чтобы показать знание 1С, отчётности и опыт работы.</p>
-            <a href="rezume-buhgaltera.html" class="btn btn-primary btn-sm">Читать</a>
+            <a href="rezume-buhgaltera" class="btn btn-primary btn-sm">Читать</a>
           </article>
         </div>
       </div>
@@ -240,22 +245,23 @@
         </div>
         <div class="footer-col">
           <h4>Проект</h4>
-          <a href="/about.html">О нас</a>
-          <a href="/contacts.html">Контакты</a>
-          <a href="/my-documents.html">Мои документы</a>
-          <a href="/reviews.html">Отзывы</a>
-          <a href="/privacy.html">Политика конфиденциальности</a>
+          <a href="/about">О нас</a>
+          <a href="/contacts">Контакты</a>
+          <a href="/my-documents">Мои документы</a>
+          <a href="/reviews">Отзывы</a>
+          <a href="/privacy">Политика конфиденциальности</a>
         </div>
         <div class="footer-col">
           <h4>Помощь</h4>
-          <a href="/blog/kak-sostavit-rezume.html">Как составить резюме</a>
+          <a href="/blog/kak-sostavit-rezume">Как составить резюме</a>
         </div>
       </div>
-      <div class="footer-bottom">© 2026 templatus.ru · Бесплатные шаблоны документов</div>
+      <div class="footer-bottom"><span>© 2026 templatus.ru · Бесплатные шаблоны документов</span><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-footer" aria-label="Разработано компанией kos-ko.ru"><span>Разработано компанией</span><img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark"></a></div>
     </div>
   </footer>
 
   <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/template-filters.js"></script>
   <script src="/assets/js/app.js"></script>
 <!-- Yandex.RTB -->
 <script>window.yaContextCb = window.yaContextCb || [];</script>

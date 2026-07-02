@@ -182,7 +182,7 @@ function shareDraft(pageId, values) {
     return;
   }
   Storage.set(pageId, values);
-  const url = `${window.location.origin}/share.html#${hash}`;
+  const url = `${window.location.origin}/share#${hash}`;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(url).then(() => {
       alert('Ссылка скопирована в буфер обмена');

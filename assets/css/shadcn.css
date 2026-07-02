@@ -1,0 +1,408 @@
+/* =========================
+   shadcn/ui-inspired styles
+   ========================= */
+
+:root {
+  --shadcn-background: 0 0% 100%;
+  --shadcn-foreground: 222.2 84% 4.9%;
+  --shadcn-card: 0 0% 100%;
+  --shadcn-card-foreground: 222.2 84% 4.9%;
+  --shadcn-primary: 221.2 83.2% 53.3%;
+  --shadcn-primary-foreground: 210 40% 98%;
+  --shadcn-secondary: 210 40% 96.1%;
+  --shadcn-secondary-foreground: 222.2 47.4% 11.2%;
+  --shadcn-muted: 210 40% 96.1%;
+  --shadcn-muted-foreground: 215.4 16.3% 46.9%;
+  --shadcn-border: 214.3 31.8% 91.4%;
+  --shadcn-input: 214.3 31.8% 91.4%;
+  --shadcn-ring: 221.2 83.2% 53.3%;
+  --shadcn-radius: 0.5rem;
+}
+
+[data-theme="dark"] {
+  --shadcn-background: 222.2 84% 4.9%;
+  --shadcn-foreground: 210 40% 98%;
+  --shadcn-card: 222.2 84% 4.9%;
+  --shadcn-card-foreground: 210 40% 98%;
+  --shadcn-primary: 217.2 91.2% 59.8%;
+  --shadcn-primary-foreground: 222.2 47.4% 11.2%;
+  --shadcn-secondary: 217.2 32.6% 17.5%;
+  --shadcn-secondary-foreground: 210 40% 98%;
+  --shadcn-muted: 217.2 32.6% 17.5%;
+  --shadcn-muted-foreground: 215 20.2% 65.1%;
+  --shadcn-border: 217.2 32.6% 17.5%;
+  --shadcn-input: 217.2 32.6% 17.5%;
+  --shadcn-ring: 224.3 76.3% 48%;
+}
+
+/* Header brand badge */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.kosko-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid hsl(var(--shadcn-border));
+  border-radius: 999px;
+  background: hsl(var(--shadcn-card));
+  color: hsl(var(--shadcn-muted-foreground));
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kosko-badge:hover {
+  color: hsl(var(--shadcn-primary));
+  border-color: hsl(var(--shadcn-ring) / 0.5);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.kosko-badge img {
+  height: 18px;
+  width: auto;
+  display: block;
+}
+
+.kosko-logo-dark {
+  display: none;
+}
+
+[data-theme="dark"] .kosko-logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .kosko-logo-dark {
+  display: block;
+}
+
+/* Footer kos-ko branding */
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.kosko-footer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: hsl(var(--shadcn-muted-foreground));
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.kosko-footer:hover {
+  color: hsl(var(--shadcn-primary));
+  text-decoration: none;
+}
+
+.kosko-footer img {
+  height: 18px;
+  width: auto;
+  display: block;
+}
+
+.kosko-footer .kosko-logo-dark {
+  display: none;
+}
+
+[data-theme="dark"] .kosko-footer .kosko-logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .kosko-footer .kosko-logo-dark {
+  display: block;
+}
+
+/* shadcn-style input used for template search */
+.shadcn-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid hsl(var(--shadcn-input));
+  border-radius: var(--shadcn-radius);
+  background: hsl(var(--shadcn-background));
+  color: hsl(var(--shadcn-foreground));
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.shadcn-input-wrap:focus-within {
+  border-color: hsl(var(--shadcn-ring));
+  box-shadow: 0 0 0 3px hsl(var(--shadcn-ring) / 0.15);
+}
+
+.shadcn-input-wrap i {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: hsl(var(--shadcn-muted-foreground));
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.shadcn-input-wrap .template-search {
+  width: 100%;
+  padding: 0.65rem 0.9rem 0.65rem 2.4rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+/* Template grid: smaller, square cards */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .template-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .template-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+.template-grid .card {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  aspect-ratio: 1 / 1;
+}
+
+.template-grid .template-preview {
+  display: none;
+}
+
+.template-grid .card-icon {
+  width: 44px;
+  height: 44px;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.template-grid .card h3 {
+  font-size: 0.95rem;
+  line-height: 1.25;
+  margin-bottom: 0.35rem;
+}
+
+.template-grid .card p {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.template-grid .btn {
+  margin-top: auto;
+}
+
+/* Utility shadcn-like badge for filters (optional enhancement) */
+.shadcn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid hsl(var(--shadcn-border));
+  background: hsl(var(--shadcn-background));
+  color: hsl(var(--shadcn-muted-foreground));
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.shadcn-pill:hover {
+  border-color: hsl(var(--shadcn-ring) / 0.5);
+  color: hsl(var(--shadcn-primary));
+}
+
+.shadcn-pill.active {
+  background: hsl(var(--shadcn-primary));
+  color: hsl(var(--shadcn-primary-foreground));
+  border-color: hsl(var(--shadcn-primary));
+}
+
+/* Shadcn/ui-inspired header overrides */
+.site-header {
+  background: hsl(var(--shadcn-background) / 0.85);
+  border-bottom-color: hsl(var(--shadcn-border));
+}
+
+[data-theme="dark"] .site-header {
+  background: hsl(var(--shadcn-background) / 0.85);
+}
+
+.logo {
+  color: hsl(var(--shadcn-foreground));
+}
+
+.main-nav a {
+  color: hsl(var(--shadcn-muted-foreground));
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: hsl(var(--shadcn-foreground));
+  background: hsl(var(--shadcn-secondary));
+}
+
+.icon-btn {
+  background: hsl(var(--shadcn-secondary));
+  border-color: hsl(var(--shadcn-border));
+  color: hsl(var(--shadcn-foreground));
+}
+
+.icon-btn:hover {
+  background: hsl(var(--shadcn-muted));
+  border-color: hsl(var(--shadcn-border));
+}
+
+/* Smaller, denser square template cards */
+.template-grid {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .template-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .template-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+.template-grid .card {
+  padding: 0.875rem;
+  border-radius: var(--shadcn-radius);
+  background: hsl(var(--shadcn-card));
+  border-color: hsl(var(--shadcn-border));
+}
+
+.template-grid .card-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+.template-grid .card h3 {
+  font-size: 0.9rem;
+}
+
+.template-grid .card p {
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.template-grid .btn {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+/* Blog grid: compact square cards with search */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .blog-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .blog-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+.blog-grid .card {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  justify-content: space-between;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--shadcn-radius);
+  background: hsl(var(--shadcn-card));
+  border-color: hsl(var(--shadcn-border));
+}
+
+.blog-grid .card-category {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: hsl(var(--shadcn-secondary));
+  color: hsl(var(--shadcn-secondary-foreground));
+  margin-bottom: 0.5rem;
+}
+
+.blog-grid .card h3 {
+  font-size: 0.95rem;
+  line-height: 1.25;
+  margin-bottom: 0.35rem;
+}
+
+.blog-grid .card p {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-grid .btn {
+  margin-top: auto;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.8rem;
+}
+
+/* Ensure focus states use shadcn ring */
+.template-search:focus {
+  box-shadow: none;
+}

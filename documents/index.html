@@ -41,14 +41,14 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a>
+      <div class="header-brand"><a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> templa<span>us</span></a><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-badge" aria-label="Продукт kos-ko.ru"><img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark"><span class="kosko-label">продукт kos-ko.ru</span></a></div>
       <nav class="main-nav" aria-label="Главное меню">
         <a href="/resume/">Резюме</a>
         <a href="/documents/" class="active">Документы</a>
         <a href="/presentations/">Презентации</a>
         <a href="/blog/">Блог</a>
-        <a href="/about.html">О нас</a>
-        <a href="/contacts.html">Контакты</a>
+        <a href="/about">О нас</a>
+        <a href="/contacts">Контакты</a>
       </nav>
       <div class="header-actions">
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему"><span data-theme-icon>☾</span></button>
@@ -60,8 +60,8 @@
       <a href="/documents/">Документы</a>
       <a href="/presentations/">Презентации</a>
       <a href="/blog/">Блог</a>
-      <a href="/about.html">О нас</a>
-      <a href="/contacts.html">Контакты</a>
+      <a href="/about">О нас</a>
+      <a href="/contacts">Контакты</a>
     </div>
   </header>
 
@@ -80,7 +80,7 @@
     <section class="section">
       <div class="container">
         <div class="template-toolbar" data-filter-target="#documents-grid">
-          <div class="template-search-wrap">
+          <div class="shadcn-input-wrap">
             <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
             <input type="search" class="template-search" placeholder="Найти документ..." aria-label="Поиск шаблонов документов">
           </div>
@@ -96,8 +96,8 @@
           </p>
         </div>
 
-        <div id="documents-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <article class="card" data-category="legal">
+        <div id="documents-grid" class="template-grid">
+          <article class="card card-template" data-category="legal">
           <div class="template-preview">
             <div class="tp-document">
               <div class="tp-line highlight"></div>
@@ -111,9 +111,9 @@
           <div class="card-icon"><i class="ph ph-house" aria-hidden="true"></i></div>
             <h3>Договор аренды жилья</h3>
             <p>Арендодатель, арендатор, срок, сумма, залог и дополнительные условия.</p>
-            <a href="dogovor-arendy.html" class="btn btn-primary btn-sm">Создать договор</a>
+            <a href="dogovor-arendy" class="btn btn-primary btn-sm">Создать договор</a>
           </article>
-          <article class="card" data-category="hr">
+          <article class="card card-template" data-category="hr">
           <div class="template-preview">
             <div class="tp-document">
               <div class="tp-line highlight"></div>
@@ -127,9 +127,9 @@
           <div class="card-icon"><i class="ph ph-airplane" aria-hidden="true"></i></div>
             <h3>Заявление на отпуск</h3>
             <p>Готовое заявление по форме HR-отдела.</p>
-            <a href="zayavlenie-otpusk.html" class="btn btn-primary btn-sm">Создать заявление</a>
+            <a href="zayavlenie-otpusk" class="btn btn-primary btn-sm">Создать заявление</a>
           </article>
-          <article class="card" data-category="legal">
+          <article class="card card-template" data-category="legal">
           <div class="template-preview">
             <div class="tp-document">
               <div class="tp-line highlight"></div>
@@ -143,9 +143,9 @@
           <div class="card-icon"><i class="ph ph-signature" aria-hidden="true"></i></div>
             <h3>Доверенность</h3>
             <p>Универсальная доверенность на представление интересов.</p>
-            <a href="doverennost.html" class="btn btn-primary btn-sm">Создать доверенность</a>
+            <a href="doverennost" class="btn btn-primary btn-sm">Создать доверенность</a>
           </article>
-          <article class="card" data-category="sales">
+          <article class="card card-template" data-category="sales">
           <div class="template-preview">
             <div class="tp-document">
               <div class="tp-line highlight"></div>
@@ -159,9 +159,9 @@
           <div class="card-icon"><i class="ph ph-currency-rub" aria-hidden="true"></i></div>
             <h3>Коммерческое предложение</h3>
             <p>Структурированное КП для клиентов и партнёров.</p>
-            <a href="kommercheskoye-predlozheniye.html" class="btn btn-primary btn-sm">Создать КП</a>
+            <a href="kommercheskoye-predlozheniye" class="btn btn-primary btn-sm">Создать КП</a>
           </article>
-          <article class="card" data-category="hr">
+          <article class="card card-template" data-category="hr">
           <div class="template-preview">
             <div class="tp-document">
               <div class="tp-line highlight"></div>
@@ -175,9 +175,9 @@
           <div class="card-icon"><i class="ph ph-sign-out" aria-hidden="true"></i></div>
             <h3>Заявление на увольнение</h3>
             <p>Заявление по собственному желанию с указанием даты увольнения.</p>
-            <a href="zayavlenie-uvolnenie.html" class="btn btn-primary btn-sm">Создать заявление</a>
+            <a href="zayavlenie-uvolnenie" class="btn btn-primary btn-sm">Создать заявление</a>
           </article>
-          <article class="card" data-category="legal">
+          <article class="card card-template" data-category="legal">
           <div class="template-preview">
             <div class="tp-document">
               <div class="tp-line highlight"></div>
@@ -191,9 +191,9 @@
           <div class="card-icon"><i class="ph ph-money" aria-hidden="true"></i></div>
             <h3>Расписка в получении денег</h3>
             <p>Для займа, аванса или передачи денежных средств.</p>
-            <a href="raspiska-dengi.html" class="btn btn-primary btn-sm">Создать расписку</a>
+            <a href="raspiska-dengi" class="btn btn-primary btn-sm">Создать расписку</a>
           </article>
-          <article class="card" data-category="legal">
+          <article class="card card-template" data-category="legal">
           <div class="template-preview">
             <div class="tp-document">
               <div class="tp-line highlight"></div>
@@ -207,7 +207,7 @@
           <div class="card-icon"><i class="ph ph-handshake" aria-hidden="true"></i></div>
             <h3>Акт приёма-передачи</h3>
             <p>Передача имущества, техники или оборудования.</p>
-            <a href="akt-priemki.html" class="btn btn-primary btn-sm">Создать акт</a>
+            <a href="akt-priemki" class="btn btn-primary btn-sm">Создать акт</a>
           </article>
         </div>
       </div>
@@ -230,18 +230,18 @@
         </div>
         <div class="footer-col">
           <h4>Проект</h4>
-          <a href="/about.html">О нас</a>
-          <a href="/contacts.html">Контакты</a>
-          <a href="/my-documents.html">Мои документы</a>
-          <a href="/reviews.html">Отзывы</a>
-          <a href="/privacy.html">Политика конфиденциальности</a>
+          <a href="/about">О нас</a>
+          <a href="/contacts">Контакты</a>
+          <a href="/my-documents">Мои документы</a>
+          <a href="/reviews">Отзывы</a>
+          <a href="/privacy">Политика конфиденциальности</a>
         </div>
         <div class="footer-col">
           <h4>Помощь</h4>
-          <a href="/blog/kak-sostavit-rezume.html">Как составить резюме</a>
+          <a href="/blog/kak-sostavit-rezume">Как составить резюме</a>
         </div>
       </div>
-      <div class="footer-bottom">© 2026 templatus.ru · Бесплатные шаблоны документов</div>
+      <div class="footer-bottom"><span>© 2026 templatus.ru · Бесплатные шаблоны документов</span><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-footer" aria-label="Разработано компанией kos-ko.ru"><span>Разработано компанией</span><img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark"></a></div>
     </div>
   </footer>
 

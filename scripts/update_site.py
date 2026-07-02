@@ -12,10 +12,10 @@ LOGO_RE = re.compile(
 LOGO_REPL = (
     r'<div class="header-brand">\1\2\3'
     r'<a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" '
-    r'class="kosko-badge" aria-label="Продукт kos-ko.ru">'
-    r'<img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light">'
-    r'<img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark">'
-    r'<span class="kosko-label">продукт kos-ko.ru</span>'
+    r'class="kosko-badge" aria-label="Продукт Kos-Ko">'
+    r'<img src="/assets/images/kos-ko-logo.png" alt="Kos-Ko" class="kosko-logo-light">'
+    r'<img src="/assets/images/kos-ko-logo-dark.png" alt="Kos-Ko" class="kosko-logo-dark">'
+    r'<span class="kosko-label">продукт Kos-Ko</span>'
     r'</a></div>'
 )
 
@@ -23,10 +23,10 @@ FOOTER_RE = re.compile(r'(<div class="footer-bottom">)(.*?)(</div>)', re.S)
 FOOTER_REPL = (
     r'<div class="footer-bottom"><span>\2</span>'
     r'<a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" '
-    r'class="kosko-footer" aria-label="Разработано компанией kos-ko.ru">'
+    r'class="kosko-footer" aria-label="Разработано компанией Kos-Ko">'
     r'<span>Разработано компанией</span>'
-    r'<img src="/assets/images/kos-ko-logo.png" alt="kos-ko.ru" class="kosko-logo-light">'
-    r'<img src="/assets/images/kos-ko-logo-dark.png" alt="kos-ko.ru" class="kosko-logo-dark">'
+    r'<img src="/assets/images/kos-ko-logo.png" alt="Kos-Ko" class="kosko-logo-light">'
+    r'<img src="/assets/images/kos-ko-logo-dark.png" alt="Kos-Ko" class="kosko-logo-dark">'
     r'</a></div>'
 )
 

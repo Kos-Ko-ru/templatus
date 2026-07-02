@@ -1,8 +1,11 @@
+@layer base, shadcn;
+@import url('shadcn.css');
+
+
+@layer base {
 /* =========================
    templatus — современные стили
    ========================= */
-
-@import url('shadcn.css');
 
 :root {
   --color-primary: #2563eb;
@@ -466,6 +469,7 @@ a:hover {
   font-style: italic;
   color: var(--color-text);
 }
+
 
 .card figcaption {
   color: var(--color-muted);
@@ -1602,4 +1606,5 @@ select:focus-visible {
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-style: italic;
   color: var(--color-text);
+}
 }

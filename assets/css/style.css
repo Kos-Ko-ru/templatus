@@ -1,6 +1,13 @@
 @layer base, shadcn;
 @import url('shadcn.css');
 
+@font-face {
+  font-family: "Phosphor";
+  src: url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @layer base {
 /* =========================

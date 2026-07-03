@@ -179,8 +179,20 @@ a:hover {
 }
 
 .logo img {
-  height: 40px;
+  height: 52px;
   width: auto;
+  display: block;
+}
+
+.logo .logo-dark {
+  display: none;
+}
+
+[data-theme="dark"] .logo .logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .logo .logo-dark {
   display: block;
 }
 

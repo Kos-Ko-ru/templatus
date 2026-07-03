@@ -178,6 +178,12 @@ a:hover {
   font-size: 1.75rem;
 }
 
+.logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
 .main-nav {
   display: none;
 }

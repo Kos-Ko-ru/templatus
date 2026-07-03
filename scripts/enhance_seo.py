@@ -76,7 +76,7 @@ def organization_schema():
         '@type': 'Organization',
         'name': 'templatus',
         'url': f'{DOMAIN}/',
-        'logo': f'{DOMAIN}/assets/images/kos-ko-logo.png',
+        'logo': f'{DOMAIN}/assets/images/logo-with-name.png',
         'sameAs': ['https://kos-ko.ru'],
     }
 
@@ -142,8 +142,27 @@ def inject_jsonld(text: str, data: dict) -> str:
     return text.replace('</head>', script + '\n</head>')
 
 
+def update_branding(text: str) -> str:
+    favicon_old = '  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">'
+    favicon_new = '''  <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">'''
+    if favicon_old in text:
+        text = text.replace(favicon_old, favicon_new)
+    elif '<link rel="icon"' not in text and '<link rel="shortcut icon"' not in text:
+        text = text.replace('</head>', favicon_new + '\n</head>')
+    logo_old = '<a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> <span class="logo-text">Templatus</span></a>'
+    logo_new = '<a href="/" class="logo"><img src="/assets/images/logo-with-name.png" alt="templatus" width="160" height="80" loading="eager"></a>'
+    text = text.replace(logo_old, logo_new)
+    text = text.replace('https://templatus.ru/assets/images/favicon.svg', 'https://templatus.ru/assets/images/logo-with-name.png')
+    return text
+
+
 def process_file(path: Path):
     text = path.read_text(encoding='utf-8')
+    text = update_branding(text)
     title_m = re.search(r'<title>(.*?)</title>', text, re.S)
     if not title_m:
         return False

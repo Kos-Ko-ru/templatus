@@ -1,11 +1,6 @@
 {
-  "name": "templatus — бесплатные шаблоны документов",
+  "name": "templatus — бесплатные шаблоны резюме, документов и презентаций",
   "short_name": "templatus",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2563eb",
-  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/assets/images/icon-192.png",
@@ -19,5 +14,10 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "lang": "ru"
 }

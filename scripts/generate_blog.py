@@ -608,7 +608,7 @@ def make_article_html(article):
       "name": "templatus",
       "logo": {{
         "@type": "ImageObject",
-        "url": "https://templatus.ru/assets/images/favicon.svg"
+        "url": "https://templatus.ru/assets/images/logo-with-name.png"
       }}
     }},
     "datePublished": "{date}",
@@ -624,7 +624,11 @@ def make_article_html(article):
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+  <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function(m,e,t,r,i,k,a){{
@@ -642,7 +646,7 @@ def make_article_html(article):
 <body>
   <header class="site-header">
     <div class="container">
-      <div class="header-brand"><a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> <span class="logo-text">Templatus</span></a><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-badge" aria-label="Продукт Kos-Ko"><img src="/assets/images/kos-ko-logo.png" alt="Kos-Ko" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="Kos-Ko" class="kosko-logo-dark"><span class="kosko-label">продукт Kos-Ko</span></a></div>
+      <div class="header-brand"><a href="/" class="logo"><img src="/assets/images/logo-with-name.png" alt="templatus" width="160" height="80" loading="eager"></a><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-badge" aria-label="Продукт Kos-Ko"><img src="/assets/images/kos-ko-logo.png" alt="Kos-Ko" class="kosko-logo-light"><img src="/assets/images/kos-ko-logo-dark.png" alt="Kos-Ko" class="kosko-logo-dark"><span class="kosko-label">продукт Kos-Ko</span></a></div>
       <nav class="main-nav" aria-label="Главное меню">
         <a href="/resume/">Резюме</a>
         <a href="/documents/">Документы</a>

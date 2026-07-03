@@ -156,7 +156,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 68px;
+  height: 80px;
 }
 
 .logo {
@@ -179,9 +179,15 @@ a:hover {
 }
 
 .logo img {
-  height: 52px;
+  height: 64px;
   width: auto;
   display: block;
+}
+
+@media (max-width: 767px) {
+  .logo img {
+    height: 52px;
+  }
 }
 
 .logo .logo-dark {

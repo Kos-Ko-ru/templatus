@@ -154,7 +154,7 @@ def update_branding(text: str) -> str:
     elif '<link rel="icon"' not in text and '<link rel="shortcut icon"' not in text:
         text = text.replace('</head>', favicon_new + '\n</head>')
     logo_old = '<a href="/" class="logo"><i class="ph ph-files" aria-hidden="true"></i> <span class="logo-text">Templatus</span></a>'
-    logo_new = '<a href="/" class="logo"><img src="/assets/images/logo-with-name.png" alt="templatus" width="160" height="80" loading="eager" class="logo-light"><img src="/assets/images/logo-with-name-white.png" alt="" width="160" height="80" loading="eager" class="logo-dark" aria-hidden="true"></a>'
+    logo_new = '<a href="/" class="logo"><img src="/assets/images/logo-with-name-cropped.png" alt="templatus" width="774" height="172" loading="eager" class="logo-light"><img src="/assets/images/logo-with-name-white-cropped.png" alt="" width="774" height="172" loading="eager" class="logo-dark" aria-hidden="true"></a>'
     text = text.replace(logo_old, logo_new)
     text = text.replace('https://templatus.ru/assets/images/favicon.svg', 'https://templatus.ru/assets/images/logo-with-name.png')
     return text

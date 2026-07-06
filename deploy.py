@@ -112,19 +112,20 @@ def update_caddyfile(sftp_client) -> None:
         except IOError:
             content = ""
 
-        domain_block = f"""{DOMAIN} {{
+        domain_block = f"""{DOMAIN}, www.{DOMAIN} {{
     root * {REMOTE_BASE}
     file_server
     encode gzip zstd
     try_files {{path}} {{path}}/index.html {{path}}.html /index.html /404.html
 }}"""
 
-        http_block = f""":80 {{
-    root * {REMOTE_BASE}
-    file_server
-    encode gzip zstd
-    try_files {{path}} {{path}}/index.html {{path}}.html /index.html /404.html
+        http_redirect_block = f"""http://{DOMAIN}, http://www.{DOMAIN} {{
+    redir https://{DOMAIN}{{uri}} 301
 }}"""
+
+        http_default_block = """:80 {
+    respond "Not Found" 404
+}"""
 
         # Удаляем существующий блок домена, включая возможные артефакты
         escaped_domain = re.escape(DOMAIN)
@@ -133,12 +134,33 @@ def update_caddyfile(sftp_client) -> None:
             re.MULTILINE | re.DOTALL,
         )
         content = pattern.sub("", content)
+        # Удаляем блок с www.{DOMAIN}, если есть
+        www_pattern = re.compile(
+            rf"^www\.{escaped_domain}\s*\{{.*?^\}}\n?",
+            re.MULTILINE | re.DOTALL,
+        )
+        content = www_pattern.sub("", content)
+        # Удаляем HTTP redirect блок для домена
+        content = re.sub(
+            rf"^http://{escaped_domain}(?:,\s*http://www\.{escaped_domain})?\s*\{{.*?^\}}\n?",
+            "",
+            content,
+            flags=re.MULTILINE | re.DOTALL,
+        )
         # Удаляем старый HTTP catch-all блок, если есть
         content = re.sub(r"^:80\s*\{.*?^\}\n?", "", content, flags=re.MULTILINE | re.DOTALL)
         # Удаляем оставшиеся артефакты try_files, если они есть
         content = re.sub(r"\s*\{path\}\.html /404\.html\s*\}?\s*", "\n", content)
         content = re.sub(r"\n{3,}", "\n\n", content)
-        content = content.rstrip("\n") + "\n\n" + domain_block + "\n\n" + http_block
+        content = (
+            content.rstrip("\n")
+            + "\n\n"
+            + domain_block
+            + "\n\n"
+            + http_redirect_block
+            + "\n\n"
+            + http_default_block
+        )
 
         local_path.write_text(content, encoding="utf-8")
         sftp_client.put(str(local_path), REMOTE_CADDYFILE_PATH)

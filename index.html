@@ -126,7 +126,7 @@
   <noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"></noscript>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=7">
+  <link rel="stylesheet" href="/assets/css/style.css?v=8">
   <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
@@ -156,6 +156,7 @@
   <meta name="twitter:image" content="https://templatus.ru/assets/images/og-image.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"templatus","url":"https://templatus.ru/","logo":"https://templatus.ru/assets/images/logo-with-name.png","sameAs":["https://kos-ko.ru"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"templatus","url":"https://templatus.ru/","potentialAction":{"@type":"SearchAction","target":"https://templatus.ru/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "templatus — генератор резюме, документов и презентаций", "url": "https://templatus.ru/", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}}</script>
 </head>
 <body>
   <header class="site-header">
@@ -203,19 +204,42 @@
             <i class="ph ph-user" aria-hidden="true"></i>
             Создать резюме
           </a>
-          <a href="/documents/" class="btn btn-secondary btn-lg">
+          <a href="/documents/" class="btn btn-ghost">
             <i class="ph ph-file-text" aria-hidden="true"></i>
-            Создать документ
+            Документ
           </a>
-          <a href="/presentations/" class="btn btn-secondary btn-lg">
+          <a href="/presentations/" class="btn btn-ghost">
             <i class="ph ph-presentation" aria-hidden="true"></i>
-            Создать презентацию
+            Презентация
           </a>
         </div>
-        <div class="hero-badge">
+        <div class="hero-badge" data-counter-badge hidden>
           <i class="ph ph-check-circle" aria-hidden="true"></i>
           Уже создано <strong data-doc-counter>0</strong> документов
         </div>
+        <div class="hero-badge hero-badge-trust" data-trust-badge>
+          <i class="ph ph-shield-check" aria-hidden="true"></i>
+          Бесплатно · Без регистрации · Данные не покидают браузер
+        </div>
+      </div>
+    </section>
+
+    <section class="how-strip" aria-label="Как это работает">
+      <div class="container">
+        <ol class="how-steps">
+          <li>
+            <span class="how-num" aria-hidden="true">1</span>
+            <div class="how-text"><strong>Выберите шаблон</strong><span>50+ готовых форм</span></div>
+          </li>
+          <li>
+            <span class="how-num" aria-hidden="true">2</span>
+            <div class="how-text"><strong>Заполните форму</strong><span>данные сохраняются в браузере</span></div>
+          </li>
+          <li>
+            <span class="how-num" aria-hidden="true">3</span>
+            <div class="how-text"><strong>Скачайте файл</strong><span>DOCX, PDF или PPTX</span></div>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -242,64 +266,6 @@
             <p>Питч-деки, квартальные отчёты и бизнес-презентации в формате PPTX.</p>
             <a href="/presentations/" class="btn btn-primary btn-sm">Выбрать шаблон</a>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" style="background:var(--color-surface)">
-      <div class="container">
-        <h2 class="section-title text-center">Как это работает</h2>
-        <p class="section-subtitle text-center">4 простых шага от выбора шаблона до готового файла</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-          <div class="card">
-            <div class="card-icon"><i class="ph ph-selection" aria-hidden="true"></i></div>
-            <h3>1. Выберите шаблон</h3>
-            <p>Большая база готовых форм под любую задачу.</p>
-            <div class="step-visual" aria-hidden="true">
-              <div class="sv-card">
-                <div class="sv-icon"></div>
-                <div class="sv-lines">
-                  <div class="sv-line sv-line-short"></div>
-                  <div class="sv-line"></div>
-                </div>
-                <div class="sv-btn"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-icon"><i class="ph ph-pencil-simple" aria-hidden="true"></i></div>
-            <h3>2. Заполните форму</h3>
-            <p>Отвечайте на простые вопросы, данные автоматически сохраняются.</p>
-            <div class="step-visual" aria-hidden="true">
-              <div class="sv-input"></div>
-              <div class="sv-input"></div>
-              <div class="sv-input sv-input-half"></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-icon"><i class="ph ph-eye" aria-hidden="true"></i></div>
-            <h3>3. Смотрите превью</h3>
-            <p>Готовый документ отображается рядом с формой в реальном времени.</p>
-            <div class="step-visual" aria-hidden="true">
-              <div class="sv-paper">
-                <div class="sv-line"></div>
-                <div class="sv-line"></div>
-                <div class="sv-line sv-line-short"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-icon"><i class="ph ph-download-simple" aria-hidden="true"></i></div>
-            <h3>4. Скачайте файл</h3>
-            <p>DOCX, PDF или PPTX — на ваш выбор.</p>
-            <div class="step-visual" aria-hidden="true">
-              <div class="sv-file">
-                <div class="sv-file-icon"><i class="ph ph-file-doc"></i></div>
-                <div class="sv-file-name">document.docx</div>
-              </div>
-              <div class="sv-download-btn">Скачать</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -379,7 +345,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h4>templatus</h4>
+          <p class="footer-brand">templatus</p>
           <p>Бесплатные шаблоны документов, резюме и презентаций. Без регистрации, в браузере.</p>
         </div>
         <div class="footer-col">
@@ -406,11 +372,11 @@
     </div>
   </footer>
 
-  <script src="/assets/js/storage.js?v=7" defer></script>
-  <script src="/assets/js/app.js?v=7" defer></script>
+  <script src="/assets/js/storage.js?v=8" defer></script>
+  <script src="/assets/js/app.js?v=8" defer></script>
 <!-- Yandex.RTB -->
 <script>window.yaContextCb = window.yaContextCb || [];</script>
 <script src="https://yandex.ru/ads/system/context.js" async></script>
-<script src="/assets/js/ads.js?v=7" defer></script>
+<script src="/assets/js/ads.js?v=8" defer></script>
 </body>
 </html>

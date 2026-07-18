@@ -75,11 +75,24 @@ function animateValue(el, start, end, duration) {
   requestAnimationFrame(step);
 }
 
+function toggleCounterBadges(count) {
+  const showCounter = count > 0;
+  document.querySelectorAll("[data-counter-badge]").forEach((b) => {
+    b.hidden = !showCounter;
+  });
+  document.querySelectorAll("[data-trust-badge]").forEach((b) => {
+    b.hidden = showCounter;
+  });
+}
+
 function updateCounter() {
   const els = document.querySelectorAll("[data-doc-counter]");
-  if (!els.length) return;
   const stats = Storage.getStats();
-  els.forEach((el) => animateValue(el, 0, stats.generated, 1500));
+  toggleCounterBadges(stats.generated);
+  if (!els.length) return;
+  if (stats.generated > 0) {
+    els.forEach((el) => animateValue(el, 0, stats.generated, 1500));
+  }
 }
 
 function bumpCounter() {
@@ -87,6 +100,7 @@ function bumpCounter() {
   document.querySelectorAll("[data-doc-counter]").forEach((el) => {
     el.textContent = value.toLocaleString("ru-RU");
   });
+  toggleCounterBadges(value);
   return value;
 }
 

@@ -132,6 +132,7 @@
   let selectedSlot = null;
   let guides = true;
   let lastScale = 1;           // текущий масштаб холста (px на мм)
+  let suppressClick = false;   // подавить click после перетаскивания
   const media = [];          // {id, dataURL, w, h, name}
 
   const $ = (s, r = document) => r.querySelector(s);
@@ -305,6 +306,7 @@
         t.style.lineHeight = "1.25";
         t.addEventListener("input", () => { slot.text = t.innerHTML; save(); });
         t.addEventListener("mousedown", (e) => {
+          if (e.altKey) { e.stopPropagation(); startSlotDrag(e, "move", slot); return; }
           // выделяем слот, но не перерисовываем холст — иначе потеряем каретку ввода
           e.stopPropagation();
           if (selectedSlot !== i) {
@@ -326,7 +328,7 @@
   function updateHandles() {
     const el = $("#pbSpread");
     if (!el) return;
-    $$(".pb-movebar, .pb-resize", el).forEach((h) => h.remove());
+  $$(".pb-movebar, .pb-resize, .pb-delhandle", el).forEach((h) => h.remove());
     $$(".pb-slot", el).forEach((d) => d.classList.remove("selected"));
     if (selectedSlot == null) return;
     const div = $(`.pb-slot[data-slot-index="${selectedSlot}"]`, el);
@@ -336,10 +338,23 @@
 
     const bar = document.createElement("div");
     bar.className = "pb-movebar";
-    bar.title = "Перетащите, чтобы переместить элемент";
-    bar.textContent = "⠿";
+    bar.title = "Перетащите, чтобы переместить элемент (или Alt + перетаскивание)";
+    bar.textContent = "⠿ переместить";
     bar.addEventListener("mousedown", (e) => startSlotDrag(e, "move", slot));
     div.appendChild(bar);
+
+    const del = document.createElement("div");
+    del.className = "pb-delhandle";
+    del.title = "Удалить элемент";
+    del.textContent = "✕";
+    del.addEventListener("mousedown", (e) => e.stopPropagation());
+    del.addEventListener("click", (e) => {
+      e.stopPropagation();
+      state.spreads[current].slots.splice(selectedSlot, 1);
+      selectedSlot = null;
+      renderApp(); save();
+    });
+    div.appendChild(del);
 
     const rh = document.createElement("div");
     rh.className = "pb-resize";
@@ -373,7 +388,7 @@
     const onUp = () => {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);
-      if (moved) { renderSide(); save(); }
+      if (moved) { suppressClick = true; renderSide(); save(); }
     };
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
@@ -392,6 +407,7 @@
     let dragging = false, sx = 0, sy = 0, c0 = null;
 
     div.addEventListener("click", () => {
+      if (suppressClick) { suppressClick = false; return; }
       if (!slot.img) pickFile((mi) => { slot.img = mi.id; renderCanvas(); save(); });
     });
 
@@ -405,7 +421,8 @@
 
     div.addEventListener("mousedown", (e) => {
       const mi = mediaOf(slot);
-      if (!mi) return;
+      // Alt + перетаскивание — перемещение рамки; пустая рамка тоже перетаскивается
+      if (e.altKey || !mi) { startSlotDrag(e, "move", slot); return; }
       dragging = true; sx = e.clientX; sy = e.clientY; c0 = { ...slot.crop };
       e.preventDefault();
     });
@@ -1223,9 +1240,11 @@
         renderCanvas(); save();
         return;
       }
-      if (e.key === "Delete" && !editing && selectedSlot != null) {
-        const sp = state.spreads[current];
-        if (sp.slots[selectedSlot].type === "image") { sp.slots[selectedSlot].img = null; renderApp(); save(); }
+      if ((e.key === "Delete" || e.key === "Backspace") && !editing && selectedSlot != null) {
+        e.preventDefault();
+        state.spreads[current].slots.splice(selectedSlot, 1);
+        selectedSlot = null;
+        renderApp(); save();
       }
       if (e.key === "Escape") { selectedSlot = null; renderCanvas(); renderSide(); }
     });

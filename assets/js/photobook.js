@@ -328,7 +328,7 @@
   function updateHandles() {
     const el = $("#pbSpread");
     if (!el) return;
-  $$(".pb-movebar, .pb-resize, .pb-delhandle", el).forEach((h) => h.remove());
+    $$(".pb-movebar, .pb-resize, .pb-delhandle", el).forEach((h) => h.remove());
     $$(".pb-slot", el).forEach((d) => d.classList.remove("selected"));
     if (selectedSlot == null) return;
     const div = $(`.pb-slot[data-slot-index="${selectedSlot}"]`, el);
@@ -336,17 +336,24 @@
     if (!div || !slot) return;
     div.classList.add("selected");
 
+    const s = lastScale;
+    // ручки живут на уровне холста, чтобы не обрезались overflow:hidden у слота
     const bar = document.createElement("div");
     bar.className = "pb-movebar";
     bar.title = "Перетащите, чтобы переместить элемент (или Alt + перетаскивание)";
     bar.textContent = "⠿ переместить";
+    bar.style.left = Math.max(0, slot.x * s) + "px";
+    bar.style.top = Math.max(0, slot.y * s - 20) + "px";
     bar.addEventListener("mousedown", (e) => startSlotDrag(e, "move", slot));
-    div.appendChild(bar);
+    el.appendChild(bar);
 
     const del = document.createElement("div");
     del.className = "pb-delhandle";
     del.title = "Удалить элемент";
     del.textContent = "✕";
+    del.style.right = "auto";
+    del.style.left = (slot.x * s + slot.w * s - 40) + "px";
+    del.style.top = Math.max(0, slot.y * s - 20) + "px";
     del.addEventListener("mousedown", (e) => e.stopPropagation());
     del.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -354,13 +361,15 @@
       selectedSlot = null;
       renderApp(); save();
     });
-    div.appendChild(del);
+    el.appendChild(del);
 
     const rh = document.createElement("div");
     rh.className = "pb-resize";
     rh.title = "Изменить размер";
+    rh.style.left = ((slot.x + slot.w) * s - 7) + "px";
+    rh.style.top = ((slot.y + slot.h) * s - 7) + "px";
     rh.addEventListener("mousedown", (e) => startSlotDrag(e, "resize", slot));
-    div.appendChild(rh);
+    el.appendChild(rh);
   }
 
   /* ---------- Перемещение и ресайз слота (мм) ---------- */

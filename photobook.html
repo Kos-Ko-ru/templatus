@@ -176,6 +176,25 @@
     </div>
   </div>
 
+  <!-- ================= МОДАЛКА РАСКЛАДКИ ФОТО ================= -->
+  <div class="pb-modal-backdrop" id="pbFillModal">
+    <div class="pb-modal">
+      <h3>Разложить фото по книге</h3>
+      <p style="font-size:.85rem;color:var(--color-muted)">
+        Выберите фотографии (порядок = нумерация) и развороты, на которых они должны появиться.
+        Фото встанут в свободные рамки по порядку.
+      </p>
+      <h4 style="font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);margin:16px 0 8px">Фотографии</h4>
+      <div id="pbFillPhotos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;max-height:220px;overflow-y:auto"></div>
+      <h4 style="font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);margin:16px 0 8px">Развороты</h4>
+      <div id="pbFillPages" style="max-height:160px;overflow-y:auto"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+        <button class="btn" data-close-modal>Отмена</button>
+        <button class="btn btn-primary" id="pbRunFill">Разложить</button>
+      </div>
+    </div>
+  </div>
+
   <footer class="site-footer">
     <div class="container">
       <p>© 2026 templatus — бесплатные шаблоны и конструкторы.</p>

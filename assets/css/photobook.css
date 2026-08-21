@@ -599,6 +599,69 @@
   transition: width .2s ease;
 }
 
+/* Ручки перемещения/ресайза выбранного слота */
+.pb-movebar {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  height: 16px;
+  padding: 0 8px;
+  border-radius: 6px 6px 0 0;
+  background: var(--pb-accent);
+  color: #fff;
+  font-size: 11px;
+  line-height: 16px;
+  cursor: move;
+  user-select: none;
+  z-index: 6;
+}
+
+.pb-resize {
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--pb-accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / .3);
+  cursor: nwse-resize;
+  z-index: 6;
+}
+
+/* Фото в модалке раскладки */
+.pb-fill-photo {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid var(--pb-border);
+  display: block;
+}
+
+.pb-fill-photo img {
+  width: 100%;
+  height: 64px;
+  object-fit: cover;
+  display: block;
+  opacity: .35;
+}
+
+.pb-fill-photo[data-on="1"] { border-color: var(--pb-accent); }
+.pb-fill-photo[data-on="1"] img { opacity: 1; }
+
+.pb-fill-ord {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  background: rgb(0 0 0 / .6);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+
 @media (max-width: 900px) {
   .pb-side { display: none; }
   .pb-workspace { padding: 12px; }

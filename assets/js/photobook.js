@@ -131,6 +131,7 @@
   let zoom = 0;              // px на мм (0 = fit)
   let selectedSlot = null;
   let guides = true;
+  let lastScale = 1;           // текущий масштаб холста (px на мм)
   const media = [];          // {id, dataURL, w, h, name}
 
   const $ = (s, r = document) => r.querySelector(s);
@@ -224,6 +225,7 @@
     const el = $("#pbSpread");
     el.style.width = (f.pageW * 2 * s) + "px";
     el.style.height = (f.pageH * s) + "px";
+    lastScale = s;
     el.style.background = sp.bg || state.customBg || palette().background;
     el.classList.toggle("pb-guides", guides);
     el.innerHTML = "";
@@ -294,19 +296,90 @@
         div.style.textAlign = slot.align;
         div.style.letterSpacing = slot.spacing + "em";
         div.style.textTransform = slot.uppercase ? "uppercase" : "none";
+        div.style.fontWeight = slot.bold ? "600" : "400";
+        div.style.fontStyle = slot.italic ? "italic" : "normal";
         const t = document.createElement("div");
         t.className = "pb-text-inner";
         t.contentEditable = "true";
         t.innerHTML = slot.text;
         t.style.lineHeight = "1.25";
         t.addEventListener("input", () => { slot.text = t.innerHTML; save(); });
-        t.addEventListener("mousedown", (e) => e.stopPropagation());
+        t.addEventListener("mousedown", (e) => {
+          // выделяем слот, но не перерисовываем холст — иначе потеряем каретку ввода
+          e.stopPropagation();
+          if (selectedSlot !== i) {
+            selectedSlot = i;
+            renderSide();
+            updateHandles();
+          }
+        });
         div.appendChild(t);
       }
       div.addEventListener("mousedown", () => selectSlot(i));
       el.appendChild(div);
     });
+
+    updateHandles();
   }
+
+  /* ---------- Ручки перемещения/ресайза выбранного слота ---------- */
+  function updateHandles() {
+    const el = $("#pbSpread");
+    if (!el) return;
+    $$(".pb-movebar, .pb-resize", el).forEach((h) => h.remove());
+    $$(".pb-slot", el).forEach((d) => d.classList.remove("selected"));
+    if (selectedSlot == null) return;
+    const div = $(`.pb-slot[data-slot-index="${selectedSlot}"]`, el);
+    const slot = state.spreads[current].slots[selectedSlot];
+    if (!div || !slot) return;
+    div.classList.add("selected");
+
+    const bar = document.createElement("div");
+    bar.className = "pb-movebar";
+    bar.title = "Перетащите, чтобы переместить элемент";
+    bar.textContent = "⠿";
+    bar.addEventListener("mousedown", (e) => startSlotDrag(e, "move", slot));
+    div.appendChild(bar);
+
+    const rh = document.createElement("div");
+    rh.className = "pb-resize";
+    rh.title = "Изменить размер";
+    rh.addEventListener("mousedown", (e) => startSlotDrag(e, "resize", slot));
+    div.appendChild(rh);
+  }
+
+  /* ---------- Перемещение и ресайз слота (мм) ---------- */
+  function startSlotDrag(e, mode, slot) {
+    e.preventDefault();
+    e.stopPropagation();
+    const f = fmt();
+    const sx = e.clientX, sy = e.clientY;
+    const o = { x: slot.x, y: slot.y, w: slot.w, h: slot.h };
+    let moved = false;
+
+    const onMove = (ev) => {
+      const dx = (ev.clientX - sx) / lastScale;
+      const dy = (ev.clientY - sy) / lastScale;
+      moved = true;
+      if (mode === "move") {
+        slot.x = Math.round(clampNum(o.x + dx, -f.bleed, f.pageW * 2 - 10));
+        slot.y = Math.round(clampNum(o.y + dy, -f.bleed, f.pageH - 10));
+      } else {
+        slot.w = Math.round(clampNum(o.w + dx, 10, f.pageW * 2 - o.x));
+        slot.h = Math.round(clampNum(o.h + dy, 8, f.pageH - o.y));
+      }
+      renderCanvas();
+    };
+    const onUp = () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      if (moved) { renderSide(); save(); }
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  }
+
+  const clampNum = (v, a, b) => Math.min(b, Math.max(a, isFinite(v) ? v : a));
 
   function selectSlot(i) {
     selectedSlot = i;
@@ -472,6 +545,28 @@
 
     side.innerHTML = `
       <div class="pb-section">
+        <h4>Элементы страницы</h4>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn" id="pbAddFrame"><i class="ph ph-image"></i> Рамка</button>
+          <button class="btn" id="pbAddText"><i class="ph ph-text-aa"></i> Текст</button>
+          <button class="btn" id="pbFillBook" title="Разложить фото из галереи по страницам"><i class="ph ph-stack"></i> Разложить фото</button>
+        </div>
+        ${sel ? `
+        <h4 style="margin-top:16px">Геометрия (мм)</h4>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-items:center">
+          ${["x","y","w","h"].map(k => `
+            <label style="font-size:.7rem;color:var(--color-muted);text-align:center">${k.toUpperCase()}
+              <input type="number" data-geo="${k}" value="${Math.round(sel[k])}" min="1" step="1"
+                style="width:100%;padding:5px 4px;border:1px solid var(--pb-border);border-radius:6px;background:var(--color-bg);color:var(--color-text);font:inherit;font-size:.8rem">
+            </label>`).join("")}
+        </div>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn" data-slotact="dup" title="Дублировать элемент"><i class="ph ph-copy"></i></button>
+          <button class="btn" data-slotact="del" title="Удалить элемент"><i class="ph ph-trash"></i></button>
+        </div>` : `<p style="font-size:.8rem;color:var(--color-muted);margin-top:10px">Кликните по элементу на холсте, чтобы настроить его положение и размер. Рамку можно перетаскивать за верхнюю полоску ⠿ и растягивать за уголок.</p>`}
+      </div>
+
+      <div class="pb-section">
         <h4>Сетка страницы</h4>
         <div class="pb-layout-grid">
           ${Object.entries(layouts).map(([k, L]) =>
@@ -533,6 +628,8 @@
           <button class="btn" data-knob="align" data-v="center" title="По центру"><i class="ph ph-text-align-center"></i></button>
           <button class="btn" data-knob="align" data-v="right" title="По правому краю"><i class="ph ph-text-align-right"></i></button>
           <button class="btn" data-knob="uppercase" title="ВЕРХНИЙ РЕГИСТР">AA</button>
+          <button class="btn" data-knob="bold" title="Полужирный" style="font-weight:700">Ж</button>
+          <button class="btn" data-knob="italic" title="Курсив" style="font-style:italic">К</button>
         </div>
         <div class="pb-slider-row"><span>Кегль</span><input type="range" min="6" max="60" step="1" value="${sel.size}" data-knob="size"></div>
         <div class="pb-slider-row"><span>Трекинг</span><input type="range" min="-0.05" max="0.3" step="0.01" value="${sel.spacing}" data-knob="spacing"></div>
@@ -541,6 +638,39 @@
     `;
 
     // --- события панели ---
+
+    // Добавление элементов
+    $("#pbAddFrame")?.addEventListener("click", () => addSlot("image"));
+    $("#pbAddText")?.addEventListener("click", () => addSlot("text"));
+    $("#pbFillBook")?.addEventListener("click", openFillModal);
+
+    // Геометрия выбранного слота
+    $$("[data-geo]", side).forEach(inp => inp.addEventListener("input", () => {
+      const s = sp.slots[selectedSlot];
+      if (!s) return;
+      const v = Math.max(+inp.min || 1, Math.round(+inp.value || 0));
+      s[inp.dataset.geo] = v;
+      renderCanvas(); save();
+    }));
+
+    // Дублировать / удалить слот
+    $$("[data-slotact]", side).forEach(b => b.addEventListener("click", () => {
+      const idx = selectedSlot;
+      if (idx == null) return;
+      if (b.dataset.slotact === "dup") {
+        const copy = JSON.parse(JSON.stringify(sp.slots[idx]));
+        copy.slotId += "_c" + Date.now() % 1000;
+        copy.x = Math.min(copy.x + 8, fmt().pageW * 2 - copy.w);
+        copy.y = Math.min(copy.y + 8, fmt().pageH - copy.h);
+        sp.slots.splice(idx + 1, 0, copy);
+        selectedSlot = idx + 1;
+      } else {
+        sp.slots.splice(idx, 1);
+        selectedSlot = null;
+      }
+      renderApp(); save();
+    }));
+
     $$("[data-layout]", side).forEach(b => b.addEventListener("click", () => {
       const keep = {};
       sp.slots.forEach((s, i) => { if (s.img) keep[s.type + (i % 3)] = s.img; });
@@ -621,6 +751,12 @@
       $$("[data-knob='uppercase']", tp).forEach(b => b.addEventListener("click", () => {
         s.uppercase = !s.uppercase; renderApp(); save();
       }));
+      $$("[data-knob='bold']", tp).forEach(b => b.addEventListener("click", () => {
+        s.bold = !s.bold; renderApp(); save();
+      }));
+      $$("[data-knob='italic']", tp).forEach(b => b.addEventListener("click", () => {
+        s.italic = !s.italic; renderApp(); save();
+      }));
     }
   }
 
@@ -629,6 +765,80 @@
     if (!mi) return "—";
     const d = slotDpi(slot, mi);
     return d < DPI_MIN ? `${d} ⚠` : String(d);
+  }
+
+  /* ---------- Добавление элементов ---------- */
+  function addSlot(type) {
+    const f = fmt();
+    const sp = state.spreads[current];
+    const theme = THEMES.find(t => t.id === state.themeId) || THEMES[0];
+    const n = sp.slots.length;
+    const w = Math.round(f.pageW * 0.38);
+    const h = type === "image" ? Math.round(w * 0.75) : 18;
+    const base = {
+      slotId: type + "_" + Date.now() % 100000,
+      type,
+      x: Math.round(f.pageW / 2 - w / 2 + (n % 5) * 8 - 16),
+      y: Math.round((f.pageH - h) / 2 + (n % 3) * 10 - 10),
+      w, h,
+    };
+    if (type === "image") {
+      Object.assign(base, { img: null, crop: { zoom: 1, ox: 0.5, oy: 0.5, rot: 0 } });
+    } else {
+      Object.assign(base, {
+        text: "Ваш текст", size: 18, font: theme.fonts[0],
+        align: "center", spacing: 0, uppercase: false, bold: false, italic: false, color: null,
+      });
+    }
+    sp.slots.push(base);
+    selectedSlot = sp.slots.length - 1;
+    renderApp(); save();
+  }
+
+  /* ---------- Пакетная автораскладка фото ---------- */
+  function openFillModal() {
+    const modal = $("#pbFillModal");
+    if (!media.length) { alert("Сначала загрузите фотографии в медиагалерею проекта."); return; }
+    $("#pbFillPhotos").innerHTML = media.map((m, i) => `
+      <label class="pb-fill-photo" data-on="1">
+        <input type="checkbox" checked data-photo="${m.id}" hidden>
+        <img src="${m.dataURL}" title="${m.name}">
+        <span class="pb-fill-ord">${i + 1}</span>
+      </label>`).join("");
+    $("#pbFillPages").innerHTML = state.spreads.map((sp, i) => `
+      <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;padding:4px 0">
+        <input type="checkbox" checked data-spread="${i}">
+        Разворот ${i + 1} — ${layoutsFor(fmt())[sp.layout]?.name || sp.layout}
+      </label>`).join("");
+    openModal(modal);
+    // синхронизация визуального состояния чекбоксов
+    $$("#pbFillPhotos .pb-fill-photo").forEach((label) => {
+      const cb = label.querySelector("input");
+      const sync = () => (label.dataset.on = cb.checked ? "1" : "0");
+      cb.addEventListener("change", sync);
+      sync();
+    });
+  }
+
+  function runFill() {
+    const photoIds = $$("#pbFillPhotos input:checked").map(i => i.dataset.photo);
+    const spreadIdx = $$("#pbFillPages input:checked").map(i => +i.dataset.spread);
+    if (!photoIds.length || !spreadIdx.length) { alert("Выберите хотя бы одно фото и один разворот."); return; }
+    let pi = 0, placed = 0;
+    spreadIdx.sort((a, b) => a - b).forEach((si) => {
+      state.spreads[si].slots.forEach((slot) => {
+        if (slot.type === "image" && !slot.img && pi < photoIds.length) {
+          slot.img = photoIds[pi++];
+          placed++;
+        }
+      });
+    });
+    closeModal($("#pbFillModal"));
+    renderApp(); save();
+    showToast(placed
+      ? `Разложено ${placed} фото по ${spreadIdx.length} разворотам.` +
+        (pi < photoIds.length ? ` Не поместились: ${photoIds.length - pi}.` : "")
+      : "Свободных фото-рамок на выбранных разворотах нет.");
   }
 
   /* ---------- Медиа: загрузка, HEIC-конвертация ---------- */
@@ -732,7 +942,7 @@
           ctx.rect(x, y, slot.w, slot.h);
           ctx.clip();
           ctx.fillStyle = slot.color || palette().text;
-          ctx.font = `${slot.size}pt ${fontCss(slot.font)}`;
+          ctx.font = `${slot.italic ? "italic " : ""}${slot.bold ? 600 : 400} ${slot.size}pt ${fontCss(slot.font)}`;
           ctx.textAlign = slot.align === "center" ? "center" : slot.align === "right" ? "right" : "left";
           ctx.textBaseline = "top";
           try { ctx.letterSpacing = slot.spacing + "em"; } catch {}
@@ -996,10 +1206,24 @@
       if (v) runExport(v.value);
     });
     $$("[data-close-modal]").forEach(b => b.addEventListener("click", () => closeModal(b.closest(".pb-modal-backdrop"))));
+    $("#pbRunFill")?.addEventListener("click", runFill);
     window.addEventListener("resize", () => { if (zoom === 0) renderCanvas(); });
     window.addEventListener("keydown", (e) => {
       if (!$("#pbApp").classList.contains("active")) return;
-      if (e.key === "Delete" && selectedSlot != null) {
+      const tgt = e.target;
+      const editing = tgt && (tgt.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(tgt.tagName));
+      if (!editing && e.key.startsWith("Arrow") && selectedSlot != null) {
+        e.preventDefault();
+        const s = state.spreads[current].slots[selectedSlot];
+        const step = e.shiftKey ? 10 : 1;
+        if (e.key === "ArrowUp") s.y -= step;
+        if (e.key === "ArrowDown") s.y += step;
+        if (e.key === "ArrowLeft") s.x -= step;
+        if (e.key === "ArrowRight") s.x += step;
+        renderCanvas(); save();
+        return;
+      }
+      if (e.key === "Delete" && !editing && selectedSlot != null) {
         const sp = state.spreads[current];
         if (sp.slots[selectedSlot].type === "image") { sp.slots[selectedSlot].img = null; renderApp(); save(); }
       }

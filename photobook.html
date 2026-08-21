@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Конструктор фотокниг — создайте фотокнигу онлайн бесплатно | templatus</title>
+  <meta name="description" content="Интерактивный конструктор фотокниг: готовые шаблоны (свадьба, семья, путешествия, портфолио, выпускной), smart crop, смена палитр в 1 клик, экспорт в печать 300 DPI с вылетами под обрез. Бесплатно и без регистрации.">
+  <meta name="keywords" content="конструктор фотокниг, фотокнига онлайн, шаблоны фотокниг, печать фотокниг, layflat, 300 dpi">
+  <link rel="canonical" href="https://templatus.ru/photobook">
+
+  <meta property="og:title" content="Конструктор фотокниг — templatus">
+  <meta property="og:description" content="Создавайте фотокниги в браузере: шаблоны, палитры, допечатная подготовка 300 DPI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://templatus.ru/photobook">
+  <meta property="og:image" content="https://templatus.ru/assets/images/og-image.jpg">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Конструктор фотокниг templatus",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Web",
+    "url": "https://templatus.ru/photobook",
+    "description": "Онлайн-конструктор фотокниг с шаблонами, палитрами и экспортом в печать 300 DPI.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" }
+  }
+  </script>
+
+  <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/photobook.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;600&family=Caveat:wght@400;600&display=swap&subset=cyrillic" rel="stylesheet">
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/photobook.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-brand"><a href="/" class="logo"><img src="/assets/images/logo-with-name-cropped.png" alt="templatus" width="774" height="172" loading="eager" class="logo-light"><img src="/assets/images/logo-with-name-white-cropped.png" alt="" width="774" height="172" loading="eager" class="logo-dark" aria-hidden="true"></a><a href="https://kos-ko.ru" target="_blank" rel="noopener noreferrer" class="kosko-badge" aria-label="Продукт Kos-Ko"><img src="/assets/images/kos-ko-logo.png" alt="Kos-Ko" class="kosko-logo-light" width="274" height="201" loading="lazy"><img src="/assets/images/kos-ko-logo-dark.png" alt="Kos-Ko" class="kosko-logo-dark" width="274" height="201" loading="lazy"><span class="kosko-label">продукт Kos-Ko</span></a></div>
+      <nav class="main-nav" aria-label="Главное меню">
+        <a href="/resume/">Резюме</a>
+        <a href="/documents/">Документы</a>
+        <a href="/presentations/">Презентации</a>
+        <a href="/photobook" aria-current="page">Фотокниги</a>
+        <a href="/blog/">Блог</a>
+        <a href="/about">О нас</a>
+        <a href="/contacts">Контакты</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему">
+          <span data-theme-icon>☾</span>
+        </button>
+        <button class="icon-btn mobile-menu-btn" type="button" data-mobile-menu-toggle aria-label="Открыть меню" aria-expanded="false">
+          <i class="ph ph-list" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu hidden" data-mobile-menu aria-label="Мобильное меню">
+      <a href="/resume/">Резюме</a>
+      <a href="/documents/">Документы</a>
+      <a href="/presentations/">Презентации</a>
+      <a href="/photobook">Фотокниги</a>
+      <a href="/blog/">Блог</a>
+      <a href="/about">О нас</a>
+      <a href="/contacts">Контакты</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= ЛЕНДИНГ / КАТАЛОГ ТЕМ ================= -->
+    <section id="pbLanding" class="section">
+      <div class="container">
+        <nav aria-label="Хлебные крошки" style="font-size:.85rem;color:var(--color-muted);margin-bottom:12px">
+          <a href="/">Главная</a> / <span>Конструктор фотокниг</span>
+        </nav>
+        <h1>Конструктор фотокниг</h1>
+        <p class="lead" style="max-width:720px">
+          Создавайте фотокниги прямо в браузере: выберите тему, загрузите фотографии,
+          настройте палитру и типографику — и скачайте файлы, готовые к печати
+          (300 DPI, вылеты под обрез +5&nbsp;мм). Бесплатно и без регистрации.
+        </p>
+        <button id="pbContinueBtn" class="btn btn-primary" style="display:none;gap:8px;align-items:center;margin-top:8px">
+          Продолжить проект
+        </button>
+
+        <div class="pb-themes-grid" id="pbThemesGrid"></div>
+
+        <div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+          <div style="background:var(--color-surface);border-radius:var(--radius-lg);padding:24px">
+            <i class="ph ph-cursor-click" style="font-size:28px;color:var(--color-primary)"></i>
+            <h3>Smart Crop</h3>
+            <p style="color:var(--color-muted);font-size:.9rem">Масштабируйте колесом мыши, перетаскивайте фото внутри рамки, поворачивайте на 90°.</p>
+          </div>
+          <div style="background:var(--color-surface);border-radius:var(--radius-lg);padding:24px">
+            <i class="ph ph-palette" style="font-size:28px;color:var(--color-primary)"></i>
+            <h3>Палитры в 1 клик</h3>
+            <p style="color:var(--color-muted);font-size:.9rem">«Скандинавский серый», «Теплый песок», «Монохром», «Глубокий индиго», «Нежная пастель».</p>
+          </div>
+          <div style="background:var(--color-surface);border-radius:var(--radius-lg);padding:24px">
+            <i class="ph ph-printer" style="font-size:28px;color:var(--color-primary)"></i>
+            <h3>Готово к печати</h3>
+            <p style="color:var(--color-muted);font-size:.9rem">Экспорт 300 DPI с вылетами под обрез, LayFlat-развороты или постраничная печать.</p>
+          </div>
+          <div style="background:var(--color-surface);border-radius:var(--radius-lg);padding:24px">
+            <i class="ph ph-warning-circle" style="font-size:28px;color:var(--color-primary)"></i>
+            <h3>DPI-контроль</h3>
+            <p style="color:var(--color-muted);font-size:.9rem">Редактор предупредит, если разрешение снимка ниже 150 DPI для печати.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ПРИЛОЖЕНИЕ-РЕДАКТОР ================= -->
+    <div class="pb-app" id="pbApp">
+      <div class="pb-topbar">
+        <button class="btn" id="pbExitBtn"><i class="ph ph-arrow-left"></i> К темам</button>
+        <select class="pb-select" id="pbFormatSel" title="Формат книги">
+          <option value="square20">Квадрат 20×20 см</option>
+          <option value="landscape25">Горизонтальный 25×20 см</option>
+          <option value="portrait20">Вертикальный 20×25 см</option>
+        </select>
+        <button class="btn" id="pbZoomOut" title="Уменьшить"><i class="ph ph-minus"></i></button>
+        <button class="btn" id="pbZoom100" title="100%">100%</button>
+        <button class="btn" id="pbZoomIn" title="Увеличить"><i class="ph ph-plus"></i></button>
+        <button class="btn" id="pbZoomFit" title="Вписать в окно"><i class="ph ph-frame-corners"></i></button>
+        <button class="btn btn-primary" id="pbGuides" title="Показать/скрыть технологические зоны">Направляющие</button>
+        <span class="spacer"></span>
+        <button class="btn btn-primary" id="pbExportBtn"><i class="ph ph-download-simple"></i> Экспорт</button>
+      </div>
+
+      <div class="pb-workspace">
+        <div class="pb-canvas-area" id="pbCanvasArea">
+          <div class="pb-spread" id="pbSpread"></div>
+        </div>
+        <aside class="pb-side" id="pbSide"></aside>
+      </div>
+
+      <div class="pb-filmstrip" id="pbFilmstrip"></div>
+    </div>
+  </main>
+
+  <!-- ================= МОДАЛКА ЭКСПОРТА ================= -->
+  <div class="pb-modal-backdrop" id="pbExportModal">
+    <div class="pb-modal">
+      <h3>Экспорт проекта</h3>
+      <div class="pb-modal-body">
+        <label class="pb-export-option">
+          <input type="radio" name="pbExportMode" value="layflat_zip" checked>
+          <span><b>Print Ready: LayFlat</b> — ZIP (JPEG 300 DPI)
+          <small>Слитные развороты, вылеты под обрез +5 мм, sRGB. Для премиум-переплета с раскрытием 180°.</small></span>
+        </label>
+        <label class="pb-export-option">
+          <input type="radio" name="pbExportMode" value="pages_pdf">
+          <span><b>Print Ready: Постраничный</b> — PDF 300 DPI
+          <small>Одиночные полосы (левая/правая) с вылетами. Для классического сшивного или клеевого переплета.</small></span>
+        </label>
+        <label class="pb-export-option">
+          <input type="radio" name="pbExportMode" value="preview_pdf">
+          <span><b>Цифровой предпросмотр</b> — PDF (экранное качество)
+          <small>Легковесный многостраничный файл для просмотра на смартфонах и отправки друзьям.</small></span>
+        </label>
+        <label class="pb-export-option">
+          <input type="radio" name="pbExportMode" value="json">
+          <span><b>Векторный исходник</b> — JSON-манифест
+          <small>Разметка проекта с координатами слотов, стилями и ссылками на фото. Для доработки.</small></span>
+        </label>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+          <button class="btn" data-close-modal>Отмена</button>
+          <button class="btn btn-primary" id="pbRunExport">Сформировать файлы</button>
+        </div>
+      </div>
+      <div class="pb-progress" id="pbProgress"><div class="pb-progress-bar" id="pbProgressBar"></div></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 templatus — бесплатные шаблоны и конструкторы.</p>
+    </div>
+  </footer>
+</body>
+</html>

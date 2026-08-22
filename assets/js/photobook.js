@@ -28,8 +28,15 @@
   /* ---------- Шрифтовые пресеты (кириллица) ---------- */
   const FONTS = [
     { id: "playfair", label: "Playfair Display (антиква)", css: "'Playfair Display', Georgia, serif" },
+    { id: "ptserif", label: "PT Serif (антиква)", css: "'PT Serif', Georgia, serif" },
+    { id: "cormorant", label: "Cormorant (изящная антиква)", css: "'Cormorant', Georgia, serif" },
     { id: "inter", label: "Inter (гротеск)", css: "'Inter', Arial, sans-serif" },
+    { id: "montserrat", label: "Montserrat (гротеск)", css: "'Montserrat', Arial, sans-serif" },
+    { id: "oswald", label: "Oswald (узкий гротеск)", css: "'Oswald', Arial Narrow, sans-serif" },
     { id: "caveat", label: "Caveat (рукописный)", css: "'Caveat', cursive" },
+    { id: "marck", label: "Marck Script (рукописный)", css: "'Marck Script', cursive" },
+    { id: "badscript", label: "Bad Script (рукописный)", css: "'Bad Script', cursive" },
+    { id: "lobster", label: "Lobster (акцидентный)", css: "'Lobster', cursive" },
   ];
 
   /* ---------- Каталог тем ---------- */
@@ -82,6 +89,11 @@
     const rightX = half + m;
 
     return {
+      title_page: { name: "Титульный лист", slots: [
+        { type: "image", x: 0, y: 0, w: half, h: H },
+        { type: "text", x: rightX, y: Math.round(H * 0.38), w: half - m * 2, h: 34, text: "Наша история", size: 30, font: "playfair", align: "center" },
+        { type: "text", x: rightX, y: Math.round(H * 0.38) + 44, w: half - m * 2, h: 18, text: "2026", size: 16, font: "caveat", align: "center" },
+      ]},
       full_bleed: { name: "1 фото во всю полосу", slots: [
         { type: "image", x: 0, y: 0, w: W, h: H },
       ]},
@@ -118,6 +130,7 @@
 
   const LAYOUT_ICON = (key) => `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg"><g fill="#94a3b8">${
     ({ full_bleed: '<rect x="4" y="4" width="112" height="52" rx="3"/>',
+       title_page: '<rect x="4" y="4" width="52" height="52" rx="3"/><rect x="66" y="20" width="48" height="9" rx="2"/><rect x="76" y="33" width="28" height="5" rx="2"/>',
        hero_notes: '<rect x="4" y="4" width="52" height="52" rx="3"/><rect x="62" y="22" width="54" height="8" rx="2"/>',
        two_vertical: '<rect x="4" y="4" width="52" height="25" rx="2"/><rect x="4" y="33" width="52" height="23" rx="2"/><rect x="62" y="4" width="54" height="25" rx="2"/><rect x="62" y="33" width="54" height="23" rx="2"/>',
        grid2x2: '<rect x="4" y="4" width="26" height="25" rx="2"/><rect x="34" y="4" width="26" height="25" rx="2"/><rect x="66" y="4" width="50" height="25" rx="2"/><rect x="4" y="33" width="56" height="23" rx="2"/><rect x="66" y="33" width="50" height="23" rx="2"/>',
@@ -149,7 +162,7 @@
       format: "square20",
       palette: theme.palette,
       customBg: null,
-      spreads: theme.spreads.map((layout, i) => makeSpread(layout, i)),
+      spreads: ["title_page", ...theme.spreads].map((layout, i) => makeSpread(layout, i)),
     };
   }
 
@@ -227,6 +240,8 @@
     el.style.width = (f.pageW * 2 * s) + "px";
     el.style.height = (f.pageH * s) + "px";
     lastScale = s;
+    const zp = $("#pbZoomPct");
+    if (zp) zp.textContent = Math.round((s / 3.78) * 100) + "%";
     el.style.background = sp.bg || state.customBg || palette().background;
     el.classList.toggle("pb-guides", guides);
     el.innerHTML = "";
@@ -236,6 +251,20 @@
     fold.className = "pb-fold";
     fold.dataset.tip = "Корешок — не размещайте лица в центре";
     el.appendChild(fold);
+
+    // чипы-подписи страниц (не экспортируются, только для ориентира)
+    const chip = (text, xMm, yMm, primary) => {
+      const c = document.createElement("div");
+      c.className = "pb-page-chip" + (primary ? " primary" : "");
+      c.textContent = text;
+      c.style.left = xMm * s + "px";
+      c.style.top = yMm * s + "px";
+      el.appendChild(c);
+    };
+    chip("стр. " + (current * 2 + 1), 4, f.pageH - 9, false);
+    chip("стр. " + (current * 2 + 2), f.pageW + 4, f.pageH - 9, false);
+    if (current === 0) chip("Титульный лист", f.pageW - 48, 5, true);
+    else if (current === state.spreads.length - 1) chip("Последний разворот", f.pageW - 62, 5, true);
 
     // Направляющие
     if (guides) {
@@ -477,8 +506,10 @@
     strip.innerHTML = "";
     state.spreads.forEach((sp, i) => {
       const f = fmt();
+      const wrap = document.createElement("div");
+      wrap.className = "pb-thumb-wrap" + (i === current ? " active" : "");
       const th = document.createElement("div");
-      th.className = "pb-thumb" + (i === current ? " active" : "");
+      th.className = "pb-thumb";
       th.draggable = true;
       th.dataset.index = i;
       const k = 54 / f.pageH; // масштаб превью: страница ~54px
@@ -531,7 +562,12 @@
         current = i;
         renderApp(); save();
       });
-      strip.appendChild(th);
+      wrap.appendChild(th);
+      const cap = document.createElement("div");
+      cap.className = "pb-thumb-caption" + (i === 0 ? " title" : "");
+      cap.textContent = i === 0 ? "Титульный лист" : `стр. ${i * 2 + 1}–${i * 2 + 2}`;
+      wrap.appendChild(cap);
+      strip.appendChild(wrap);
     });
 
     const add = document.createElement("button");
@@ -1211,7 +1247,7 @@
     $("#pbExitBtn").addEventListener("click", exitApp);
     $("#pbZoomIn").addEventListener("click", () => { zoom = (zoom || fitScaleNow()) * 1.15; renderCanvas(); });
     $("#pbZoomOut").addEventListener("click", () => { zoom = Math.max(0.2, (zoom || fitScaleNow()) / 1.15); renderCanvas(); });
-    $("#pbZoom100").addEventListener("click", () => { zoom = 3.78; renderCanvas(); }); // 96dpi
+    $("#pbZoomPct").addEventListener("click", () => { zoom = 3.78; renderCanvas(); }); // 96dpi = 100%
     $("#pbZoomFit").addEventListener("click", () => { zoom = 0; renderCanvas(); });
     $("#pbGuides").addEventListener("click", (e) => { guides = !guides; e.currentTarget.classList.toggle("btn-primary", guides); renderCanvas(); });
     $("#pbFormatSel").addEventListener("change", (e) => {

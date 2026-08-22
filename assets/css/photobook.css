@@ -186,8 +186,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 48px 40px;
   position: relative;
+  background-image: radial-gradient(color-mix(in srgb, var(--color-muted) 22%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
 }
 
 /* Spread (screen render) */
@@ -328,6 +330,14 @@
   padding: 16px;
 }
 
+.pb-side .pb-section {
+  background: var(--color-bg);
+  border: 1px solid var(--pb-border);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
 .pb-side h4 {
   margin: 0 0 10px;
   font-size: .8rem;
@@ -450,7 +460,7 @@
 /* ---------- Thumbnails strip ---------- */
 .pb-filmstrip {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   padding: 10px 14px;
   background: var(--pb-panel);
@@ -471,9 +481,14 @@
   display: flex;
   gap: 1px;
   padding: 3px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color .15s ease, box-shadow .15s ease;
 }
 
+.pb-thumb:hover { box-shadow: var(--shadow-md); }
+
 .pb-thumb.active { border-color: var(--pb-accent); }
+.pb-thumb-wrap.active .pb-thumb { border-color: var(--pb-accent); }
 .pb-thumb.drag-over { border-color: var(--color-secondary); }
 
 .pb-thumb .pb-thumb-page {
@@ -681,6 +696,62 @@
   padding: 1px 6px;
   border-radius: 999px;
 }
+
+/* Чипы-подписи страниц на холсте */
+.pb-page-chip {
+  position: absolute;
+  background: rgb(15 23 42 / .55);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  padding: 4px 9px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 8;
+  white-space: nowrap;
+}
+
+.pb-page-chip.primary {
+  background: var(--pb-accent);
+  font-weight: 600;
+}
+
+/* Индикатор масштаба */
+.pb-zoom-pct {
+  min-width: 46px;
+  text-align: center;
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+  cursor: pointer;
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  user-select: none;
+}
+
+.pb-zoom-pct:hover { color: var(--pb-accent); background: color-mix(in srgb, var(--pb-accent) 8%, transparent); }
+
+/* ---------- Лента миниатюр: подписи ---------- */
+.pb-thumb-wrap {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pb-thumb-caption {
+  font-size: 10px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.pb-thumb-caption.title {
+  color: var(--pb-accent);
+  font-weight: 600;
+}
+
+.pb-thumb-wrap.active .pb-thumb-caption { color: var(--pb-accent); font-weight: 600; }
 
 @media (max-width: 900px) {
   .pb-side { display: none; }

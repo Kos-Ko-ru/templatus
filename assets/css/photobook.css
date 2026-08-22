@@ -200,6 +200,20 @@
   flex: none;
 }
 
+.pb-spread .pb-fold.cover {
+  background: rgb(37 99 235 / .35);
+  width: 2px;
+}
+
+.pb-strip-sep {
+  flex: none;
+  align-self: center;
+  width: 1px;
+  height: 48px;
+  background: var(--pb-border);
+  margin: 0 4px;
+}
+
 .pb-spread .pb-fold {
   position: absolute;
   top: 0;

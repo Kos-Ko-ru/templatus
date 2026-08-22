@@ -156,7 +156,7 @@
 
   function newProject(themeId) {
     const theme = THEMES.find(t => t.id === themeId) || THEMES[0];
-    return {
+    const proj = {
       projectId: "tpl_book_" + Math.random().toString(36).slice(2, 6),
       themeId: theme.id,
       format: "square20",
@@ -164,6 +164,8 @@
       customBg: null,
       spreads: ["title_page", ...theme.spreads].map((layout, i) => makeSpread(layout, i)),
     };
+    proj.cover = makeCover(proj.format);
+    return proj;
   }
 
   function makeSpread(layoutKey, idx, formatKey) {
@@ -219,6 +221,40 @@
     return media.find(m => m.id === slot.img) || null;
   };
 
+  /* ---------- Обложка и корешок ---------- */
+  let editingCover = false;
+  const activeSpread = () => editingCover ? state.cover : state.spreads[current];
+  const spreadWmm = () => editingCover
+    ? fmt().pageW * 2 + state.cover.spineW
+    : fmt().pageW * 2;
+
+  function makeCover(formatKey) {
+    const f = FORMATS[formatKey || (state ? state.format : null) || "square20"];
+    const spine = Math.max(5, Math.round((f.pageH + 20) * 0.05));
+    const W = f.pageW * 2 + spine;
+    const frontX = f.pageW + spine;
+    return {
+      layout: "cover",
+      isCover: true,
+      spineW: spine,
+      bg: null,
+      slots: [
+        { slotId: "cover_bg", type: "image", x: 0, y: 0, w: W, h: f.pageH, img: null, crop: { zoom: 1, ox: 0.5, oy: 0.5, rot: 0 } },
+        { slotId: "cover_title", type: "text", x: Math.round(frontX + f.pageW * 0.15), y: Math.round(f.pageH * 0.38), w: Math.round(f.pageW * 0.7), h: 30, text: "Название книги", size: 26, font: "playfair", align: "center", spacing: 0, uppercase: false, bold: false, italic: false, color: "#FFFFFF" },
+        { slotId: "cover_subtitle", type: "text", x: Math.round(frontX + f.pageW * 0.15), y: Math.round(f.pageH * 0.38) + 40, w: Math.round(f.pageW * 0.7), h: 16, text: "2026", size: 14, font: "caveat", align: "center", spacing: 0, uppercase: false, bold: false, italic: false, color: "#FFFFFF" },
+        { slotId: "cover_spine", type: "text", x: f.pageW + 1, y: Math.round(f.pageH * 0.46), w: spine - 2, h: 14, text: "КОРЕШОК", size: 9, font: "oswald", align: "center", spacing: 0.05, uppercase: true, bold: false, italic: false, color: "#FFFFFF" },
+      ],
+    };
+  }
+
+  // пересчёт ширины корешка по числу страниц
+  function recalcSpine() {
+    const c = state.cover;
+    if (!c || !c.autoSpine) return;
+    const sheets = state.spreads.length; // 1 лист ≈ 1 разворот в упрощении
+    c.spineW = Math.min(40, Math.max(5, Math.round(3 + sheets * 0.6)));
+  }
+
   /* =========================================================
      РЕНДЕР НА ЭКРАНЕ (DOM)
      ========================================================= */
@@ -230,14 +266,15 @@
 
   function renderCanvas() {
     const area = $("#pbCanvasArea");
-    const sp = state.spreads[current];
+    const sp = activeSpread();
     const f = fmt();
+    const totalW = spreadWmm();
     const areaW = area.clientWidth - 80, areaH = area.clientHeight - 80;
-    const fitScale = Math.min(areaW / (f.pageW * 2), areaH / f.pageH);
+    const fitScale = Math.min(areaW / totalW, areaH / f.pageH);
     const s = zoom > 0 ? zoom : Math.max(0.2, fitScale); // px на мм
 
     const el = $("#pbSpread");
-    el.style.width = (f.pageW * 2 * s) + "px";
+    el.style.width = (totalW * s) + "px";
     el.style.height = (f.pageH * s) + "px";
     lastScale = s;
     const zp = $("#pbZoomPct");
@@ -246,11 +283,23 @@
     el.classList.toggle("pb-guides", guides);
     el.innerHTML = "";
 
-    // Корешок
-    const fold = document.createElement("div");
-    fold.className = "pb-fold";
-    fold.dataset.tip = "Корешок — не размещайте лица в центре";
-    el.appendChild(fold);
+    // Линии сгибов / корешок
+    if (editingCover) {
+      const mkFold = (xMm, tip) => {
+        const fd = document.createElement("div");
+        fd.className = "pb-fold cover";
+        fd.style.left = xMm * s + "px";
+        fd.dataset.tip = tip;
+        el.appendChild(fd);
+      };
+      mkFold(f.pageW, "Линия сгиба: задняя обложка → корешок");
+      mkFold(f.pageW + sp.spineW, "Линия сгиба: корешок → передняя обложка");
+    } else {
+      const fold = document.createElement("div");
+      fold.className = "pb-fold";
+      fold.dataset.tip = "Корешок — не размещайте лица в центре";
+      el.appendChild(fold);
+    }
 
     // чипы-подписи страниц (не экспортируются, только для ориентира)
     const chip = (text, xMm, yMm, primary) => {
@@ -261,10 +310,16 @@
       c.style.top = yMm * s + "px";
       el.appendChild(c);
     };
-    chip("стр. " + (current * 2 + 1), 4, f.pageH - 9, false);
-    chip("стр. " + (current * 2 + 2), f.pageW + 4, f.pageH - 9, false);
-    if (current === 0) chip("Титульный лист", f.pageW - 48, 5, true);
-    else if (current === state.spreads.length - 1) chip("Последний разворот", f.pageW - 62, 5, true);
+    if (editingCover) {
+      chip("Задняя обложка", 4, f.pageH - 9, false);
+      chip("Передняя обложка", f.pageW + sp.spineW + 4, f.pageH - 9, false);
+      chip("Корешок · " + sp.spineW + " мм", f.pageW - 4, 5, true);
+    } else {
+      chip("стр. " + (current * 2 + 1), 4, f.pageH - 9, false);
+      chip("стр. " + (current * 2 + 2), f.pageW + 4, f.pageH - 9, false);
+      if (current === 0) chip("Титульный лист", f.pageW - 48, 5, true);
+      else if (current === state.spreads.length - 1) chip("Последний разворот", f.pageW - 62, 5, true);
+    }
 
     // Направляющие
     if (guides) {
@@ -361,7 +416,7 @@
     $$(".pb-slot", el).forEach((d) => d.classList.remove("selected"));
     if (selectedSlot == null) return;
     const div = $(`.pb-slot[data-slot-index="${selectedSlot}"]`, el);
-    const slot = state.spreads[current].slots[selectedSlot];
+    const slot = activeSpread().slots[selectedSlot];
     if (!div || !slot) return;
     div.classList.add("selected");
 
@@ -386,7 +441,7 @@
     del.addEventListener("mousedown", (e) => e.stopPropagation());
     del.addEventListener("click", (e) => {
       e.stopPropagation();
-      state.spreads[current].slots.splice(selectedSlot, 1);
+      activeSpread().slots.splice(selectedSlot, 1);
       selectedSlot = null;
       renderApp(); save();
     });
@@ -415,10 +470,10 @@
       const dy = (ev.clientY - sy) / lastScale;
       moved = true;
       if (mode === "move") {
-        slot.x = Math.round(clampNum(o.x + dx, -f.bleed, f.pageW * 2 - 10));
+        slot.x = Math.round(clampNum(o.x + dx, -f.bleed, spreadWmm() - 10));
         slot.y = Math.round(clampNum(o.y + dy, -f.bleed, f.pageH - 10));
       } else {
-        slot.w = Math.round(clampNum(o.w + dx, 10, f.pageW * 2 - o.x));
+        slot.w = Math.round(clampNum(o.w + dx, 10, spreadWmm() - o.x));
         slot.h = Math.round(clampNum(o.h + dy, 8, f.pageH - o.y));
       }
       renderCanvas();
@@ -504,6 +559,43 @@
   function renderFilmstrip() {
     const strip = $("#pbFilmstrip");
     strip.innerHTML = "";
+
+    // --- Обложка ---
+    const cvr = state.cover;
+    if (cvr) {
+      const cwrap = document.createElement("div");
+      cwrap.className = "pb-thumb-wrap" + (editingCover ? " active" : "");
+      const cth = document.createElement("div");
+      cth.className = "pb-thumb";
+      cth.title = "Обложка: задняя + корешок + передняя";
+      cth.style.width = "140px";
+      const f0 = fmt();
+      const totalMm = f0.pageW * 2 + cvr.spineW;
+      [f0.pageW, cvr.spineW, f0.pageW].forEach((wMm, k) => {
+        const zone = document.createElement("div");
+        zone.className = "pb-thumb-page";
+        zone.style.flex = "none";
+        zone.style.width = Math.max(2, wMm / totalMm * 134) + "px";
+        if (k === 1) zone.style.background = "var(--pb-accent)";
+        else if (cvr.slots.some(x => x.type === "image" && x.img)) zone.style.background = "linear-gradient(135deg,#9aa6b5,#c3ccd8)";
+        cth.appendChild(zone);
+      });
+      const cnum = document.createElement("span");
+      cnum.className = "pb-thumb-num";
+      cnum.textContent = "Обл.";
+      cth.appendChild(cnum);
+      cth.addEventListener("click", () => { editingCover = true; selectedSlot = null; renderApp(); });
+      cwrap.appendChild(cth);
+      const ccap = document.createElement("div");
+      ccap.className = "pb-thumb-caption title";
+      ccap.textContent = "Обложка + корешок";
+      cwrap.appendChild(ccap);
+      strip.appendChild(cwrap);
+      const sep = document.createElement("div");
+      sep.className = "pb-strip-sep";
+      strip.appendChild(sep);
+    }
+
     state.spreads.forEach((sp, i) => {
       const f = fmt();
       const wrap = document.createElement("div");
@@ -549,7 +641,7 @@
       });
       th.appendChild(del);
 
-      th.addEventListener("click", () => { current = i; selectedSlot = null; renderApp(); });
+      th.addEventListener("click", () => { editingCover = false; current = i; selectedSlot = null; renderApp(); });
       th.addEventListener("dragstart", (e) => e.dataTransfer.setData("text/plain", i));
       th.addEventListener("dragover", (e) => { e.preventDefault(); th.classList.add("drag-over"); });
       th.addEventListener("dragleave", () => th.classList.remove("drag-over"));
@@ -600,7 +692,7 @@
      ========================================================= */
   function renderSide() {
     const side = $("#pbSide");
-    const sp = state.spreads[current];
+    const sp = activeSpread();
     const layouts = layoutsFor(fmt());
     const p = palette();
     const sel = selectedSlot != null ? sp.slots[selectedSlot] : null;
@@ -628,13 +720,33 @@
         </div>` : `<p style="font-size:.8rem;color:var(--color-muted);margin-top:10px">Кликните по элементу на холсте, чтобы настроить его положение и размер. Рамку можно перетаскивать за верхнюю полоску ⠿ и растягивать за уголок.</p>`}
       </div>
 
+      ${editingCover ? `
+      <div class="pb-section">
+        <h4>Обложка и корешок</h4>
+        <div class="pb-slider-row">
+          <span>Корешок, мм</span>
+          <input type="range" min="5" max="40" step="1" value="${state.cover.spineW}" id="pbSpineW">
+          <b style="min-width:26px;text-align:right">${state.cover.spineW}</b>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--color-muted);margin-top:8px">
+          <input type="checkbox" id="pbAutoSpine" ${state.cover.autoSpine ? "checked" : ""}>
+          Рассчитывать по числу страниц
+        </label>
+        <div class="pb-slider-row" style="margin-top:8px">
+          <span>Фон обложки</span>
+          <input type="color" class="pb-color-input" id="pbCoverBg" value="${state.cover.bg || palette().background}">
+        </div>
+        <p style="font-size:.75rem;color:var(--color-muted);margin:10px 0 0">
+          Слева — задняя обложка, в центре — корешок, справа — передняя с заголовком.
+        </p>
+      </div>` : `
       <div class="pb-section">
         <h4>Сетка страницы</h4>
         <div class="pb-layout-grid">
           ${Object.entries(layouts).map(([k, L]) =>
             `<button class="pb-layout-btn ${sp.layout === k ? "active" : ""}" data-layout="${k}" title="${L.name}">${LAYOUT_ICON(k)}</button>`).join("")}
         </div>
-      </div>
+      </div>`}
 
       <div class="pb-section">
         <h4>Глобальная палитра</h4>
@@ -700,6 +812,25 @@
     `;
 
     // --- события панели ---
+
+    // Обложка: корешок
+    const spine = $("#pbSpineW", side);
+    if (spine) {
+      spine.addEventListener("input", () => {
+        state.cover.spineW = +spine.value;
+        state.cover.autoSpine = false;
+        spine.parentElement.querySelector("b").textContent = spine.value;
+        renderCanvas(); renderFilmstrip(); save();
+      });
+      $("#pbAutoSpine", side).addEventListener("change", (e) => {
+        state.cover.autoSpine = e.target.checked;
+        if (state.cover.autoSpine) { recalcSpine(); renderApp(); save(); }
+      });
+      $("#pbCoverBg", side).addEventListener("input", (e) => {
+        state.cover.bg = e.target.value;
+        renderCanvas(); save();
+      });
+    }
 
     // Добавление элементов
     $("#pbAddFrame")?.addEventListener("click", () => addSlot("image"));
@@ -832,7 +963,7 @@
   /* ---------- Добавление элементов ---------- */
   function addSlot(type) {
     const f = fmt();
-    const sp = state.spreads[current];
+    const sp = activeSpread();
     const theme = THEMES.find(t => t.id === state.themeId) || THEMES[0];
     const n = sp.slots.length;
     const w = Math.round(f.pageW * 0.38);
@@ -965,7 +1096,7 @@
   function drawToCanvas(sp, opts) {
     const f = fmt();
     const spread = !!opts.spread;
-    const pageWmm = spread ? f.pageW * 2 : f.pageW;
+    const pageWmm = spread ? (opts.cover ? f.pageW * 2 + opts.spineW : f.pageW * 2) : f.pageW;
     const Wmm = pageWmm + (opts.bleed ? f.bleed * 2 : 0);
     const Hmm = f.pageH + (opts.bleed ? f.bleed * 2 : 0);
     const ppm = opts.dpi / MM_PER_INCH;
@@ -1078,6 +1209,14 @@
           accent: palette().accent, divider: palette().divider,
         },
         fonts: FONTS.map(x => x.id),
+        cover: state.cover ? {
+          spineW: state.cover.spineW,
+          autoSpine: !!state.cover.autoSpine,
+          background: state.cover.bg || null,
+          elements: state.cover.slots.map(s => s.type === "image"
+            ? { type: "image", slotId: s.slotId, x: s.x, y: s.y, w: s.w, h: s.h, src: (mediaOf(s) || {}).name || null, crop: { ...s.crop } }
+            : { type: "text", slotId: s.slotId, x: s.x, y: s.y, w: s.w, h: s.h, text: (s.text || "").replace(/<[^>]+>/g, ""), font: s.font, size: s.size, align: s.align }),
+        } : null,
         spreads: state.spreads.map((sp, i) => ({
           spreadIndex: i + 1,
           layout: sp.layout,
@@ -1092,6 +1231,11 @@
 
     if (mode === "layflat_zip") {
       const zip = new JSZip();
+      if (state.cover) {
+        const cc = drawToCanvas(state.cover, { spread: true, cover: true, spineW: state.cover.spineW, bleed: true, dpi: 300 });
+        const cb = await new Promise((r) => cc.toBlob(r, "image/jpeg", 0.95));
+        zip.file("cover_300dpi.jpg", cb);
+      }
       for (let i = 0; i < state.spreads.length; i++) {
         const c = drawToCanvas(state.spreads[i], { spread: true, bleed: true, dpi: 300 });
         const blob = await new Promise((r) => c.toBlob(r, "image/jpeg", 0.95));
@@ -1107,6 +1251,12 @@
 
     if (mode === "pages_pdf") {
       const pdf = pdfMaker();
+      if (state.cover) {
+        const cw = f.pageW * 2 + state.cover.spineW + f.bleed * 2;
+        const cc = drawToCanvas(state.cover, { spread: true, cover: true, spineW: state.cover.spineW, bleed: true, dpi: 300 });
+        pdf.addPage([cw, f.pageH + f.bleed * 2]);
+        pdf.addImage(cc.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, cw, f.pageH + f.bleed * 2);
+      }
       for (let i = 0; i < state.spreads.length; i++) {
         const sp = state.spreads[i];
         // левая полоса
@@ -1124,6 +1274,12 @@
 
     if (mode === "preview_pdf") {
       const pdf = pdfMaker();
+      if (state.cover) {
+        const cw = f.pageW * 2 + state.cover.spineW;
+        const cc = drawToCanvas(state.cover, { spread: true, cover: true, spineW: state.cover.spineW, bleed: false, dpi: 96 });
+        pdf.addPage([cw, f.pageH]);
+        pdf.addImage(cc.toDataURL("image/jpeg", 0.85), "JPEG", 0, 0, cw, f.pageH);
+      }
       for (let i = 0; i < state.spreads.length; i++) {
         const c = drawToCanvas(state.spreads[i], { spread: true, bleed: false, dpi: 96 });
         if (i > 0) pdf.addPage([f.pageW * 2, f.pageH]);
@@ -1181,6 +1337,7 @@
       const data = JSON.parse(raw);
       if (!data.state || !data.state.spreads) return false;
       state = data.state;
+      if (!state.cover) { state.cover = makeCover(state.format); state.cover.autoSpine = false; }
       media.push(...data.media);
       return true;
     } catch { return false; }
@@ -1227,6 +1384,7 @@
   }
 
   function enterApp() {
+    editingCover = false;
     $("#pbLanding").style.display = "none";
     $("#pbApp").classList.add("active");
     selectedSlot = null;
@@ -1287,7 +1445,7 @@
       }
       if ((e.key === "Delete" || e.key === "Backspace") && !editing && selectedSlot != null) {
         e.preventDefault();
-        state.spreads[current].slots.splice(selectedSlot, 1);
+        activeSpread().slots.splice(selectedSlot, 1);
         selectedSlot = null;
         renderApp(); save();
       }

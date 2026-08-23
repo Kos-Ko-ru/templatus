@@ -420,6 +420,11 @@
         div.appendChild(t);
       }
       div.addEventListener("mousedown", () => selectSlot(i));
+      div.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        selectedSlot = i;
+        openContextMenu(e.clientX, e.clientY, i);
+      });
       el.appendChild(div);
     });
 
@@ -430,7 +435,7 @@
   function updateHandles() {
     const el = $("#pbSpread");
     if (!el) return;
-    $$(".pb-movebar, .pb-resize, .pb-delhandle, .pb-rotatehandle", el).forEach((h) => h.remove());
+    $$(".pb-elbar, .pb-resize, .pb-rotatehandle", el).forEach((h) => h.remove());
     $$(".pb-slot", el).forEach((d) => d.classList.remove("selected"));
     if (selectedSlot == null) return;
     const div = $(`.pb-slot[data-slot-index="${selectedSlot}"]`, el);
@@ -441,31 +446,43 @@
     const s = lastScale;
     const bb = slotBBox(slot); // bbox с учётом вращения
 
-    // полоска перемещения
+    // панель действий элемента
     const bar = document.createElement("div");
-    bar.className = "pb-movebar";
-    bar.title = "Перетащите, чтобы переместить (Alt + перетаскивание)";
-    bar.textContent = "⠿";
+    bar.className = "pb-elbar";
     bar.style.left = Math.max(0, bb.x * s) + "px";
-    bar.style.top = Math.max(0, bb.y * s - 22) + "px";
-    bar.addEventListener("mousedown", (e) => startSlotDrag(e, "move", slot));
-    el.appendChild(bar);
-
-    // удаление
-    const del = document.createElement("div");
-    del.className = "pb-delhandle";
-    del.title = "Удалить (Delete)";
-    del.textContent = "✕";
-    del.style.left = (bb.x * s + bb.w * s - 26) + "px";
-    del.style.top = Math.max(0, bb.y * s - 22) + "px";
-    del.addEventListener("mousedown", (e) => e.stopPropagation());
-    del.addEventListener("click", (e) => {
-      e.stopPropagation();
+    bar.style.top = Math.max(0, bb.y * s - 34) + "px";
+    const mkBtn = (icon, title, fn, dragMode) => {
+      const b = document.createElement("button");
+      b.className = "pb-elbar-btn";
+      b.title = title;
+      b.innerHTML = icon;
+      if (dragMode) {
+        b.addEventListener("mousedown", (e) => startSlotDrag(e, dragMode, slot));
+      } else {
+        b.addEventListener("mousedown", (e) => e.stopPropagation());
+        b.addEventListener("click", (e) => { e.stopPropagation(); closeContextMenu(); fn(); });
+      }
+      return b;
+    };
+    bar.appendChild(mkBtn("⠿", "Переместить (или Alt+перетаскивание)", null, "move"));
+    bar.appendChild(mkBtn('<i class="ph ph-arrow-clockwise"></i>', "Вращать (Shift — шаг 15°)", null, "rotate"));
+    bar.appendChild(mkBtn('<i class="ph ph-copy"></i>', "Дублировать (Ctrl+D)", () => {
+      const sp = activeSpread();
+      const copy = JSON.parse(JSON.stringify(slot));
+      copy.slotId += "_c" + Date.now() % 1000;
+      sp.slots.splice(selectedSlot + 1, 0, copy);
+      selectedSlot++;
+      renderApp(); save();
+    }));
+    bar.appendChild(mkBtn('<i class="ph ph-arrow-up"></i>', "Слой выше", () => moveLayer(selectedSlot, 1)));
+    bar.appendChild(mkBtn('<i class="ph ph-arrow-down"></i>', "Слой ниже", () => moveLayer(selectedSlot, -1)));
+    bar.appendChild(mkBtn('<i class="ph ph-trash"></i>', "Удалить (Delete)", () => {
       activeSpread().slots.splice(selectedSlot, 1);
       selectedSlot = null;
       renderApp(); save();
-    });
-    el.appendChild(del);
+    }, false));
+    bar.lastChild.classList.add("danger");
+    el.appendChild(bar);
 
     // ручка вращения
     const rot = document.createElement("div");
@@ -580,6 +597,11 @@
     });
 
     div.addEventListener("wheel", (e) => {
+      if (e.ctrlKey) { // Ctrl+колесо — масштаб холста
+        e.preventDefault();
+        zoomCanvas(e.deltaY < 0 ? 1.12 : 1 / 1.12);
+        return;
+      }
       const mi = mediaOf(slot);
       if (!mi) return;
       e.preventDefault();
@@ -836,6 +858,21 @@
       </div>`}
 
       <div class="pb-section">
+        <h4>Слои (сверху — верхний)</h4>
+        <div class="pb-layers">
+          ${[...sp.slots].reverse().map((sl) => {
+            const idx = sp.slots.indexOf(sl);
+            const ic = sl.type === "image" ? "ph-image" : sl.type === "text" ? "ph-text-aa" : "ph-shape";
+            const name = sl.type === "image" ? (sl.img ? "Фото" : "Рамка") : sl.type === "text" ? (sl.text.replace(/<[^>]+>/g, "").slice(0, 18) || "Текст") : "Декор: " + (DECOR_SHAPES[sl.shape] || {}).name;
+            return `<div class="pb-layer ${selectedSlot === idx ? "active" : ""}" data-layer="${idx}">
+              <i class="ph ${ic}"></i><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</span>
+              ${sl.rot ? `<em style="font-size:.7rem;color:var(--color-muted)">${sl.rot}°</em>` : ""}
+            </div>`;
+          }).join("")}
+        </div>
+      </div>
+
+      <div class="pb-section">
         <h4>Глобальная палитра</h4>
         <div class="pb-palette-list">
           ${PALETTES.map(pl => `
@@ -916,6 +953,12 @@
     `;
 
     // --- события панели ---
+
+    // Слои: выбор по клику
+    $$(".pb-layer", side).forEach(l => l.addEventListener("click", () => {
+      selectedSlot = +l.dataset.layer;
+      renderCanvas(); renderSide();
+    }));
 
     // Обложка: корешок
     const spine = $("#pbSpineW", side);
@@ -1534,7 +1577,114 @@
       try {
         localStorage.setItem(LS_KEY, JSON.stringify({ state, media: media.map(({ _el, ...m }) => m) }));
       } catch (e) { /* квота — игнорируем */ }
+      pushHistory();
     }, 400);
+  }
+
+  /* ---------- Контекстное меню (ПКМ) ---------- */
+  function closeContextMenu() {
+    const m = $("#pbContextMenu");
+    if (m) { m.remove(); }
+  }
+
+  function openContextMenu(x, y, slotIdx) {
+    closeContextMenu();
+    selectedSlot = slotIdx;
+    const sp = activeSpread();
+    const slot = sp.slots[slotIdx];
+    if (!slot) return;
+    renderSide(); updateHandles();
+
+    const items = [];
+    if (slot.type === "image") {
+      items.push({ icon: "ph-swap", label: "Заменить фото", fn: () => pickFile((mi) => { slot.img = mi.id; renderApp(); save(); }) });
+      items.push({ icon: "ph-arrow-clockwise", label: "Повернуть фото 90°", fn: () => { slot.crop.rot = ((slot.crop.rot || 0) + 1) % 4; renderApp(); save(); } });
+      items.push({ icon: "ph-frame-corners", label: "Сбросить кроп", fn: () => { slot.crop = { zoom: 1, ox: 0.5, oy: 0.5, rot: slot.crop.rot }; renderApp(); save(); } });
+      items.push({ sep: 1 });
+    }
+    if (slot.type === "text" || slot.type === "decor") {
+      items.push({ icon: "ph-arrow-clockwise", label: "Повернуть на 15°", fn: () => { slot.rot = ((slot.rot || 0) + 15) % 360; renderApp(); save(); } });
+      items.push({ sep: 1 });
+    }
+    items.push({ icon: "ph-copy", label: "Дублировать (Ctrl+D)", fn: () => {
+      const copy = JSON.parse(JSON.stringify(slot));
+      copy.slotId += "_c" + Date.now() % 1000;
+      sp.slots.splice(slotIdx + 1, 0, copy);
+      selectedSlot = slotIdx + 1;
+      renderApp(); save();
+    } });
+    items.push({ icon: "ph-arrow-up", label: "Слой выше", fn: () => { moveLayer(slotIdx, 1); } });
+    items.push({ icon: "ph-arrow-down", label: "Слой ниже", fn: () => { moveLayer(slotIdx, -1); } });
+    items.push({ sep: 1 });
+    items.push({ icon: "ph-undo", label: "Отменить (Ctrl+Z)", fn: undo });
+    items.push({ icon: "ph-trash", label: "Удалить (Del)", danger: 1, fn: () => {
+      sp.slots.splice(slotIdx, 1);
+      selectedSlot = null;
+      renderApp(); save();
+    } });
+
+    const m = document.createElement("div");
+    m.id = "pbContextMenu";
+    m.className = "pb-contextmenu";
+    items.forEach((it) => {
+      if (it.sep) { const hr = document.createElement("div"); hr.className = "pb-cm-sep"; m.appendChild(hr); return; }
+      const b = document.createElement("button");
+      b.className = "pb-cm-item" + (it.danger ? " danger" : "");
+      b.innerHTML = `<i class="ph ${it.icon}"></i> ${it.label}`;
+      b.addEventListener("click", () => { closeContextMenu(); it.fn(); });
+      m.appendChild(b);
+    });
+    document.body.appendChild(m);
+    const mw = m.offsetWidth, mh = m.offsetHeight;
+    m.style.left = Math.min(x, window.innerWidth - mw - 8) + "px";
+    m.style.top = Math.min(y, window.innerHeight - mh - 8) + "px";
+    setTimeout(() => {
+      document.addEventListener("mousedown", onDocDown);
+    }, 0);
+    function onDocDown(e) {
+      if (!m.contains(e.target)) { closeContextMenu(); document.removeEventListener("mousedown", onDocDown); }
+    }
+  }
+
+  function moveLayer(idx, dir) {
+    const sp = activeSpread();
+    const to = idx + dir;
+    if (to < 0 || to >= sp.slots.length) return;
+    [sp.slots[idx], sp.slots[to]] = [sp.slots[to], sp.slots[idx]];
+    selectedSlot = to;
+    renderApp(); save();
+  }
+
+  /* ---------- История (Ctrl+Z / Ctrl+Y) ---------- */
+  let hist = [], histIdx = -1;
+  function pushHistory() {
+    const snap = JSON.stringify(state);
+    if (hist[histIdx] === snap) return;
+    hist = hist.slice(0, histIdx + 1);
+    hist.push(snap);
+    if (hist.length > 60) hist.shift();
+    histIdx = hist.length - 1;
+  }
+  function undo() {
+    if (histIdx <= 0) return showToast("Отменять нечего");
+    histIdx--;
+    restoreSnapshot(hist[histIdx]);
+    showToast("Отменено (Ctrl+Z)");
+  }
+  function redo() {
+    if (histIdx >= hist.length - 1) return showToast("Повторять нечего");
+    histIdx++;
+    restoreSnapshot(hist[histIdx]);
+    showToast("Возвращено (Ctrl+Y)");
+  }
+  function restoreSnapshot(snap) {
+    state = JSON.parse(snap);
+    if (!state.cover) state.cover = makeCover(state.format);
+    current = Math.min(current, state.spreads.length - 1);
+    selectedSlot = null;
+    closeContextMenu();
+    renderApp();
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ state, media: media.map(({ _el, ...m }) => m) })); } catch (e) {}
   }
 
   function restore() {
@@ -1613,6 +1763,8 @@
     $("#pbZoomIn").addEventListener("click", () => { zoom = (zoom || fitScaleNow()) * 1.15; renderCanvas(); });
     $("#pbZoomOut").addEventListener("click", () => { zoom = Math.max(0.2, (zoom || fitScaleNow()) / 1.15); renderCanvas(); });
     $("#pbZoomPct").addEventListener("click", () => { zoom = 3.78; renderCanvas(); }); // 96dpi = 100%
+    $("#pbUndoBtn").addEventListener("click", undo);
+    $("#pbRedoBtn").addEventListener("click", redo);
     $("#pbZoomFit").addEventListener("click", () => { zoom = 0; renderCanvas(); });
     $("#pbGuides").addEventListener("click", (e) => { guides = !guides; e.currentTarget.classList.toggle("btn-primary", guides); renderCanvas(); });
     $("#pbFormatSel").addEventListener("change", (e) => {
@@ -1635,8 +1787,29 @@
     $$("[data-close-modal]").forEach(b => b.addEventListener("click", () => closeModal(b.closest(".pb-modal-backdrop"))));
     $("#pbRunFill")?.addEventListener("click", runFill);
     window.addEventListener("resize", () => { if (zoom === 0) renderCanvas(); });
+
+    // Ctrl + колесо — масштаб холста в любом месте рабочей области
+    const area = $("#pbCanvasArea");
+    area.addEventListener("wheel", (e) => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      zoomCanvas(e.deltaY < 0 ? 1.12 : 1 / 1.12);
+    }, { passive: false });
     window.addEventListener("keydown", (e) => {
       if (!$("#pbApp").classList.contains("active")) return;
+      const meta = e.ctrlKey || e.metaKey;
+      if (meta && e.key.toLowerCase() === "z") { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+      if (meta && e.key.toLowerCase() === "y") { e.preventDefault(); redo(); return; }
+      if (meta && e.key.toLowerCase() === "d" && selectedSlot != null) {
+        e.preventDefault();
+        const sp = activeSpread();
+        const copy = JSON.parse(JSON.stringify(sp.slots[selectedSlot]));
+        copy.slotId += "_k" + Date.now() % 1000;
+        sp.slots.splice(selectedSlot + 1, 0, copy);
+        selectedSlot++;
+        renderApp(); save();
+        return;
+      }
       const tgt = e.target;
       const editing = tgt && (tgt.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(tgt.tagName));
       if (!editing && e.key.startsWith("Arrow") && selectedSlot != null) {
@@ -1656,8 +1829,14 @@
         selectedSlot = null;
         renderApp(); save();
       }
-      if (e.key === "Escape") { selectedSlot = null; renderCanvas(); renderSide(); }
+      if (e.key === "Escape") { closeContextMenu(); selectedSlot = null; renderCanvas(); renderSide(); }
     });
+  }
+
+  function zoomCanvas(factor) {
+    const base = zoom > 0 ? zoom : fitScaleNow();
+    zoom = Math.min(12, Math.max(0.2, base * factor));
+    renderCanvas();
   }
 
   function fitScaleNow() {

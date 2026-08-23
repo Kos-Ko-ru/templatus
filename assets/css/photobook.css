@@ -815,6 +815,101 @@
 
 .pb-thumb-wrap.active .pb-thumb-caption { color: var(--pb-accent); font-weight: 600; }
 
+/* ---------- Панель действий элемента ---------- */
+.pb-elbar {
+  position: absolute;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--color-bg);
+  border: 1px solid var(--pb-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  z-index: 7;
+}
+
+.pb-elbar-btn {
+  width: 26px;
+  height: 24px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pb-elbar-btn:hover {
+  background: color-mix(in srgb, var(--pb-accent) 12%, transparent);
+  color: var(--pb-accent);
+}
+
+.pb-elbar-btn.danger:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ---------- Контекстное меню ---------- */
+.pb-contextmenu {
+  position: fixed;
+  min-width: 220px;
+  background: var(--color-bg);
+  border: 1px solid var(--pb-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  z-index: 500;
+}
+
+.pb-cm-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: .85rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pb-cm-item:hover { background: color-mix(in srgb, var(--pb-accent) 10%, transparent); color: var(--pb-accent); }
+.pb-cm-item.danger:hover { background: #fee2e2; color: #dc2626; }
+.pb-cm-sep { height: 1px; background: var(--pb-border); margin: 5px 8px; }
+
+/* ---------- Панель слоёв ---------- */
+.pb-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.pb-layer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: .82rem;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.pb-layer:hover { background: color-mix(in srgb, var(--pb-accent) 8%, transparent); }
+.pb-layer.active { border-color: var(--pb-accent); background: color-mix(in srgb, var(--pb-accent) 10%, transparent); }
+.pb-layer i { color: var(--color-muted); }
+.pb-layer.active i { color: var(--pb-accent); }
+
 @media (max-width: 900px) {
   .pb-side { display: none; }
   .pb-workspace { padding: 12px; }

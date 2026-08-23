@@ -29,12 +29,12 @@
 
   <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
   <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/photobook.css?v=6">
+  <link rel="stylesheet" href="/assets/css/photobook.css?v=7">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;600&family=Montserrat:wght@400;600&family=Oswald:wght@400;600&family=Caveat:wght@400;600&family=Marck+Script&family=Bad+Script&family=Lobster&display=swap" rel="stylesheet">
   <script src="/assets/js/app.js" defer></script>
-  <script src="/assets/js/photobook.js?v=6" defer></script>
+  <script src="/assets/js/photobook.js?v=7" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -122,10 +122,12 @@
           <option value="landscape25">Горизонтальный 25×20 см</option>
           <option value="portrait20">Вертикальный 20×25 см</option>
         </select>
-        <button class="btn" id="pbZoomOut" title="Уменьшить"><i class="ph ph-minus"></i></button>
-        <span class="pb-zoom-pct" id="pbZoomPct" title="Текущий масштаб">100%</span>
-        <button class="btn" id="pbZoomIn" title="Увеличить"><i class="ph ph-plus"></i></button>
-        <button class="btn" id="pbZoomFit" title="Вписать в окно"><i class="ph ph-frame-corners"></i></button>
+        <div class="pb-group">
+          <button class="btn" id="pbZoomOut" title="Уменьшить"><i class="ph ph-minus"></i></button>
+          <span class="pb-zoom-pct" id="pbZoomPct" title="Масштаб (клик = 100%)">100%</span>
+          <button class="btn" id="pbZoomIn" title="Увеличить"><i class="ph ph-plus"></i></button>
+          <button class="btn" id="pbZoomFit" title="Вписать в окно"><i class="ph ph-frame-corners"></i></button>
+        </div>
         <button class="btn btn-primary" id="pbGuides" title="Показать/скрыть технологические зоны">Направляющие</button>
         <span class="spacer"></span>
         <button class="btn btn-primary" id="pbExportBtn"><i class="ph ph-download-simple"></i> Экспорт</button>

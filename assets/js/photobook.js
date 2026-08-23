@@ -346,8 +346,26 @@
       div.style.top = slot.y * s + "px";
       div.style.width = slot.w * s + "px";
       div.style.height = slot.h * s + "px";
+      if (slot.rot) {
+        div.style.transformOrigin = "center";
+        div.style.transform = `rotate(${slot.rot}deg)`;
+      }
 
-      if (slot.type === "image") {
+      if (slot.type === "decor") {
+        const shape = DECOR_SHAPES[slot.shape] || DECOR_SHAPES.line;
+        const fill = !!DECOR_FILL[slot.shape];
+        div.style.background = "none";
+        div.style.outline = "none";
+        div.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%;display:block;overflow:visible">
+          ${shape.svg.replace(/stroke-width/g, 'vector-effect="non-scaling-stroke" stroke-width')}
+        </svg>`.replace('vector-effect="non-scaling-stroke" stroke-width', 'stroke-width');
+        const svg = div.firstChild;
+        const el2 = svg.firstElementChild;
+        if (el2) {
+          if (fill) { el2.setAttribute("fill", slot.color || palette().accent); el2.removeAttribute("stroke"); }
+          else { el2.setAttribute("stroke", slot.color || palette().accent); }
+        }
+      } else if (slot.type === "image") {
         const mi = mediaOf(slot);
         if (mi) {
           const img = document.createElement("img");
@@ -408,11 +426,11 @@
     updateHandles();
   }
 
-  /* ---------- Ручки перемещения/ресайза выбранного слота ---------- */
+  /* ---------- Ручки управления выбранным слотом ---------- */
   function updateHandles() {
     const el = $("#pbSpread");
     if (!el) return;
-    $$(".pb-movebar, .pb-resize, .pb-delhandle", el).forEach((h) => h.remove());
+    $$(".pb-movebar, .pb-resize, .pb-delhandle, .pb-rotatehandle", el).forEach((h) => h.remove());
     $$(".pb-slot", el).forEach((d) => d.classList.remove("selected"));
     if (selectedSlot == null) return;
     const div = $(`.pb-slot[data-slot-index="${selectedSlot}"]`, el);
@@ -421,23 +439,25 @@
     div.classList.add("selected");
 
     const s = lastScale;
-    // ручки живут на уровне холста, чтобы не обрезались overflow:hidden у слота
+    const bb = slotBBox(slot); // bbox с учётом вращения
+
+    // полоска перемещения
     const bar = document.createElement("div");
     bar.className = "pb-movebar";
-    bar.title = "Перетащите, чтобы переместить элемент (или Alt + перетаскивание)";
-    bar.textContent = "⠿ переместить";
-    bar.style.left = Math.max(0, slot.x * s) + "px";
-    bar.style.top = Math.max(0, slot.y * s - 20) + "px";
+    bar.title = "Перетащите, чтобы переместить (Alt + перетаскивание)";
+    bar.textContent = "⠿";
+    bar.style.left = Math.max(0, bb.x * s) + "px";
+    bar.style.top = Math.max(0, bb.y * s - 22) + "px";
     bar.addEventListener("mousedown", (e) => startSlotDrag(e, "move", slot));
     el.appendChild(bar);
 
+    // удаление
     const del = document.createElement("div");
     del.className = "pb-delhandle";
-    del.title = "Удалить элемент";
+    del.title = "Удалить (Delete)";
     del.textContent = "✕";
-    del.style.right = "auto";
-    del.style.left = (slot.x * s + slot.w * s - 40) + "px";
-    del.style.top = Math.max(0, slot.y * s - 20) + "px";
+    del.style.left = (bb.x * s + bb.w * s - 26) + "px";
+    del.style.top = Math.max(0, bb.y * s - 22) + "px";
     del.addEventListener("mousedown", (e) => e.stopPropagation());
     del.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -447,34 +467,91 @@
     });
     el.appendChild(del);
 
+    // ручка вращения
+    const rot = document.createElement("div");
+    rot.className = "pb-rotatehandle";
+    rot.title = "Вращать (Shift — шаг 15°)";
+    rot.innerHTML = '<i class="ph ph-arrow-clockwise"></i>';
+    rot.style.left = (bb.x * s + bb.w * s / 2 - 11) + "px";
+    rot.style.top = Math.max(0, bb.y * s - 22) + "px";
+    rot.addEventListener("mousedown", (e) => startSlotDrag(e, "rotate", slot));
+    el.appendChild(rot);
+
+    // ресайз
     const rh = document.createElement("div");
     rh.className = "pb-resize";
     rh.title = "Изменить размер";
-    rh.style.left = ((slot.x + slot.w) * s - 7) + "px";
-    rh.style.top = ((slot.y + slot.h) * s - 7) + "px";
+    rh.style.left = ((bb.x + bb.w) * s - 8) + "px";
+    rh.style.top = ((bb.y + bb.h) * s - 8) + "px";
     rh.addEventListener("mousedown", (e) => startSlotDrag(e, "resize", slot));
     el.appendChild(rh);
   }
 
-  /* ---------- Перемещение и ресайз слота (мм) ---------- */
+  const clampNum = (v, a, b) => Math.min(b, Math.max(a, isFinite(v) ? v : a));
+
+  /* ---------- BBox слота с учётом вращения ---------- */
+  function slotBBox(slot) {
+    if (!slot.rot) return { x: slot.x, y: slot.y, w: slot.w, h: slot.h };
+    const cx = slot.x + slot.w / 2, cy = slot.y + slot.h / 2;
+    const r = slot.rot * Math.PI / 180;
+    const pts = [[slot.x, slot.y], [slot.x + slot.w, slot.y], [slot.x, slot.y + slot.h], [slot.x + slot.w, slot.y + slot.h]]
+      .map(([x, y]) => {
+        const dx = x - cx, dy = y - cy;
+        return [cx + dx * Math.cos(r) - dy * Math.sin(r), cy + dx * Math.sin(r) + dy * Math.cos(r)];
+      });
+    const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]);
+    return { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+  }
+
+  /* ---------- Декор-элементы ---------- */
+  const DECOR_SHAPES = {
+    line:   { name: "Линия",        svg: '<rect x="0" y="47" width="100" height="6" rx="3"/>' },
+    rect:   { name: "Рамка",        svg: '<rect x="3" y="3" width="94" height="94" fill="none" stroke-width="5"/>' },
+    circle: { name: "Круг",         svg: '<circle cx="50" cy="50" r="46" fill="none" stroke-width="5"/>' },
+    heart:  { name: "Сердце",       svg: '<path d="M50 88 C10 60 4 34 22 20 C36 9 50 20 50 32 C50 20 64 9 78 20 C96 34 90 60 50 88 Z"/>' },
+    star:   { name: "Звезда",       svg: '<path d="M50 4 L61 38 L97 38 L68 59 L79 94 L50 72 L21 94 L32 59 L3 38 L39 38 Z"/>' },
+    corner: { name: "Уголок",       svg: '<path d="M6 40 L6 6 L40 6" fill="none" stroke-width="8" stroke-linecap="round"/>' },
+    tape:   { name: "Скотч",        svg: '<rect x="4" y="30" width="92" height="40" rx="2"/>' },
+  };
+  const DECOR_FILL = { line: 1, heart: 1, star: 1, tape: 1 };
+
+  /* ---------- Перетаскивание / ресайз / вращение слота (мм) ---------- */
   function startSlotDrag(e, mode, slot) {
     e.preventDefault();
     e.stopPropagation();
     const f = fmt();
     const sx = e.clientX, sy = e.clientY;
-    const o = { x: slot.x, y: slot.y, w: slot.w, h: slot.h };
+    const o = { x: slot.x, y: slot.y, w: slot.w, h: slot.h, rot: slot.rot || 0 };
     let moved = false;
+
+    // вращение: угол от центра элемента к курсору
+    let startAngle = null;
+    if (mode === "rotate") {
+      const rect = $("#pbSpread").getBoundingClientRect();
+      const cx = rect.left + (slot.x + slot.w / 2) * lastScale;
+      const cy = rect.top + (slot.y + slot.h / 2) * lastScale;
+      startAngle = Math.atan2(e.clientY - cy, e.clientX - cx);
+    }
 
     const onMove = (ev) => {
       const dx = (ev.clientX - sx) / lastScale;
       const dy = (ev.clientY - sy) / lastScale;
       moved = true;
-      if (mode === "move") {
+      if (mode === "rotate") {
+        const rect = $("#pbSpread").getBoundingClientRect();
+        const cx = rect.left + (slot.x + slot.w / 2) * lastScale;
+        const cy = rect.top + (slot.y + slot.h / 2) * lastScale;
+        const a = Math.atan2(ev.clientY - cy, ev.clientX - cx);
+        let deg = o.rot + (a - startAngle) * 180 / Math.PI;
+        deg = ((Math.round(deg) % 360) + 360) % 360;
+        if (ev.shiftKey) deg = Math.round(deg / 15) * 15; // шаг 15° с Shift
+        slot.rot = deg;
+      } else if (mode === "move") {
         slot.x = Math.round(clampNum(o.x + dx, -f.bleed, spreadWmm() - 10));
         slot.y = Math.round(clampNum(o.y + dy, -f.bleed, f.pageH - 10));
       } else {
         slot.w = Math.round(clampNum(o.w + dx, 10, spreadWmm() - o.x));
-        slot.h = Math.round(clampNum(o.h + dy, 8, f.pageH - o.y));
+        slot.h = Math.round(clampNum(o.h + dy, slot.type === "text" ? 4 : 8, f.pageH - o.y));
       }
       renderCanvas();
     };
@@ -486,8 +563,6 @@
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
   }
-
-  const clampNum = (v, a, b) => Math.min(b, Math.max(a, isFinite(v) ? v : a));
 
   function selectSlot(i) {
     selectedSlot = i;
@@ -612,7 +687,7 @@
           const x = side === "left" ? slot.x : slot.x - f.pageW;
           if (x + slot.w < 0 || x > f.pageW) return;
           const s = document.createElement("div");
-          s.className = "pb-thumb-slot" + (slot.type === "text" ? " txt" : "");
+          s.className = "pb-thumb-slot" + (slot.type === "text" ? " txt" : "") + (slot.type === "decor" ? " dec" : "");
           s.style.left = Math.max(0, x * k) + "px";
           s.style.top = slot.y * k + "px";
           s.style.width = Math.min(f.pageW - Math.max(0, x), slot.w) * k + "px";
@@ -703,7 +778,16 @@
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="btn" id="pbAddFrame"><i class="ph ph-image"></i> Рамка</button>
           <button class="btn" id="pbAddText"><i class="ph ph-text-aa"></i> Текст</button>
-          <button class="btn" id="pbFillBook" title="Разложить фото из галереи по страницам"><i class="ph ph-stack"></i> Разложить фото</button>
+          <button class="btn" id="pbAddDecor"><i class="ph ph-shape"></i> Декор</button>
+          <button class="btn" id="pbFillBook" title="Разложить фото из галереи по страницам"><i class="ph ph-stack"></i> Разложить</button>
+        </div>
+        <h4 style="margin-top:14px">Наборы дизайна</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <button class="btn" data-decorset="classic" title="Уголки и разделитель корешка">Классика</button>
+          <button class="btn" data-decorset="romantic" title="Сердце и линии">Романтика</button>
+          <button class="btn" data-decorset="minimal" title="Строгие линии">Минимал</button>
+          <button class="btn" data-decorset="celebration" title="Звёзды и скотч">Праздник</button>
+          <button class="btn" data-decorset="washi" title="Скотч и круги" style="grid-column:1/-1">Ваши-Скотчи (Washi)</button>
         </div>
         ${sel ? `
         <h4 style="margin-top:16px">Геометрия (мм)</h4>
@@ -715,8 +799,11 @@
             </label>`).join("")}
         </div>
         <div style="display:flex;gap:6px;margin-top:10px">
-          <button class="btn" data-slotact="dup" title="Дублировать элемент"><i class="ph ph-copy"></i></button>
-          <button class="btn" data-slotact="del" title="Удалить элемент"><i class="ph ph-trash"></i></button>
+          <button class="btn" data-slotact="dup" title="Дублировать"><i class="ph ph-copy"></i></button>
+          <button class="btn" data-slotact="del" title="Удалить"><i class="ph ph-trash"></i></button>
+          <button class="btn" data-slotact="up" title="На слой выше"><i class="ph ph-arrow-up"></i></button>
+          <button class="btn" data-slotact="down" title="На слой ниже"><i class="ph ph-arrow-down"></i></button>
+          <button class="btn" data-slotact="rot0" title="Выровнять угол (0°)"><i class="ph ph-arrow-counter-clockwise"></i></button>
         </div>` : `<p style="font-size:.8rem;color:var(--color-muted);margin-top:10px">Кликните по элементу на холсте, чтобы настроить его положение и размер. Рамку можно перетаскивать за верхнюю полоску ⠿ и растягивать за уголок.</p>`}
       </div>
 
@@ -791,6 +878,23 @@
         <div class="pb-slider-row"><span>DPI: <b id="pbDpiVal">${dpiLabel(sel)}</b></span></div>
       </div>` : ""}
 
+      ${sel && sel.type === "decor" ? `
+      <div class="pb-section" id="pbDecorPanel">
+        <h4>Декор-элемент</h4>
+        <select class="pb-select" data-dknob="shape" style="width:100%">
+          ${Object.entries(DECOR_SHAPES).map(([k, v]) => `<option value="${k}" ${sel.shape === k ? "selected" : ""}>${v.name}</option>`).join("")}
+        </select>
+        <div class="pb-slider-row" style="margin-top:10px">
+          <span>Цвет</span>
+          <input type="color" class="pb-color-input" data-dknob="color" value="${sel.color || palette().accent}">
+        </div>
+        <div class="pb-slider-row">
+          <span>Угол, °</span>
+          <input type="range" min="0" max="345" step="15" value="${sel.rot || 0}" data-dknob="rot">
+          <b style="min-width:30px;text-align:right">${sel.rot || 0}</b>
+        </div>
+      </div>` : ""}
+
       ${sel && sel.type === "text" ? `
       <div class="pb-section pb-text-controls" id="pbTextPanel">
         <h4>Типографика</h4>
@@ -835,6 +939,21 @@
     // Добавление элементов
     $("#pbAddFrame")?.addEventListener("click", () => addSlot("image"));
     $("#pbAddText")?.addEventListener("click", () => addSlot("text"));
+    $("#pbAddDecor")?.addEventListener("click", () => addSlot("decor"));
+    $$("[data-decorset]", side).forEach(b => b.addEventListener("click", () => addDecorSet(b.dataset.decorset)));
+
+    // Панель декора
+    const dp = $("#pbDecorPanel", side);
+    if (dp) {
+      const ds = sp.slots[selectedSlot];
+      $$("[data-dknob]", dp).forEach(el => el.addEventListener("input", () => {
+        const k = el.dataset.dknob;
+        if (k === "shape") ds.shape = el.value;
+        if (k === "color") ds.color = el.value;
+        if (k === "rot") { ds.rot = +el.value; el.parentElement.querySelector("b").textContent = el.value; }
+        renderCanvas(); save();
+      }));
+    }
     $("#pbFillBook")?.addEventListener("click", openFillModal);
 
     // Геометрия выбранного слота
@@ -850,7 +969,18 @@
     $$("[data-slotact]", side).forEach(b => b.addEventListener("click", () => {
       const idx = selectedSlot;
       if (idx == null) return;
-      if (b.dataset.slotact === "dup") {
+      if (["up", "down", "rot0"].includes(b.dataset.slotact)) {
+        const idx = selectedSlot;
+        if (b.dataset.slotact === "up" && idx < sp.slots.length - 1) {
+          [sp.slots[idx], sp.slots[idx + 1]] = [sp.slots[idx + 1], sp.slots[idx]];
+          selectedSlot = idx + 1;
+        } else if (b.dataset.slotact === "down" && idx > 0) {
+          [sp.slots[idx], sp.slots[idx - 1]] = [sp.slots[idx - 1], sp.slots[idx]];
+          selectedSlot = idx - 1;
+        } else if (b.dataset.slotact === "rot0") {
+          sp.slots[idx].rot = 0;
+        }
+      } else if (b.dataset.slotact === "dup") {
         const copy = JSON.parse(JSON.stringify(sp.slots[idx]));
         copy.slotId += "_c" + Date.now() % 1000;
         copy.x = Math.min(copy.x + 8, fmt().pageW * 2 - copy.w);
@@ -977,6 +1107,8 @@
     };
     if (type === "image") {
       Object.assign(base, { img: null, crop: { zoom: 1, ox: 0.5, oy: 0.5, rot: 0 } });
+    } else if (type === "decor") {
+      Object.assign(base, { shape: "line", color: palette().accent, rot: 0, w: 60, h: 6 });
     } else {
       Object.assign(base, {
         text: "Ваш текст", size: 18, font: theme.fonts[0],
@@ -985,6 +1117,42 @@
     }
     sp.slots.push(base);
     selectedSlot = sp.slots.length - 1;
+    renderApp(); save();
+  }
+
+  /* ---------- Наборы дизайна (декор-композиции) ---------- */
+  function addDecorSet(kind) {
+    const f = fmt();
+    const sp = activeSpread();
+    const W = spreadWmm(), H = f.pageH;
+    const p = palette();
+    const mk = (shape, x, y, w, h, rot = 0, color = null) => {
+      sp.slots.push({ slotId: "dec_" + Date.now() % 100000 + sp.slots.length, type: "decor", shape, x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h), rot, color: color || p.accent });
+    };
+    if (kind === "classic") {
+      // классика: рамки-уголки + разделитель по центру корешка
+      mk("corner", 12, 12, 24, 24); mk("corner", W - 36, H - 36, 24, 24, 180);
+      mk("line", f.pageW + 20, H / 2 - 2, 40, 4);
+    } else if (kind === "romantic") {
+      mk("heart", f.pageW * 0.45, H * 0.06, 20, 20);
+      mk("line", 30, H * 0.12, W - 60, 3);
+      mk("line", 30, H * 0.9, W - 60, 3);
+      mk("circle", W - 60, 20, 34, 34, 0, "transparent" === "x" ? null : null);
+    } else if (kind === "minimal") {
+      mk("line", 30, 24, 90, 2);
+      mk("line", W - 120, H - 26, 90, 2);
+      mk("rect", f.pageW + 14, H / 2 - 26, 52, 52, 0);
+    } else if (kind === "celebration") {
+      mk("star", f.pageW * 0.2, H * 0.15, 18, 18);
+      mk("star", f.pageW * 0.75, H * 0.2, 12, 12, 15);
+      mk("star", W - f.pageW * 0.3, H * 0.75, 15, 15);
+      mk("tape", f.pageW * 0.35, H * 0.08, 46, 20, -6);
+    } else if (kind === "washi") {
+      mk("tape", 24, 18, 50, 22, -8);
+      mk("tape", W - 80, H - 44, 50, 22, 7);
+      mk("circle", f.pageW + 22, H / 2 - 17, 34, 34);
+    }
+    selectedSlot = null;
     renderApp(); save();
   }
 
@@ -1113,8 +1281,46 @@
 
     const drawSlots = (offsetX) => {
       sp.slots.forEach((slot) => {
-        const x = slot.x - offsetX + B, y = slot.y + B;
+        let x = slot.x - offsetX + B, y = slot.y + B;
         if (x + slot.w < B - 0.1 || x > Wmm - B + 0.1) return;
+        // поддержка вращения: поворот вокруг центра слота
+        let rotRestore = null;
+        if (slot.rot) {
+          rotRestore = true;
+          const cx = x + slot.w / 2, cy = y + slot.h / 2;
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(slot.rot * Math.PI / 180);
+          ctx.translate(-cx, -cy);
+        }
+        if (slot.type === "decor") {
+          const fill = !!DECOR_FILL[slot.shape];
+          const col = slot.color || palette().accent;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.scale(slot.w / 100, slot.h / 100);
+          ctx.restore();
+          ctx.fillStyle = col;
+          ctx.strokeStyle = col;
+          if (slot.shape === "line") ctx.fillRect(x, y + slot.h / 2 - 3, slot.w, 6);
+          else if (slot.shape === "rect") { ctx.lineWidth = Math.max(1.2, slot.w * 0.05); ctx.strokeRect(x + 1.5, y + 1.5, slot.w - 3, slot.h - 3); }
+          else if (slot.shape === "circle") { ctx.lineWidth = Math.max(1.2, slot.w * 0.05); ctx.beginPath(); ctx.ellipse(x + slot.w / 2, y + slot.h / 2, slot.w / 2 - 1, slot.h / 2 - 1, 0, 0, Math.PI * 2); ctx.stroke(); }
+          else if (slot.shape === "tape") { ctx.globalAlpha = 0.75; ctx.fillRect(x, y, slot.w, slot.h); ctx.globalAlpha = 1; }
+          else if (slot.shape === "heart" || slot.shape === "star" || slot.shape === "corner") {
+            const d = { heart: "M50 88 C10 60 4 34 22 20 C36 9 50 20 50 32 C50 20 64 9 78 20 C96 34 90 60 50 88 Z",
+                        star: "M50 4 L61 38 L97 38 L68 59 L79 94 L50 72 L21 94 L32 59 L3 38 L39 38 Z",
+                        corner: "M6 40 L6 6 L40 6" }[slot.shape];
+            const path2 = new Path2D(d);
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(slot.w / 100, slot.h / 100);
+            if (fill) ctx.fill(path2);
+            else { ctx.lineWidth = 8; ctx.lineCap = "round"; ctx.stroke(path2); }
+            ctx.restore();
+          }
+          if (rotRestore) ctx.restore();
+          return;
+        }
         if (slot.type === "image") {
           const mi = mediaOf(slot);
           if (!mi) return;
@@ -1149,6 +1355,7 @@
           });
           ctx.restore();
         }
+        if (rotRestore) ctx.restore();
       });
     };
 

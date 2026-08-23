@@ -910,6 +910,17 @@
 .pb-layer i { color: var(--color-muted); }
 .pb-layer.active i { color: var(--pb-accent); }
 
+/* ---------- Магнитные направляющие (как в Figma) ---------- */
+.pb-guide {
+  position: absolute;
+  background: #f43f5e;
+  pointer-events: none;
+  z-index: 900;
+}
+
+.pb-guide-v { width: 1px; }
+.pb-guide-h { height: 1px; }
+
 @media (max-width: 900px) {
   .pb-side { display: none; }
   .pb-workspace { padding: 12px; }

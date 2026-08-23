@@ -346,6 +346,7 @@
       div.style.top = slot.y * s + "px";
       div.style.width = slot.w * s + "px";
       div.style.height = slot.h * s + "px";
+      div.style.zIndex = 10 + i; // порядок слоёв = порядок в массиве (и в панели «Слои»)
       if (slot.rot) {
         div.style.transformOrigin = "center";
         div.style.transform = `rotate(${slot.rot}deg)`;
@@ -435,13 +436,17 @@
   function updateHandles() {
     const el = $("#pbSpread");
     if (!el) return;
-    $$(".pb-elbar, .pb-resize, .pb-rotatehandle", el).forEach((h) => h.remove());
-    $$(".pb-slot", el).forEach((d) => d.classList.remove("selected"));
+    $$(".pb-elbar, .pb-resize, .pb-rotatehandle", el).forEach((h) => { h.remove(); });
+    $$(".pb-slot", el).forEach((d) => {
+      d.classList.remove("selected");
+      d.style.zIndex = 10 + (+d.dataset.slotIndex); // восстановить исходный z-index
+    });
     if (selectedSlot == null) return;
     const div = $(`.pb-slot[data-slot-index="${selectedSlot}"]`, el);
     const slot = activeSpread().slots[selectedSlot];
     if (!div || !slot) return;
     div.classList.add("selected");
+    div.style.zIndex = 500;
 
     const s = lastScale;
     const bb = slotBBox(slot); // bbox с учётом вращения
@@ -449,6 +454,7 @@
     // панель действий элемента
     const bar = document.createElement("div");
     bar.className = "pb-elbar";
+    bar.style.zIndex = 1000;
     bar.style.left = Math.max(0, bb.x * s) + "px";
     bar.style.top = Math.max(0, bb.y * s - 34) + "px";
     const mkBtn = (icon, title, fn, dragMode) => {
@@ -465,8 +471,8 @@
       return b;
     };
     bar.appendChild(mkBtn("⠿", "Переместить (или Alt+перетаскивание)", null, "move"));
-    bar.appendChild(mkBtn('<i class="ph ph-arrow-clockwise"></i>', "Вращать (Shift — шаг 15°)", null, "rotate"));
-    bar.appendChild(mkBtn('<i class="ph ph-copy"></i>', "Дублировать (Ctrl+D)", () => {
+    bar.appendChild(mkBtn("⟳", "Вращать (Shift — шаг 15°)", null, "rotate"));
+    bar.appendChild(mkBtn("⧉", "Дублировать (Ctrl+D)", () => {
       const sp = activeSpread();
       const copy = JSON.parse(JSON.stringify(slot));
       copy.slotId += "_c" + Date.now() % 1000;
@@ -474,9 +480,9 @@
       selectedSlot++;
       renderApp(); save();
     }));
-    bar.appendChild(mkBtn('<i class="ph ph-arrow-up"></i>', "Слой выше", () => moveLayer(selectedSlot, 1)));
-    bar.appendChild(mkBtn('<i class="ph ph-arrow-down"></i>', "Слой ниже", () => moveLayer(selectedSlot, -1)));
-    bar.appendChild(mkBtn('<i class="ph ph-trash"></i>', "Удалить (Delete)", () => {
+    bar.appendChild(mkBtn("▲", "Слой выше", () => moveLayer(selectedSlot, 1)));
+    bar.appendChild(mkBtn("▼", "Слой ниже", () => moveLayer(selectedSlot, -1)));
+    bar.appendChild(mkBtn("✕", "Удалить (Delete)", () => {
       activeSpread().slots.splice(selectedSlot, 1);
       selectedSlot = null;
       renderApp(); save();
@@ -487,6 +493,7 @@
     // ручка вращения
     const rot = document.createElement("div");
     rot.className = "pb-rotatehandle";
+    rot.style.zIndex = 1001;
     rot.title = "Вращать (Shift — шаг 15°)";
     rot.innerHTML = '<i class="ph ph-arrow-clockwise"></i>';
     rot.style.left = (bb.x * s + bb.w * s / 2 - 11) + "px";
@@ -497,6 +504,7 @@
     // ресайз
     const rh = document.createElement("div");
     rh.className = "pb-resize";
+    rh.style.zIndex = 1001;
     rh.title = "Изменить размер";
     rh.style.left = ((bb.x + bb.w) * s - 8) + "px";
     rh.style.top = ((bb.y + bb.h) * s - 8) + "px";
@@ -505,6 +513,62 @@
   }
 
   const clampNum = (v, a, b) => Math.min(b, Math.max(a, isFinite(v) ? v : a));
+
+  /* ---------- Магнит (snap) как в Figma ---------- */
+  let snapGuides = [];
+  function findSnap(slot, nx, ny) {
+    const f = fmt();
+    const thr = 8 / lastScale; // порог в мм (~8px)
+    const guides = [];
+    const W = spreadWmm();
+
+    const vx = [], vy = [];
+    // осевые линии разворота и центры страниц
+    [0, f.pageW, W, W / 2, f.pageW / 2, f.pageW * 1.5].forEach((v) => vx.push(v));
+    [0, f.pageH, f.pageH / 2].forEach((v) => vy.push(v));
+    activeSpread().slots.forEach((s) => {
+      if (s === slot) return;
+      vx.push(s.x, s.x + s.w, s.x + s.w / 2);
+      vy.push(s.y, s.y + s.h, s.y + s.h / 2);
+    });
+
+    const tryAxis = (pos, size, targets, axis) => {
+      let best = null;
+      [pos, pos + size / 2, pos + size].forEach((pv, k) => {
+        targets.forEach((tv) => {
+          const d = Math.abs(pv - tv);
+          if (d < thr && (!best || d < best.d)) best = { d, tv, k };
+        });
+      });
+      if (best) {
+        const adj = best.k === 0 ? best.tv : best.k === 1 ? best.tv - size / 2 : best.tv - size;
+        guides.push({ axis, v: best.tv });
+        return adj;
+      }
+      return pos;
+    };
+
+    const x2 = tryAxis(nx, slot.w, vx, "v");
+    const y2 = tryAxis(ny, slot.h, vy, "h");
+    return { x: x2, y: y2, guides };
+  }
+
+  function drawSnapGuides() {
+    clearSnapGuides();
+    const el = $("#pbSpread");
+    if (!el) return;
+    snapGuides.forEach((g) => {
+      const d = document.createElement("div");
+      d.className = g.axis === "v" ? "pb-guide pb-guide-v" : "pb-guide pb-guide-h";
+      if (g.axis === "v") { d.style.left = g.v * lastScale + "px"; d.style.top = "-30px"; d.style.bottom = "-30px"; }
+      else { d.style.top = g.v * lastScale + "px"; d.style.left = "-30px"; d.style.right = "-30px"; }
+      el.appendChild(d);
+    });
+  }
+
+  function clearSnapGuides() {
+    $$(".pb-guide").forEach((g) => g.remove());
+  }
 
   /* ---------- BBox слота с учётом вращения ---------- */
   function slotBBox(slot) {
@@ -564,17 +628,33 @@
         if (ev.shiftKey) deg = Math.round(deg / 15) * 15; // шаг 15° с Shift
         slot.rot = deg;
       } else if (mode === "move") {
-        slot.x = Math.round(clampNum(o.x + dx, -f.bleed, spreadWmm() - 10));
-        slot.y = Math.round(clampNum(o.y + dy, -f.bleed, f.pageH - 10));
+        let nx = clampNum(o.x + dx, -f.bleed, spreadWmm() - 10);
+        let ny = clampNum(o.y + dy, -f.bleed, f.pageH - 10);
+        // магнит как в Figma: привязка к краям/центрам соседей и страниц
+        const snap = findSnap(slot, nx, ny);
+        nx = snap.x; ny = snap.y;
+        slot.x = Math.round(nx); slot.y = Math.round(ny);
+        snapGuides = snap.guides;
       } else {
-        slot.w = Math.round(clampNum(o.w + dx, 10, spreadWmm() - o.x));
-        slot.h = Math.round(clampNum(o.h + dy, slot.type === "text" ? 4 : 8, f.pageH - o.y));
+        if (ev.shiftKey) {
+          // Shift — пропорции сохраняются
+          const w2 = clampNum(o.w + dx, 10, spreadWmm() - o.x);
+          const ratio = o.h / o.w;
+          slot.w = Math.round(w2);
+          slot.h = Math.round(clampNum(w2 * ratio, 4, f.pageH - o.y));
+        } else {
+          slot.w = Math.round(clampNum(o.w + dx, 10, spreadWmm() - o.x));
+          slot.h = Math.round(clampNum(o.h + dy, slot.type === "text" ? 4 : 8, f.pageH - o.y));
+        }
       }
       renderCanvas();
+      drawSnapGuides();
     };
     const onUp = () => {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);
+      snapGuides = [];
+      clearSnapGuides();
       if (moved) { suppressClick = true; renderSide(); save(); }
     };
     window.addEventListener("mousemove", onMove);
@@ -1798,6 +1878,19 @@
     window.addEventListener("keydown", (e) => {
       if (!$("#pbApp").classList.contains("active")) return;
       const meta = e.ctrlKey || e.metaKey;
+      // перехватываем раньше contenteditable/input, чтобы Ctrl+Z/D/Y работали всегда
+      if (meta && e.key.toLowerCase() === "z") { e.preventDefault(); e.stopPropagation(); e.shiftKey ? redo() : undo(); return; }
+      if (meta && e.key.toLowerCase() === "y") { e.preventDefault(); e.stopPropagation(); redo(); return; }
+      if (meta && e.key.toLowerCase() === "d" && selectedSlot != null) {
+        e.preventDefault(); e.stopPropagation();
+        const sp = activeSpread();
+        const copy = JSON.parse(JSON.stringify(sp.slots[selectedSlot]));
+        copy.slotId += "_k" + Date.now() % 1000;
+        sp.slots.splice(selectedSlot + 1, 0, copy);
+        selectedSlot++;
+        renderApp(); save();
+        return;
+      }
       if (meta && e.key.toLowerCase() === "z") { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
       if (meta && e.key.toLowerCase() === "y") { e.preventDefault(); redo(); return; }
       if (meta && e.key.toLowerCase() === "d" && selectedSlot != null) {
@@ -1830,7 +1923,7 @@
         renderApp(); save();
       }
       if (e.key === "Escape") { closeContextMenu(); selectedSlot = null; renderCanvas(); renderSide(); }
-    });
+    }, true);
   }
 
   function zoomCanvas(factor) {

@@ -360,7 +360,7 @@
   width: 100%;
   outline: none;
   overflow-wrap: break-word;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* ---------- Side panel ---------- */

@@ -1563,9 +1563,7 @@
           ctx.restore();
         } else {
           ctx.save();
-          ctx.beginPath();
-          ctx.rect(x, y, slot.w, slot.h);
-          ctx.clip();
+          // текст не клипуем по рамке — WYSIWYG как в редакторе
           ctx.fillStyle = slot.color || palette().text;
           // контекст масштабирован в мм, поэтому размер в px = размер в мм
           ctx.font = `${slot.italic ? "italic " : ""}${slot.bold ? 600 : 400} ${slot.size}px ${fontCss(slot.font)}`;

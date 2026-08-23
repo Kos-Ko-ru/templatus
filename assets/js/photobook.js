@@ -390,7 +390,7 @@
             div.appendChild(b);
           }
         } else {
-          div.innerHTML = `<div class="pb-empty-hint"><i class="ph ph-image"></i>Перетащите фото<br>или кликните</div>`;
+          div.innerHTML = `<div class="pb-empty-hint">▭Перетащите фото<br>или кликните</div>`;
         }
         bindImageSlot(div, slot, i);
       } else {
@@ -420,7 +420,10 @@
         });
         div.appendChild(t);
       }
-      div.addEventListener("mousedown", () => selectSlot(i));
+      div.addEventListener("mousedown", (e) => {
+        e.stopPropagation();
+        if (selectedSlot !== i) { selectedSlot = i; renderSide(); updateHandles(); }
+      });
       div.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         selectedSlot = i;
@@ -430,6 +433,11 @@
     });
 
     updateHandles();
+
+    // клик по пустой области разворота — снять выделение
+    el.addEventListener("mousedown", (e) => {
+      if (selectedSlot != null) { selectedSlot = null; renderCanvas(); renderSide(); }
+    });
   }
 
   /* ---------- Ручки управления выбранным слотом ---------- */
@@ -495,7 +503,7 @@
     rot.className = "pb-rotatehandle";
     rot.style.zIndex = 1001;
     rot.title = "Вращать (Shift — шаг 15°)";
-    rot.innerHTML = '<i class="ph ph-arrow-clockwise"></i>';
+    rot.innerHTML = "⟳";
     rot.style.left = (bb.x * s + bb.w * s / 2 - 11) + "px";
     rot.style.top = Math.max(0, bb.y * s - 22) + "px";
     rot.addEventListener("mousedown", (e) => startSlotDrag(e, "rotate", slot));
@@ -878,10 +886,10 @@
       <div class="pb-section">
         <h4>Элементы страницы</h4>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn" id="pbAddFrame"><i class="ph ph-image"></i> Рамка</button>
-          <button class="btn" id="pbAddText"><i class="ph ph-text-aa"></i> Текст</button>
-          <button class="btn" id="pbAddDecor"><i class="ph ph-shape"></i> Декор</button>
-          <button class="btn" id="pbFillBook" title="Разложить фото из галереи по страницам"><i class="ph ph-stack"></i> Разложить</button>
+          <button class="btn" id="pbAddFrame">▭ Рамка</button>
+          <button class="btn" id="pbAddText">T Текст</button>
+          <button class="btn" id="pbAddDecor">✦ Декор</button>
+          <button class="btn" id="pbFillBook" title="Разложить фото из галереи по страницам">⇉ Разложить</button>
         </div>
         <h4 style="margin-top:14px">Наборы дизайна</h4>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
@@ -901,11 +909,11 @@
             </label>`).join("")}
         </div>
         <div style="display:flex;gap:6px;margin-top:10px">
-          <button class="btn" data-slotact="dup" title="Дублировать"><i class="ph ph-copy"></i></button>
-          <button class="btn" data-slotact="del" title="Удалить"><i class="ph ph-trash"></i></button>
-          <button class="btn" data-slotact="up" title="На слой выше"><i class="ph ph-arrow-up"></i></button>
-          <button class="btn" data-slotact="down" title="На слой ниже"><i class="ph ph-arrow-down"></i></button>
-          <button class="btn" data-slotact="rot0" title="Выровнять угол (0°)"><i class="ph ph-arrow-counter-clockwise"></i></button>
+          <button class="btn" data-slotact="dup" title="Дублировать">⧉</button>
+          <button class="btn" data-slotact="del" title="Удалить">🗑</button>
+          <button class="btn" data-slotact="up" title="На слой выше">▲</button>
+          <button class="btn" data-slotact="down" title="На слой ниже">▼</button>
+          <button class="btn" data-slotact="rot0" title="Выровнять угол (0°)">↺</button>
         </div>` : `<p style="font-size:.8rem;color:var(--color-muted);margin-top:10px">Кликните по элементу на холсте, чтобы настроить его положение и размер. Рамку можно перетаскивать за верхнюю полоску ⠿ и растягивать за уголок.</p>`}
       </div>
 
@@ -942,10 +950,10 @@
         <div class="pb-layers">
           ${[...sp.slots].reverse().map((sl) => {
             const idx = sp.slots.indexOf(sl);
-            const ic = sl.type === "image" ? "ph-image" : sl.type === "text" ? "ph-text-aa" : "ph-shape";
+            const ic = sl.type === "image" ? "▭" : sl.type === "text" ? "𝐓" : "✦";
             const name = sl.type === "image" ? (sl.img ? "Фото" : "Рамка") : sl.type === "text" ? (sl.text.replace(/<[^>]+>/g, "").slice(0, 18) || "Текст") : "Декор: " + (DECOR_SHAPES[sl.shape] || {}).name;
             return `<div class="pb-layer ${selectedSlot === idx ? "active" : ""}" data-layer="${idx}">
-              <i class="ph ${ic}"></i><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</span>
+              <span style="width:16px;display:inline-flex;justify-content:center">${ic}</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</span>
               ${sl.rot ? `<em style="font-size:.7rem;color:var(--color-muted)">${sl.rot}°</em>` : ""}
             </div>`;
           }).join("")}
@@ -973,7 +981,7 @@
       <div class="pb-section">
         <h4>Медиагалерея проекта</h4>
         <div class="pb-media-drop" id="pbMediaDrop">
-          <i class="ph ph-upload-simple"></i><br>
+          ⬆<br>
           Перетащите фото (JPEG, PNG, WebP, HEIC)<br>или кликните для загрузки
         </div>
         <input type="file" id="pbMediaInput" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple hidden>
@@ -986,10 +994,10 @@
       <div class="pb-section pb-text-controls" id="pbImgPanel">
         <h4>Фото</h4>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn" data-act="rotate" title="Повернуть на 90°"><i class="ph ph-arrow-clockwise"></i> 90°</button>
-          <button class="btn" data-act="replace" title="Заменить фото"><i class="ph ph-swap"></i></button>
-          <button class="btn" data-act="remove" title="Убрать фото"><i class="ph ph-x"></i></button>
-          <button class="btn" data-act="fill" title="Заполнить слот (сброс кропа)"><i class="ph ph-frame-corners"></i></button>
+          <button class="btn" data-act="rotate" title="Повернуть на 90°">⟳ 90°</button>
+          <button class="btn" data-act="replace" title="Заменить фото">⇄</button>
+          <button class="btn" data-act="remove" title="Убрать фото">✕</button>
+          <button class="btn" data-act="fill" title="Заполнить слот (сброс кропа)">⤢</button>
         </div>
         <div class="pb-slider-row"><span>Zoom</span><input type="range" min="1" max="4" step="0.05" value="${sel.crop.zoom}" data-knob="zoom"></div>
         <div class="pb-slider-row"><span>DPI: <b id="pbDpiVal">${dpiLabel(sel)}</b></span></div>
@@ -1019,9 +1027,9 @@
           ${FONTS.map(f => `<option value="${f.id}" ${sel.font === f.id ? "selected" : ""}>${f.label}</option>`).join("")}
         </select>
         <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn" data-knob="align" data-v="left" title="По левому краю"><i class="ph ph-text-align-left"></i></button>
-          <button class="btn" data-knob="align" data-v="center" title="По центру"><i class="ph ph-text-align-center"></i></button>
-          <button class="btn" data-knob="align" data-v="right" title="По правому краю"><i class="ph ph-text-align-right"></i></button>
+          <button class="btn" data-knob="align" data-v="left" title="По левому краю">⯇</button>
+          <button class="btn" data-knob="align" data-v="center" title="По центру">≡</button>
+          <button class="btn" data-knob="align" data-v="right" title="По правому краю">⯈</button>
           <button class="btn" data-knob="uppercase" title="ВЕРХНИЙ РЕГИСТР">AA</button>
           <button class="btn" data-knob="bold" title="Полужирный" style="font-weight:700">Ж</button>
           <button class="btn" data-knob="italic" title="Курсив" style="font-style:italic">К</button>
@@ -1667,6 +1675,8 @@
     if (m) { m.remove(); }
   }
 
+  const CM_ICONS = { "ph-swap": "⇄", "ph-arrow-clockwise": "⟳", "ph-frame-corners": "⤢", "ph-copy": "⧉", "ph-arrow-up": "▲", "ph-arrow-down": "▼", "ph-undo": "↺", "ph-trash": "🗑" };
+
   function openContextMenu(x, y, slotIdx) {
     closeContextMenu();
     selectedSlot = slotIdx;
@@ -1710,7 +1720,7 @@
       if (it.sep) { const hr = document.createElement("div"); hr.className = "pb-cm-sep"; m.appendChild(hr); return; }
       const b = document.createElement("button");
       b.className = "pb-cm-item" + (it.danger ? " danger" : "");
-      b.innerHTML = `<i class="ph ${it.icon}"></i> ${it.label}`;
+      b.innerHTML = `${CM_ICONS[it.icon] || ""} ${it.label}`;
       b.addEventListener("click", () => { closeContextMenu(); it.fn(); });
       m.appendChild(b);
     });
@@ -1878,10 +1888,11 @@
     window.addEventListener("keydown", (e) => {
       if (!$("#pbApp").classList.contains("active")) return;
       const meta = e.ctrlKey || e.metaKey;
+      const code = e.code || ""; // физическая клавиша — работает и на русской раскладке
       // перехватываем раньше contenteditable/input, чтобы Ctrl+Z/D/Y работали всегда
-      if (meta && e.key.toLowerCase() === "z") { e.preventDefault(); e.stopPropagation(); e.shiftKey ? redo() : undo(); return; }
-      if (meta && e.key.toLowerCase() === "y") { e.preventDefault(); e.stopPropagation(); redo(); return; }
-      if (meta && e.key.toLowerCase() === "d" && selectedSlot != null) {
+      if (meta && code === "KeyZ") { e.preventDefault(); e.stopPropagation(); e.shiftKey ? redo() : undo(); return; }
+      if (meta && code === "KeyY") { e.preventDefault(); e.stopPropagation(); redo(); return; }
+      if (meta && code === "KeyD" && selectedSlot != null) {
         e.preventDefault(); e.stopPropagation();
         const sp = activeSpread();
         const copy = JSON.parse(JSON.stringify(sp.slots[selectedSlot]));

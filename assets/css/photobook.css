@@ -921,6 +921,51 @@
 .pb-guide-v { width: 1px; }
 .pb-guide-h { height: 1px; }
 
+/* ---------- Библиотека декора ---------- */
+.pb-decor-lib {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.pb-decor-item {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pb-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  cursor: grab;
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.pb-decor-item:hover {
+  border-color: var(--pb-accent);
+  background: color-mix(in srgb, var(--pb-accent) 8%, transparent);
+}
+
+.pb-decor-item svg { color: var(--color-text); }
+.pb-decor-item svg * { vector-effect: non-scaling-stroke; }
+
+/* ---------- Бейджи расстояний (Figma) ---------- */
+.pb-dist {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: #f43f5e;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 3px 7px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 901;
+  white-space: nowrap;
+}
+
 @media (max-width: 900px) {
   .pb-side { display: none; }
   .pb-workspace { padding: 12px; }

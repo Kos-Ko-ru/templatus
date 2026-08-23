@@ -198,13 +198,15 @@
     return { wMm: mediaItem.w * scale, hMm: mediaItem.h * scale, scale };
   }
 
-  // Позиция верхнего левого угла картинки (мм в координатах слота)
+  // Позиция верхнего левого угла картинки (мм в координатах слота).
+  // +12% «подглядывания» с каждой стороны — фото легко двигать внутри рамки всегда
   function imageOffset(slot, mediaItem) {
     const d = imageDrawSize(slot, mediaItem);
-    const maxOx = Math.max(0, d.wMm - slot.w), maxOy = Math.max(0, d.hMm - slot.h);
+    const spanX = Math.max(0, d.wMm - slot.w) + slot.w * 0.12;
+    const spanY = Math.max(0, d.hMm - slot.h) + slot.h * 0.12;
     return {
-      x: -maxOx * slot.crop.ox - Math.max(0, (slot.w - d.wMm) / 2),
-      y: -maxOy * slot.crop.oy - Math.max(0, (slot.h - d.hMm) / 2),
+      x: (slot.crop.ox * 2 - 1) * spanX - Math.max(0, (slot.w - d.wMm) / 2),
+      y: (slot.crop.oy * 2 - 1) * spanY - Math.max(0, (slot.h - d.hMm) / 2),
       ...d,
     };
   }
@@ -361,11 +363,11 @@
           ${shape.svg.replace(/stroke-width/g, 'vector-effect="non-scaling-stroke" stroke-width')}
         </svg>`.replace('vector-effect="non-scaling-stroke" stroke-width', 'stroke-width');
         const svg = div.firstChild;
-        const el2 = svg.firstElementChild;
-        if (el2) {
-          if (fill) { el2.setAttribute("fill", slot.color || palette().accent); el2.removeAttribute("stroke"); }
-          else { el2.setAttribute("stroke", slot.color || palette().accent); }
-        }
+        [...svg.children].forEach((el2) => {
+          const col = slot.color || palette().accent;
+          if (fill) { el2.setAttribute("fill", col); el2.setAttribute("stroke", "none"); }
+          else { el2.setAttribute("fill", "none"); el2.setAttribute("stroke", col); }
+        });
       } else if (slot.type === "image") {
         const mi = mediaOf(slot);
         if (mi) {
@@ -434,10 +436,28 @@
 
     updateHandles();
 
+    // перетаскивание декора из библиотеки на холст (on* — без дублей при ре-рендере)
+    el.ondragover = (e) => { if (e.dataTransfer.types.includes("text/pbshape")) e.preventDefault(); };
+    el.ondrop = (e) => {
+      const shape = e.dataTransfer.getData("text/pbshape");
+      if (!shape || !DECOR_SHAPES[shape]) return;
+      e.preventDefault();
+      const rect = el.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) / lastScale, my = (e.clientY - rect.top) / lastScale;
+      const wide = ["line", "dline", "dashline", "wave"].includes(shape);
+      activeSpread().slots.push({
+        slotId: "dec_" + Date.now() % 100000, type: "decor", shape,
+        x: Math.round(mx - (wide ? 30 : 15)), y: Math.round(my - (wide ? 3 : 15)),
+        w: wide ? 60 : 30, h: wide ? 6 : 30, rot: 0, color: palette().accent,
+      });
+      selectedSlot = activeSpread().slots.length - 1;
+      renderApp(); save();
+    };
+
     // клик по пустой области разворота — снять выделение
-    el.addEventListener("mousedown", (e) => {
+    el.onmousedown = (e) => {
       if (selectedSlot != null) { selectedSlot = null; renderCanvas(); renderSide(); }
-    });
+    };
   }
 
   /* ---------- Ручки управления выбранным слотом ---------- */
@@ -522,8 +542,31 @@
 
   const clampNum = (v, a, b) => Math.min(b, Math.max(a, isFinite(v) ? v : a));
 
+  /* ---------- SVG-рендер декора для экспорта (идентично экрану) ---------- */
+  const decorCache = {};
+  function decorImage(slot) {
+    const col = slot.color || palette().accent;
+    const key = slot.shape + "|" + col;
+    if (!decorCache[key]) {
+      const shape = DECOR_SHAPES[slot.shape] || DECOR_SHAPES.line;
+      const fill = !!DECOR_FILL[slot.shape];
+      const inner = [...shape.svg.replace(/<g /g, "<g ").matchAll(/<([a-z]+)[^>]*/g)].map(() => "").join("");
+      // перекраска: добавляем атрибуты через CSS-переменные
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" ${
+        fill ? `fill="${col}" stroke="none"` : `fill="none" stroke="${col}"`
+      }>${shape.svg}</svg>`;
+      const img = new Image();
+      const entry = { img, ready: false };
+      img.onload = () => { entry.ready = true; };
+      img.src = "data:image/svg+xml;charset=utf8," + encodeURIComponent(svg);
+      decorCache[key] = entry;
+    }
+    return decorCache[key];
+  }
+
   /* ---------- Магнит (snap) как в Figma ---------- */
   let snapGuides = [];
+  let snapBadges = [];
   function findSnap(slot, nx, ny) {
     const f = fmt();
     const thr = 8 / lastScale; // порог в мм (~8px)
@@ -556,9 +599,31 @@
       return pos;
     };
 
+    // равные отступы (как в Figma): соседи по строке/столбцу
+    const others = activeSpread().slots.filter((q) => q !== slot);
+    const overlap = (a1, a2, b1, b2) => Math.min(a2, b2) - Math.max(a1, b1);
+    const rowN = others.filter((q) => overlap(q.y, q.y + q.h, ny, ny + slot.h) > Math.min(slot.h, q.h) * 0.3)
+                       .sort((a, b) => a.x - b.x);
+    const colN = others.filter((q) => overlap(q.x, q.x + q.w, nx, nx + slot.w) > Math.min(slot.w, q.w) * 0.3)
+                       .sort((a, b) => a.y - b.y);
+    const L = [...rowN].reverse().find((q) => q.x + q.w <= nx + slot.w / 2);
+    const R = rowN.find((q) => q.x >= nx + slot.w / 2);
+    if (L && R) vx.push((L.x + L.w + R.x - slot.w) / 2); // центр между соседями = равные зазоры
+    const T = [...colN].reverse().find((q) => q.y + q.h <= ny + slot.h / 2);
+    const Bm = colN.find((q) => q.y >= ny + slot.h / 2);
+    if (T && Bm) vy.push((T.y + T.h + Bm.y - slot.h) / 2);
+
     const x2 = tryAxis(nx, slot.w, vx, "v");
     const y2 = tryAxis(ny, slot.h, vy, "h");
-    return { x: x2, y: y2, guides };
+
+    // бейджи расстояний до ближайших соседей
+    const badges = [];
+    const mkBadge = (gx, gy, text) => badges.push({ x: gx, y: gy, text });
+    if (L) mkBadge((L.x + L.w + x2) / 2, y2 + slot.h / 2, Math.max(0, Math.round(x2 - L.x - L.w)) + " мм");
+    if (R) mkBadge((x2 + slot.w + R.x) / 2, y2 + slot.h / 2, Math.max(0, Math.round(R.x - x2 - slot.w)) + " мм");
+    if (T) mkBadge(x2 + slot.w / 2, (T.y + T.h + y2) / 2, Math.max(0, Math.round(y2 - T.y - T.h)) + " мм");
+    if (Bm) mkBadge(x2 + slot.w / 2, (y2 + slot.h + Bm.y) / 2, Math.max(0, Math.round(Bm.y - y2 - slot.h)) + " мм");
+    return { x: x2, y: y2, guides, badges };
   }
 
   function drawSnapGuides() {
@@ -572,10 +637,18 @@
       else { d.style.top = g.v * lastScale + "px"; d.style.left = "-30px"; d.style.right = "-30px"; }
       el.appendChild(d);
     });
+    snapBadges.forEach((b) => {
+      const d = document.createElement("div");
+      d.className = "pb-dist";
+      d.textContent = b.text;
+      d.style.left = b.x * lastScale + "px";
+      d.style.top = b.y * lastScale + "px";
+      el.appendChild(d);
+    });
   }
 
   function clearSnapGuides() {
-    $$(".pb-guide").forEach((g) => g.remove());
+    $$(".pb-guide, .pb-dist").forEach((g) => g.remove());
   }
 
   /* ---------- BBox слота с учётом вращения ---------- */
@@ -594,15 +667,31 @@
 
   /* ---------- Декор-элементы ---------- */
   const DECOR_SHAPES = {
-    line:   { name: "Линия",        svg: '<rect x="0" y="47" width="100" height="6" rx="3"/>' },
-    rect:   { name: "Рамка",        svg: '<rect x="3" y="3" width="94" height="94" fill="none" stroke-width="5"/>' },
-    circle: { name: "Круг",         svg: '<circle cx="50" cy="50" r="46" fill="none" stroke-width="5"/>' },
-    heart:  { name: "Сердце",       svg: '<path d="M50 88 C10 60 4 34 22 20 C36 9 50 20 50 32 C50 20 64 9 78 20 C96 34 90 60 50 88 Z"/>' },
-    star:   { name: "Звезда",       svg: '<path d="M50 4 L61 38 L97 38 L68 59 L79 94 L50 72 L21 94 L32 59 L3 38 L39 38 Z"/>' },
-    corner: { name: "Уголок",       svg: '<path d="M6 40 L6 6 L40 6" fill="none" stroke-width="8" stroke-linecap="round"/>' },
-    tape:   { name: "Скотч",        svg: '<rect x="4" y="30" width="92" height="40" rx="2"/>' },
+    line:     { name: "Линия",        svg: '<rect x="0" y="47" width="100" height="6" rx="3"/>' },
+    dline:    { name: "Двойная линия", svg: '<rect x="0" y="34" width="100" height="5" rx="2"/><rect x="0" y="60" width="100" height="5" rx="2"/>' },
+    dashline: { name: "Пунктир",      svg: '<rect x="0" y="46" width="18" height="7" rx="2"/><rect x="28" y="46" width="18" height="7" rx="2"/><rect x="56" y="46" width="18" height="7" rx="2"/><rect x="84" y="46" width="16" height="7" rx="2"/>' },
+    rect:     { name: "Рамка",        svg: '<rect x="3" y="3" width="94" height="94" fill="none" stroke-width="5"/>' },
+    circle:   { name: "Круг",         svg: '<circle cx="50" cy="50" r="46" fill="none" stroke-width="5"/>' },
+    dotc:     { name: "Точка",        svg: '<circle cx="50" cy="50" r="28"/>' },
+    ring2:    { name: "Двойной круг", svg: '<circle cx="50" cy="50" r="46" fill="none" stroke-width="5"/><circle cx="50" cy="50" r="34" fill="none" stroke-width="5"/>' },
+    triangle: { name: "Треугольник",  svg: '<path d="M50 8 L94 90 L6 90 Z" fill="none" stroke-width="5"/>' },
+    diamond:  { name: "Ромб",         svg: '<path d="M50 4 L96 50 L50 96 L4 50 Z" fill="none" stroke-width="5"/>' },
+    heart:    { name: "Сердце",       svg: '<path d="M50 88 C10 60 4 34 22 20 C36 9 50 20 50 32 C50 20 64 9 78 20 C96 34 90 60 50 88 Z"/>' },
+    star:     { name: "Звезда",       svg: '<path d="M50 4 L61 38 L97 38 L68 59 L79 94 L50 72 L21 94 L32 59 L3 38 L39 38 Z"/>' },
+    corner:   { name: "Уголок",       svg: '<path d="M6 40 L6 6 L40 6" fill="none" stroke-width="8" stroke-linecap="round"/>' },
+    corner2:  { name: "Двойной уголок", svg: '<path d="M4 42 L4 4 L42 4" fill="none" stroke-width="7" stroke-linecap="round"/><path d="M16 52 L16 16 L52 16" fill="none" stroke-width="5" stroke-linecap="round"/>' },
+    tape:     { name: "Скотч",        svg: '<rect x="4" y="30" width="92" height="40" rx="2"/>' },
+    leaf:     { name: "Лист",         svg: '<path d="M50 6 C84 30 88 68 50 94 C12 68 16 30 50 6 Z" fill="none" stroke-width="5"/>' },
+    flourish: { name: "Завиток",      svg: '<path d="M6 60 C6 34 30 30 38 46 C44 58 34 68 24 62 C16 57 22 44 36 44 L64 44 C78 44 84 57 76 62 C66 68 56 58 62 46 C70 30 94 34 94 60" fill="none" stroke-width="5" stroke-linecap="round"/>' },
+    sun:      { name: "Солнце",       svg: '<circle cx="50" cy="50" r="20" fill="none" stroke-width="5"/><g stroke-width="5" stroke-linecap="round"><line x1="50" y1="6" x2="50" y2="20"/><line x1="50" y1="80" x2="50" y2="94"/><line x1="6" y1="50" x2="20" y2="50"/><line x1="80" y1="50" x2="94" y2="50"/><line x1="19" y1="19" x2="29" y2="29"/><line x1="71" y1="71" x2="81" y2="81"/><line x1="19" y1="81" x2="29" y2="71"/><line x1="71" y1="29" x2="81" y2="19"/></g>' },
+    wave:     { name: "Волна",        svg: '<path d="M4 50 C20 26 36 26 50 50 C64 74 80 74 96 50" fill="none" stroke-width="7" stroke-linecap="round"/>' },
+    arch:     { name: "Арка",         svg: '<path d="M10 92 L10 50 C10 22 90 22 90 50 L90 92" fill="none" stroke-width="6"/>' },
+    brackets: { name: "Скобки",       svg: '<path d="M36 8 L10 8 L10 92 L36 92 M64 8 L90 8 L90 92 L64 92" fill="none" stroke-width="7" stroke-linecap="round"/>' },
+    badge:    { name: "Бирка",        svg: '<path d="M8 50 L30 26 L92 26 L92 74 L30 74 Z" fill="none" stroke-width="5"/>' },
+    plus:     { name: "Крест",        svg: '<path d="M50 8 L50 92 M8 50 L92 50" fill="none" stroke-width="8" stroke-linecap="round"/>' },
+    grid4:    { name: "Сетка точек",  svg: '<g><circle cx="20" cy="20" r="7"/><circle cx="50" cy="20" r="7"/><circle cx="80" cy="20" r="7"/><circle cx="20" cy="50" r="7"/><circle cx="50" cy="50" r="7"/><circle cx="80" cy="50" r="7"/><circle cx="20" cy="80" r="7"/><circle cx="50" cy="80" r="7"/><circle cx="80" cy="80" r="7"/></g>' },
   };
-  const DECOR_FILL = { line: 1, heart: 1, star: 1, tape: 1 };
+  const DECOR_FILL = { line: 1, dline: 1, dashline: 1, heart: 1, star: 1, tape: 1, dotc: 1, grid4: 1 };
 
   /* ---------- Перетаскивание / ресайз / вращение слота (мм) ---------- */
   function startSlotDrag(e, mode, slot) {
@@ -642,7 +731,7 @@
         const snap = findSnap(slot, nx, ny);
         nx = snap.x; ny = snap.y;
         slot.x = Math.round(nx); slot.y = Math.round(ny);
-        snapGuides = snap.guides;
+        snapGuides = snap.guides; snapBadges = snap.badges || [];
       } else {
         if (ev.shiftKey) {
           // Shift — пропорции сохраняются
@@ -709,16 +798,16 @@
       if (!dragging) return;
       const mi = mediaOf(slot);
       if (!mi) return;
-      const rect = div.getBoundingClientRect();
-      const mmPerPx = slot.w / rect.width;
+      // lastScale (px/мм) не зависит от ре-рендера, в отличие от getBoundingClientRect() оторванного div
+      const mmPerPx = 1 / lastScale;
       const dxMm = (e.clientX - sx) * mmPerPx, dyMm = (e.clientY - sy) * mmPerPx;
       const oldOff = imageOffset({ ...slot, crop: c0 }, mi);
-      // смещение картинки = старое + сдвиг мыши, с ограничением в [-max, 0]
-      const maxOx = Math.max(0, oldOff.wMm - slot.w), maxOy = Math.max(0, oldOff.hMm - slot.h);
-      const oxMm = Math.min(0, Math.max(-maxOx, oldOff.x + dxMm));
-      const oyMm = Math.min(0, Math.max(-maxOy, oldOff.y + dyMm));
-      slot.crop.ox = maxOx > 0 ? (oxMm + maxOx) / maxOx : 0.5;
-      slot.crop.oy = maxOy > 0 ? (oyMm + maxOy) / maxOy : 0.5;
+      // смещение картинки = старое + сдвиг мыши; ox/oy в [0..1] с запасом ±12%
+      const spanX = Math.max(0, oldOff.wMm - slot.w) + slot.w * 0.12;
+      const spanY = Math.max(0, oldOff.hMm - slot.h) + slot.h * 0.12;
+      const wantX = oldOff.x + dxMm, wantY = oldOff.y + dyMm;
+      slot.crop.ox = clamp01((wantX / spanX + 1) / 2);
+      slot.crop.oy = clamp01((wantY / spanY + 1) / 2);
       renderCanvas();
     });
 
@@ -890,6 +979,13 @@
           <button class="btn" id="pbAddText">T Текст</button>
           <button class="btn" id="pbAddDecor">✦ Декор</button>
           <button class="btn" id="pbFillBook" title="Разложить фото из галереи по страницам">⇉ Разложить</button>
+        </div>
+        <h4 style="margin-top:14px">Библиотека декора</h4>
+        <div class="pb-decor-lib" id="pbDecorLib">
+          ${Object.entries(DECOR_SHAPES).map(([k, v]) => `
+            <div class="pb-decor-item" draggable="true" data-libshape="${k}" title="${v.name} — кликните или перетащите на холст">
+              <svg viewBox="0 0 100 100" width="30" height="30">${v.svg}</svg>
+            </div>`).join("")}
         </div>
         <h4 style="margin-top:14px">Наборы дизайна</h4>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
@@ -1071,6 +1167,24 @@
     $("#pbAddFrame")?.addEventListener("click", () => addSlot("image"));
     $("#pbAddText")?.addEventListener("click", () => addSlot("text"));
     $("#pbAddDecor")?.addEventListener("click", () => addSlot("decor"));
+    $$(".pb-decor-item", side).forEach((it) => {
+      const shape = it.dataset.libshape;
+      it.addEventListener("click", () => {
+        const f = fmt();
+        const sp = activeSpread();
+        const n = sp.slots.length;
+        sp.slots.push({
+          slotId: "dec_" + Date.now() % 100000 + n, type: "decor", shape,
+          x: Math.round(spreadWmm() / 2 - 30), y: Math.round(f.pageH / 2 - 15),
+          w: shape === "line" || shape === "dline" || shape === "dashline" || shape === "wave" ? 60 : 30,
+          h: shape === "line" || shape === "dline" || shape === "dashline" ? 6 : 30,
+          rot: 0, color: palette().accent,
+        });
+        selectedSlot = sp.slots.length - 1;
+        renderApp(); save();
+      });
+      it.addEventListener("dragstart", (e) => e.dataTransfer.setData("text/pbshape", shape));
+    });
     $$("[data-decorset]", side).forEach(b => b.addEventListener("click", () => addDecorSet(b.dataset.decorset)));
 
     // Панель декора
@@ -1425,30 +1539,11 @@
           ctx.translate(-cx, -cy);
         }
         if (slot.type === "decor") {
-          const fill = !!DECOR_FILL[slot.shape];
-          const col = slot.color || palette().accent;
-          ctx.save();
-          ctx.translate(x, y);
-          ctx.scale(slot.w / 100, slot.h / 100);
-          ctx.restore();
-          ctx.fillStyle = col;
-          ctx.strokeStyle = col;
-          if (slot.shape === "line") ctx.fillRect(x, y + slot.h / 2 - 3, slot.w, 6);
-          else if (slot.shape === "rect") { ctx.lineWidth = Math.max(1.2, slot.w * 0.05); ctx.strokeRect(x + 1.5, y + 1.5, slot.w - 3, slot.h - 3); }
-          else if (slot.shape === "circle") { ctx.lineWidth = Math.max(1.2, slot.w * 0.05); ctx.beginPath(); ctx.ellipse(x + slot.w / 2, y + slot.h / 2, slot.w / 2 - 1, slot.h / 2 - 1, 0, 0, Math.PI * 2); ctx.stroke(); }
-          else if (slot.shape === "tape") { ctx.globalAlpha = 0.75; ctx.fillRect(x, y, slot.w, slot.h); ctx.globalAlpha = 1; }
-          else if (slot.shape === "heart" || slot.shape === "star" || slot.shape === "corner") {
-            const d = { heart: "M50 88 C10 60 4 34 22 20 C36 9 50 20 50 32 C50 20 64 9 78 20 C96 34 90 60 50 88 Z",
-                        star: "M50 4 L61 38 L97 38 L68 59 L79 94 L50 72 L21 94 L32 59 L3 38 L39 38 Z",
-                        corner: "M6 40 L6 6 L40 6" }[slot.shape];
-            const path2 = new Path2D(d);
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.scale(slot.w / 100, slot.h / 100);
-            if (fill) ctx.fill(path2);
-            else { ctx.lineWidth = 8; ctx.lineCap = "round"; ctx.stroke(path2); }
-            ctx.restore();
-          }
+          const di = decorImage(slot);
+          if (slot.shape === "tape") ctx.globalAlpha = 0.75;
+          if (di && di.ready) ctx.drawImage(di.img, x, y, slot.w, slot.h);
+          else ctx.fillRect(x, y, slot.w, slot.h); // пока SVG не готов
+          ctx.globalAlpha = 1;
           if (rotRestore) ctx.restore();
           return;
         }
@@ -1472,7 +1567,8 @@
           ctx.rect(x, y, slot.w, slot.h);
           ctx.clip();
           ctx.fillStyle = slot.color || palette().text;
-          ctx.font = `${slot.italic ? "italic " : ""}${slot.bold ? 600 : 400} ${slot.size}pt ${fontCss(slot.font)}`;
+          // контекст масштабирован в мм, поэтому размер в px = размер в мм
+          ctx.font = `${slot.italic ? "italic " : ""}${slot.bold ? 600 : 400} ${slot.size}px ${fontCss(slot.font)}`;
           ctx.textAlign = slot.align === "center" ? "center" : slot.align === "right" ? "right" : "left";
           ctx.textBaseline = "top";
           try { ctx.letterSpacing = slot.spacing + "em"; } catch {}
@@ -1482,7 +1578,7 @@
           lines.forEach((line) => {
             const l = slot.uppercase ? line.toUpperCase() : line;
             ctx.fillText(l, tx, ty);
-            ty += slot.size * 1.25 * 0.3528; // pt→мм × межстрочный
+            ty += slot.size * 1.25; // межстрочный интервал в мм
           });
           ctx.restore();
         }
@@ -1502,6 +1598,23 @@
   async function decodeAllImages() {
     await documentFonts();
     const jobs = [];
+    // декор: прогреваем SVG-кэш
+    const warms = new Set();
+    state.cover?.slots.forEach(warmDecor);
+    state.spreads.forEach((sp) => sp.slots.forEach(warmDecor));
+    function warmDecor(sl) {
+      if (sl.type !== "decor") return;
+      const di = decorImage(sl);
+      if (!di.ready && !warms.has(di)) {
+        warms.add(di);
+        jobs.push(new Promise((res) => {
+          if (di.ready) return res();
+          di.img.addEventListener("load", res, { once: true });
+          di.img.addEventListener("error", res, { once: true });
+          setTimeout(res, 3000);
+        }));
+      }
+    }
     state.spreads.forEach(sp => sp.slots.forEach(s => {
       const mi = mediaOf(s);
       if (mi && !mi._el) {

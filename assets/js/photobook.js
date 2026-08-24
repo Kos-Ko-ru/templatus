@@ -984,7 +984,7 @@
         <div class="pb-decor-lib" id="pbDecorLib">
           ${Object.entries(DECOR_SHAPES).map(([k, v]) => `
             <div class="pb-decor-item" draggable="true" data-libshape="${k}" title="${v.name} — кликните или перетащите на холст">
-              <svg viewBox="0 0 100 100" width="30" height="30">${v.svg}</svg>
+              <svg viewBox="0 0 100 100" width="30" height="30" ${DECOR_FILL[k] ? 'fill="currentColor" stroke="none"' : 'fill="none" stroke="currentColor"'}>${v.svg}</svg>
             </div>`).join("")}
         </div>
         <h4 style="margin-top:14px">Наборы дизайна</h4>
@@ -1978,6 +1978,20 @@
     $("#pbZoomOut").addEventListener("click", () => { zoom = Math.max(0.2, (zoom || fitScaleNow()) / 1.15); renderCanvas(); });
     $("#pbZoomPct").addEventListener("click", () => { zoom = 3.78; renderCanvas(); }); // 96dpi = 100%
     $("#pbUndoBtn").addEventListener("click", undo);
+    // Переключение темы внутри редактора
+    const themeBtn = $("#pbThemeBtn");
+    const syncThemeIcon = () => {
+      themeBtn.textContent = document.documentElement.getAttribute("data-theme") === "dark" ? "☀" : "☾";
+    };
+    themeBtn.addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try { Storage.setTheme(next); } catch (e) {}
+      // иконка в шапке сайта
+      $$("[data-theme-icon]").forEach((el) => (el.textContent = next === "dark" ? "☀" : "☾"));
+      syncThemeIcon();
+    });
+    syncThemeIcon();
     $("#pbRedoBtn").addEventListener("click", redo);
     $("#pbZoomFit").addEventListener("click", () => { zoom = 0; renderCanvas(); });
     $("#pbGuides").addEventListener("click", (e) => { guides = !guides; e.currentTarget.classList.toggle("btn-primary", guides); renderCanvas(); });

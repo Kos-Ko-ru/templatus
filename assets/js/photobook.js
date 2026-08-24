@@ -542,6 +542,15 @@
 
   const clampNum = (v, a, b) => Math.min(b, Math.max(a, isFinite(v) ? v : a));
 
+  /* ---------- Декодирование HTML-текста для canvas ---------- */
+  function decodeHtmlEntities(str) {
+    if (!str) return "";
+    const map = { "&nbsp;": " ", "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#39;": "'", "&mdash;": "—", "&laquo;": "«", "&raquo;": "»", "&ndash;": "–", "&hellip;": "…" };
+    let out = str.replace(/&nbsp;|&amp;|&lt;|&gt;|&quot;|&#39;|&mdash;|&laquo;|&raquo;|&ndash;|&hellip;/g, (m) => map[m]);
+    out = out.replace(/&#(\d+);/g, (m, d) => String.fromCharCode(+d));
+    return out;
+  }
+
   /* ---------- SVG-рендер декора для экспорта (идентично экрану) ---------- */
   const decorCache = {};
   function decorImage(slot) {
@@ -1549,8 +1558,21 @@
         }
         if (slot.type === "image") {
           const mi = mediaOf(slot);
-          if (!mi) return;
-          const im = mi._el || (() => { const i = new Image(); i.src = mi.dataURL; return i; })();
+          if (!mi || !(mi._el && mi._el.complete && mi._el.naturalWidth > 0)) {
+            if (mi) { // фото недоступно — видимая заглушка вместо пустоты
+              ctx.fillStyle = "#d9dde3";
+              ctx.fillRect(x, y, slot.w, slot.h);
+              ctx.strokeStyle = "#9aa6b5";
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(x + 2, y + 2); ctx.lineTo(x + slot.w - 2, y + slot.h - 2);
+              ctx.moveTo(x + slot.w - 2, y + 2); ctx.lineTo(x + 2, y + slot.h - 2);
+              ctx.stroke();
+            }
+            if (rotRestore) ctx.restore();
+            return;
+          }
+          const im = mi._el; // гарантированно декодирован в decodeAllImages
           const d = imageOffset(slot, mi);
           ctx.save();
           ctx.beginPath();
@@ -1572,7 +1594,7 @@
           try { ctx.letterSpacing = slot.spacing + "em"; } catch {}
           const tx = slot.align === "center" ? x + slot.w / 2 : slot.align === "right" ? x + slot.w : x;
           // переносы по ширине рамки — как в редакторе (CSS word-wrap)
-          const rawLines = (slot.text || "").replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "").split("\n");
+          const rawLines = decodeHtmlEntities((slot.text || "").replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "")).split("\n");
           const lines = [];
           rawLines.forEach((raw) => {
             const text = slot.uppercase ? raw.toUpperCase() : raw;

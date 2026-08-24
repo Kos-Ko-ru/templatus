@@ -1571,24 +1571,11 @@
           ctx.textBaseline = "top";
           try { ctx.letterSpacing = slot.spacing + "em"; } catch {}
           const tx = slot.align === "center" ? x + slot.w / 2 : slot.align === "right" ? x + slot.w : x;
-          // переносы по ширине рамки — как в редакторе (CSS word-wrap)
-          const rawLines = (slot.text || "").replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "").split("\n");
-          const lines = [];
-          rawLines.forEach((raw) => {
-            const text = slot.uppercase ? raw.toUpperCase() : raw;
-            const words = text.split(/\s+/).filter(Boolean);
-            if (!words.length) { lines.push(""); return; }
-            let cur = "";
-            words.forEach((word) => {
-              const probe = cur ? cur + " " + word : word;
-              if (ctx.measureText(probe).width <= slot.w || !cur) cur = probe;
-              else { lines.push(cur); cur = word; }
-            });
-            if (cur) lines.push(cur);
-          });
+          const lines = (slot.text || "").replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "").split("\n");
           let ty = y;
           lines.forEach((line) => {
-            ctx.fillText(line, tx, ty);
+            const l = slot.uppercase ? line.toUpperCase() : line;
+            ctx.fillText(l, tx, ty);
             ty += slot.size * 1.25; // межстрочный интервал в мм
           });
           ctx.restore();

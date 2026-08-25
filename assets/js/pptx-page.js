@@ -35,6 +35,8 @@
     const data = Storage.get(PAGE_ID);
     if (!data) return;
     if (data.title) setValue("projectTitle", data.title);
+    if (data.fio) setValue("studentFio", data.fio);
+    if (data.eventDate) setValue("eventDate", data.eventDate);
     if (data.subtitle) setValue("projectSubtitle", data.subtitle);
     if (data.theme) setValue("theme", data.theme);
     if (data.chartLabels) setValue("chartLabels", data.chartLabels.join(", "));
@@ -76,7 +78,14 @@
 
   async function handleDownload() {
     const data = PptxGenerator.collectData();
-    const filename = `pitch-deck-${transliterate(data.title || "startup").replace(/\s+/g, "-")}.pptx`;
+    // Для шаблона первокурсника — имя по требованиям: мероприятие + ФИО + дата
+    let filename;
+    if (data.fio) {
+      const safe = (t) => (t || "").replace(/[\/:*?"<>|]/g, "").trim();
+      filename = `${safe(data.eventTitle || "День первокурсника")}_${safe(data.fio)}${data.eventDate ? "_" + safe(data.eventDate) : ""}.pptx`;
+    } else {
+      filename = `pitch-deck-${transliterate(data.title || "startup").replace(/\s+/g, "-")}.pptx`;
+    }
 
     showDownloadModal(async () => {
       try {

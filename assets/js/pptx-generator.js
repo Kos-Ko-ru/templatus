@@ -7,6 +7,9 @@ const PptxGenerator = (() => {
     return {
       title: getValue("projectTitle"),
       subtitle: getValue("projectSubtitle"),
+      fio: getValue("studentFio"),
+      eventDate: getValue("eventDate"),
+      eventTitle: getValue("eventTitle"),
       slides: Array.from(document.querySelectorAll("[data-slide-textarea]")).map((el) => ({
         title: el.dataset.slideTitle,
         text: el.value.trim(),
